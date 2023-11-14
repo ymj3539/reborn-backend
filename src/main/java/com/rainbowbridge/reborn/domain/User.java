@@ -20,7 +20,7 @@ import java.util.List;
 public class User {
 
     @Id
-    private Long id;
+    private String id;
 
     private String password;    // 비밀번호
 

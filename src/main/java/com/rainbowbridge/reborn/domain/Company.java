@@ -19,7 +19,7 @@ import java.util.List;
 public class Company {
 
     @Id
-    private Long id;
+    private String id;
 
     private String password;        // 비밀번호
 
