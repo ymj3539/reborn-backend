@@ -49,7 +49,7 @@ public class Company {
     private File mainPic;
 
     @OneToMany(mappedBy = "company")
-    private List<Like> likes = new ArrayList<>();
+    private List<Heart> hearts = new ArrayList<>();
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<Reservation> reservations = new ArrayList<>();
