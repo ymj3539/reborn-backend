@@ -19,6 +19,10 @@ public class UserService {
 
     @Transactional
     public User addUser(UserAddDto dto){
+       if (userRepository.findById(dto.getId()).isPresent()) {
+           throw new IllegalStateException("이미 존재하는 아이디입니다.");
+       }
+
         String encodedPassword = UserSha256.encrypt(dto.getPassword());
         User user = dto.toEntity(encodedPassword);
         return userRepository.save(user);
