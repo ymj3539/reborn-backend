@@ -36,15 +36,17 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity addUser(@RequestBody UserAddDto dto, HttpSession session){
-        return ResponseEntity.ok(userService.addUser(dto, session));
+        userService.addUser(dto, session);
+        return ResponseEntity.ok("로그인에 성공했습니다");
     }
 
     /**
      *  로그인
      */
     @PostMapping("/login")
-    public ResponseEntity<User> loginUser(@RequestBody LoginDto dto, HttpSession session) {
-        return ResponseEntity.ok(userService.loginUser(dto, session));
+    public ResponseEntity loginUser(@RequestBody LoginDto dto, HttpSession session) {
+        userService.loginUser(dto, session);
+        return ResponseEntity.ok("로그인에 성공했습니다.");
     }
 
     /**

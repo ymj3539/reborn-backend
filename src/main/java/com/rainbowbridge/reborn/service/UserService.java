@@ -24,16 +24,14 @@ public class UserService {
     }
 
     @Transactional
-    public User addUser(UserAddDto dto, HttpSession session){
+    public void addUser(UserAddDto dto, HttpSession session){
         String encodedPassword = UserSha256.encrypt(dto.getPassword());
         User user = dto.toEntity(encodedPassword);
 
-        session.setAttribute("user", user);
-
-        return userRepository.save(user);
+        session.setAttribute("user", userRepository.save(user));
     }
 
-    public User loginUser(LoginDto dto, HttpSession session) {
+    public void loginUser(LoginDto dto, HttpSession session) {
         User user = userRepository.findById(dto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("아이디가 존재하지 않습니다."));
 
@@ -43,7 +41,5 @@ public class UserService {
         }
 
         session.setAttribute("user", user);
-
-        return user;
     }
 }
