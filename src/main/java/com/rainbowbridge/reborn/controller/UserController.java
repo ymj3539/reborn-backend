@@ -47,4 +47,13 @@ public class UserController {
         return ResponseEntity.ok(userService.loginUser(dto, session));
     }
 
+    /**
+     *  로그아웃
+     */
+    @GetMapping("/logout")
+    public ResponseEntity logout(HttpSession session) {
+        session.removeAttribute("user");
+        return ResponseEntity.ok("로그아웃에 성공했습니다.");
+    }
+
 }
