@@ -24,9 +24,12 @@ public class UserService {
     }
 
     @Transactional
-    public User addUser(UserAddDto dto){
+    public User addUser(UserAddDto dto, HttpSession session){
         String encodedPassword = UserSha256.encrypt(dto.getPassword());
         User user = dto.toEntity(encodedPassword);
+
+        session.setAttribute("user", user);
+
         return userRepository.save(user);
     }
 

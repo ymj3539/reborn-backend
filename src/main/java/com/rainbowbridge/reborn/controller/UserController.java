@@ -35,8 +35,8 @@ public class UserController {
      *  회원가입
      */
     @PostMapping
-    public ResponseEntity addUser(@RequestBody UserAddDto dto){
-        return ResponseEntity.ok(userService.addUser(dto));
+    public ResponseEntity addUser(@RequestBody UserAddDto dto, HttpSession session){
+        return ResponseEntity.ok(userService.addUser(dto, session));
     }
 
     /**
