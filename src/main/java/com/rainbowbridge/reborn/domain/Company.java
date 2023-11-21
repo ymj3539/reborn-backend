@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -25,11 +23,7 @@ public class Company {
 
     private String name;            // 이름
 
-    @Enumerated(EnumType.STRING)
-    private Region region;          // 지역
-
-    @Enumerated(EnumType.STRING)
-    private Area area;              // 세부지역
+    private String region;          // 권역
 
     private String address;         // 주소
 
@@ -42,8 +36,6 @@ public class Company {
     private int closeTime;          // 영업마감시간
 
     private String notification;    // 안내사항
-
-    private boolean pickupYn;       // 픽업 서비스 제공 여부
 
     @OneToOne(mappedBy = "companyMain", cascade = CascadeType.ALL)
     private File mainPic;
