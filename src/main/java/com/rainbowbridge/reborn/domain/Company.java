@@ -37,6 +37,10 @@ public class Company {
 
     private String notification;    // 안내사항
 
+    private double latitude;        // 위도
+
+    private double longitude;       // 경도
+
     @OneToOne(mappedBy = "companyMain", cascade = CascadeType.ALL)
     private File mainPic;
 
