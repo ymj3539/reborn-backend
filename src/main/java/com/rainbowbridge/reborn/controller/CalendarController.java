@@ -3,6 +3,7 @@ package com.rainbowbridge.reborn.controller;
 import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.dto.common.DayResponseDto;
 import com.rainbowbridge.reborn.dto.company.CalendarCompanyListRequestDto;
+import com.rainbowbridge.reborn.dto.company.CalendarCompanyListResponseDto;
 import com.rainbowbridge.reborn.service.CompanyService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ public class CalendarController {
 
     @GetMapping("/companies")
     @ApiOperation(value = "바로예약 캘린더 업체 리스트 조회")
-    public List<Company> getCalendarCompanyList(@RequestBody CalendarCompanyListRequestDto dto) {
+    public List<CalendarCompanyListResponseDto> getCalendarCompanyList(@RequestBody CalendarCompanyListRequestDto dto) {
         return companyService.getCalendarCompanyList(dto);
     }
 

@@ -1,7 +1,11 @@
 package com.rainbowbridge.reborn.service;
 
 import com.rainbowbridge.reborn.domain.Company;
+import com.rainbowbridge.reborn.domain.Product;
+import com.rainbowbridge.reborn.domain.ProductType;
 import com.rainbowbridge.reborn.dto.company.CalendarCompanyListRequestDto;
+import com.rainbowbridge.reborn.dto.company.CalendarCompanyListResponseDto;
+import com.rainbowbridge.reborn.dto.product.CalendarProductResponseDto;
 import com.rainbowbridge.reborn.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +24,37 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
 
-    public List<Company> getCalendarCompanyList(CalendarCompanyListRequestDto dto) {
+    public List<CalendarCompanyListResponseDto> getCalendarCompanyList(CalendarCompanyListRequestDto dto) {
         // 영업 가능한 업체 조회
         List<Company> availableCompanies = companyRepository.findAvailableCompanieList(dto.getSelectedDate(), dto.getSelectedTime());
         // 가까운 순 10개 업체 계산
-        return calculateNearbyCompanyList(availableCompanies, dto.getUserLatitude(), dto.getUserLongitude());
+        List<Company> nearbyAvailableCompanies = calculateNearbyCompanyList(availableCompanies, dto.getUserLatitude(), dto.getUserLongitude());
+
+        List<CalendarCompanyListResponseDto> companyResponseDtoList = new ArrayList<>();
+
+        for (Company company : nearbyAvailableCompanies) {
+
+            // 리본 패키지만 추출
+            List<CalendarProductResponseDto> productResponseDtoList = Optional.ofNullable(company.getProducts())
+                    .orElse(Collections.emptyList()).stream()
+                    .filter(product -> product.getProductType().equals(ProductType.REBORN_PACKAGE))
+                    .map(product -> CalendarProductResponseDto.builder()
+                            .id(product.getId())
+                            .name(product.getName())
+                            .price(product.getPrice())
+                            .build())
+                    .collect(Collectors.toList());
+
+            CalendarCompanyListResponseDto companyListResponseDto = CalendarCompanyListResponseDto.builder()
+                    .id(company.getId())
+                    .name(company.getName())
+                    .products(productResponseDtoList)
+                    .build();
+
+            companyResponseDtoList.add(companyListResponseDto);
+        }
+
+        return companyResponseDtoList;
     }
 
     private List<Company> calculateNearbyCompanyList(List<Company> companies, double userLatitude, double userLongitude) {
