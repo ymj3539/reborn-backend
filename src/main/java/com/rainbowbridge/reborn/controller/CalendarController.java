@@ -1,9 +1,13 @@
 package com.rainbowbridge.reborn.controller;
 
+import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.dto.common.DayResponseDto;
+import com.rainbowbridge.reborn.dto.company.CalendarCompanyListRequestDto;
+import com.rainbowbridge.reborn.service.CompanyService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +21,8 @@ import java.util.Locale;
 @RequiredArgsConstructor
 @RequestMapping("/api/calendar")
 public class CalendarController {
+
+    private final CompanyService companyService;
 
     @GetMapping
     @ApiOperation(value = "캘린더 일자 조회")
@@ -34,5 +40,12 @@ public class CalendarController {
 
         return dtos;
     }
+
+    @GetMapping("/companies")
+    @ApiOperation(value = "바로예약 캘린더 업체 리스트 조회")
+    public List<Company> getCalendarCompanyList(@RequestBody CalendarCompanyListRequestDto dto) {
+        return companyService.getCalendarCompanyList(dto);
+    }
+
 
 }
