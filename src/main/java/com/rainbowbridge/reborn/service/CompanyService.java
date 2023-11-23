@@ -29,7 +29,7 @@ public class CompanyService {
         // 각 업체의 사용자의 거리를 계산하고, 그 결과를 Map에 저장
         Map<Company, Double> companyDistanceMap = new HashMap<>();
         for (Company company : companies) {
-            double distance = calculateDistance(userLatitude, userLongitude, company.getLatitude(), company.getLatitude());
+            double distance = calculateDistance(userLatitude, userLongitude, company.getLatitude(), company.getLongitude());
             companyDistanceMap.put(company, distance);
         }
 
