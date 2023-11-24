@@ -36,31 +36,7 @@ public class CompanyService {
         // 가장 가까운 10개 업체만 선택.
         List<Company> nearbyAvailableCompanies = sortedCompanies.size() > 10 ? sortedCompanies.subList(0, 10) : sortedCompanies;
 
-        List<CompanyListDto> companyResponseDtoList = new ArrayList<>();
-
-        for (Company company : nearbyAvailableCompanies) {
-
-            // 리본 패키지만 추출
-            List<CalendarProductResponseDto> productResponseDtoList = Optional.ofNullable(company.getProducts())
-                    .orElse(Collections.emptyList()).stream()
-                    .filter(product -> product.getProductType().equals(ProductType.REBORN_PACKAGE))
-                    .map(product -> CalendarProductResponseDto.builder()
-                            .id(product.getId())
-                            .name(product.getName())
-                            .price(product.getPrice())
-                            .build())
-                    .collect(Collectors.toList());
-
-            CompanyListDto companyListResponseDto = CompanyListDto.builder()
-                    .id(company.getId())
-                    .name(company.getName())
-                    .products(productResponseDtoList)
-                    .build();
-
-            companyResponseDtoList.add(companyListResponseDto);
-        }
-
-        return companyResponseDtoList;
+        return toCompanyListDto(nearbyAvailableCompanies);
     }
 
     public List<CompanyListDto> getFilteredCompanyList(FilteredCompanyListRequestDto dto) {
@@ -83,31 +59,7 @@ public class CompanyService {
             sortCompaniesByReservationCount(companies);
         }
 
-        List<CompanyListDto> companyResponseDtoList = new ArrayList<>();
-
-        for (Company company : companies) {
-
-            // 리본 패키지만 추출
-            List<CalendarProductResponseDto> productResponseDtoList = Optional.ofNullable(company.getProducts())
-                    .orElse(Collections.emptyList()).stream()
-                    .filter(product -> product.getProductType().equals(ProductType.REBORN_PACKAGE))
-                    .map(product -> CalendarProductResponseDto.builder()
-                            .id(product.getId())
-                            .name(product.getName())
-                            .price(product.getPrice())
-                            .build())
-                    .collect(Collectors.toList());
-
-            CompanyListDto companyListResponseDto = CompanyListDto.builder()
-                    .id(company.getId())
-                    .name(company.getName())
-                    .products(productResponseDtoList)
-                    .build();
-
-            companyResponseDtoList.add(companyListResponseDto);
-        }
-
-        return companyResponseDtoList;
+        return toCompanyListDto(companies);
     }
 
     private List<Company> sortCompanyListByDistance(List<Company> companies, double userLatitude, double userLongitude) {
@@ -149,6 +101,34 @@ public class CompanyService {
             int count2 = c2.getReservations().size();
             return Integer.compare(count2, count1);
         });
+    }
+
+    private List<CompanyListDto> toCompanyListDto(List<Company> companies) {
+        List<CompanyListDto> companyResponseDtoList = new ArrayList<>();
+
+        for (Company company : companies) {
+
+            // 리본 패키지만 추출
+            List<CalendarProductResponseDto> productResponseDtoList = Optional.ofNullable(company.getProducts())
+                    .orElse(Collections.emptyList()).stream()
+                    .filter(product -> product.getProductType().equals(ProductType.REBORN_PACKAGE))
+                    .map(product -> CalendarProductResponseDto.builder()
+                            .id(product.getId())
+                            .name(product.getName())
+                            .price(product.getPrice())
+                            .build())
+                    .collect(Collectors.toList());
+
+            CompanyListDto companyListResponseDto = CompanyListDto.builder()
+                    .id(company.getId())
+                    .name(company.getName())
+                    .products(productResponseDtoList)
+                    .build();
+
+            companyResponseDtoList.add(companyListResponseDto);
+        }
+
+        return companyResponseDtoList;
     }
 
 }
