@@ -27,8 +27,10 @@ public class CompanyService {
     public List<CompanyListDto> getCalendarCompanyList(CalendarCompanyListRequestDto dto) {
         // 영업 가능한 업체 조회
         List<Company> availableCompanies = companyRepository.findAvailableCompanieList(dto.getSelectedDate(), dto.getSelectedTime());
-        // 가까운 순 10개 업체 계산
-        List<Company> nearbyAvailableCompanies = calculateNearbyCompanyList(availableCompanies, dto.getUserLatitude(), dto.getUserLongitude());
+        // 가까운 순으로 업체 정렬
+        List<Company> sortedCompanies = sortCompanyListByDistance(availableCompanies, dto.getUserLatitude(), dto.getUserLongitude());
+        // 가장 가까운 10개 업체만 선택.
+        List<Company> nearbyAvailableCompanies = sortedCompanies.size() > 10 ? sortedCompanies.subList(0, 10) : sortedCompanies;
 
         List<CompanyListDto> companyResponseDtoList = new ArrayList<>();
 
@@ -57,7 +59,7 @@ public class CompanyService {
         return companyResponseDtoList;
     }
 
-    private List<Company> calculateNearbyCompanyList(List<Company> companies, double userLatitude, double userLongitude) {
+    private List<Company> sortCompanyListByDistance(List<Company> companies, double userLatitude, double userLongitude) {
         // 각 업체의 사용자의 거리를 계산하고, 그 결과를 Map에 저장
         Map<Company, Double> companyDistanceMap = new HashMap<>();
         for (Company company : companies) {
@@ -69,13 +71,9 @@ public class CompanyService {
         List<Map.Entry<Company, Double>> entries = new ArrayList<>(companyDistanceMap.entrySet());
         entries.sort(Map.Entry.comparingByValue());
 
-        // 상위 10개 업체만 선택.
-        List<Company> nearestCompanies = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            nearestCompanies.add(entries.get(i).getKey());
-        }
-
-        return nearestCompanies;
+        return entries.stream()
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 
 }
