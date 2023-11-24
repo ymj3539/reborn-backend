@@ -21,7 +21,7 @@ public class FilteredCompanyListRequestDto {
     private SortCriteria sortCriteria;
 
     @NotNull
-    @ApiModelProperty(value = "지역권", allowableValues = "CAPITAL, CHUNGCHEONG, GANGWON, YEONGNAM, HONAM")
+    @ApiModelProperty(value = "지역권", allowableValues = "ALL, CAPITAL, CHUNGCHEONG, GANGWON, YEONGNAM, HONAM")
     private Region region;
 
 

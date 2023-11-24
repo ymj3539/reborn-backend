@@ -2,6 +2,7 @@ package com.rainbowbridge.reborn.domain;
 
 public enum Region {
 
+    ALL("전국"),
     CAPITAL("수도권"),
     CHUNGCHEONG("충청권"),
     GANGWON("강원권"),
