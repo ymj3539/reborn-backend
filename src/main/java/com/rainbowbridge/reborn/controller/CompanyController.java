@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.controller;
 
+import com.rainbowbridge.reborn.dto.company.FilteredCompanyListRequestDto;
 import com.rainbowbridge.reborn.dto.company.CalendarCompanyListRequestDto;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
 import com.rainbowbridge.reborn.service.CompanyService;
@@ -23,6 +24,12 @@ public class CompanyController {
     @ApiOperation(value = "바로예약 캘린더 업체 리스트 조회")
     public List<CompanyListDto> getCalendarCompanyList(@RequestBody CalendarCompanyListRequestDto dto) {
         return companyService.getCalendarCompanyList(dto);
+    }
+
+    @GetMapping("/filter")
+    @ApiOperation(value = "정렬순과 지역권에 따른 업체 리스트 조회")
+    public List<CompanyListDto> getFilteredCompanyList(@RequestBody FilteredCompanyListRequestDto dto) {
+        return companyService.getFilteredCompanyList(dto);
     }
 
 }
