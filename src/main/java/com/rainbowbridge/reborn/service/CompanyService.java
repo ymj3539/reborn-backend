@@ -5,14 +5,13 @@ import com.rainbowbridge.reborn.domain.ProductType;
 import com.rainbowbridge.reborn.domain.Region;
 import com.rainbowbridge.reborn.domain.Review;
 import com.rainbowbridge.reborn.domain.SortCriteria;
-import com.rainbowbridge.reborn.dto.company.CalendarCompanyListRequestDto;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
-import com.rainbowbridge.reborn.dto.company.FilteredCompanyListRequestDto;
 import com.rainbowbridge.reborn.dto.product.CalendarProductResponseDto;
 import com.rainbowbridge.reborn.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,30 +27,29 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final CommonService commonService;
 
-    public List<CompanyListDto> getCalendarCompanyList(CalendarCompanyListRequestDto dto) {
+    public List<CompanyListDto> getCalendarCompanyList(LocalDate selectedDate, int selectedTime, double userLatitude, double userLongitude) {
         // 영업 가능한 업체 조회
-        List<Company> availableCompanies = companyRepository.findAvailableCompanieList(dto.getSelectedDate(), dto.getSelectedTime());
+        List<Company> availableCompanies = companyRepository.findAvailableCompanieList(selectedDate, selectedTime);
         // 가까운 순으로 업체 정렬
-        List<Company> sortedCompanies = sortCompanyListByDistance(availableCompanies, dto.getUserLatitude(), dto.getUserLongitude());
+        List<Company> sortedCompanies = sortCompanyListByDistance(availableCompanies, userLatitude, userLongitude);
         // 가장 가까운 10개 업체만 선택.
         List<Company> nearbyAvailableCompanies = sortedCompanies.size() > 10 ? sortedCompanies.subList(0, 10) : sortedCompanies;
 
         return toCompanyListDto(nearbyAvailableCompanies);
     }
 
-    public List<CompanyListDto> getFilteredCompanyList(FilteredCompanyListRequestDto dto) {
+    public List<CompanyListDto> getFilteredCompanyList(SortCriteria sortCriteria, Region region) {
         List<Company> companies;
 
         // 지역권 기준으로 업체 리스트 조회
-        if (dto.getRegion().equals(Region.ALL)) {
+        if (region.equals(Region.ALL)) {
             companies = companyRepository.findAll();
         }
         else {
-            companies = companyRepository.findAllByRegion(dto.getRegion().getDisplayName());
+            companies = companyRepository.findAllByRegion(region.getDisplayName());
         }
 
         // 정렬 기준으로 업체 리스트 정렬
-        SortCriteria sortCriteria = dto.getSortCriteria();
         if (sortCriteria.equals(SortCriteria.RATING)) {
             sortCompaniesByAverageRating(companies);
         }
