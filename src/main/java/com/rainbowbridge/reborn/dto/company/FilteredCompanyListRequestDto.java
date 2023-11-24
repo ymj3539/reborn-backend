@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 public class FilteredCompanyListRequestDto {
 
     @NotNull
-    @ApiModelProperty(value = "정렬 기준", allowableValues = "RATING, POPULARITY, DISTANCE")
+    @ApiModelProperty(value = "정렬 기준", allowableValues = "RATING, POPULARITY")
     private SortCriteria sortCriteria;
 
     @NotNull
