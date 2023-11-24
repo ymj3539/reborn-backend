@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CalendarCompanyListResponseDto {
+public class CompanyListDto {
 
     private String id;
 

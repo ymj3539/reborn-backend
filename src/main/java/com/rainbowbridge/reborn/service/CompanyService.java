@@ -1,10 +1,9 @@
 package com.rainbowbridge.reborn.service;
 
 import com.rainbowbridge.reborn.domain.Company;
-import com.rainbowbridge.reborn.domain.Product;
 import com.rainbowbridge.reborn.domain.ProductType;
 import com.rainbowbridge.reborn.dto.company.CalendarCompanyListRequestDto;
-import com.rainbowbridge.reborn.dto.company.CalendarCompanyListResponseDto;
+import com.rainbowbridge.reborn.dto.company.CompanyListDto;
 import com.rainbowbridge.reborn.dto.product.CalendarProductResponseDto;
 import com.rainbowbridge.reborn.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +23,13 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
 
-    public List<CalendarCompanyListResponseDto> getCalendarCompanyList(CalendarCompanyListRequestDto dto) {
+    public List<CompanyListDto> getCalendarCompanyList(CalendarCompanyListRequestDto dto) {
         // 영업 가능한 업체 조회
         List<Company> availableCompanies = companyRepository.findAvailableCompanieList(dto.getSelectedDate(), dto.getSelectedTime());
         // 가까운 순 10개 업체 계산
         List<Company> nearbyAvailableCompanies = calculateNearbyCompanyList(availableCompanies, dto.getUserLatitude(), dto.getUserLongitude());
 
-        List<CalendarCompanyListResponseDto> companyResponseDtoList = new ArrayList<>();
+        List<CompanyListDto> companyResponseDtoList = new ArrayList<>();
 
         for (Company company : nearbyAvailableCompanies) {
 
@@ -45,7 +44,7 @@ public class CompanyService {
                             .build())
                     .collect(Collectors.toList());
 
-            CalendarCompanyListResponseDto companyListResponseDto = CalendarCompanyListResponseDto.builder()
+            CompanyListDto companyListResponseDto = CompanyListDto.builder()
                     .id(company.getId())
                     .name(company.getName())
                     .products(productResponseDtoList)
