@@ -5,6 +5,7 @@ import com.rainbowbridge.reborn.domain.SortCriteria;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
 import com.rainbowbridge.reborn.service.CompanyService;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +26,10 @@ public class CompanyController {
     @GetMapping("/calendar")
     @ApiOperation(value = "바로예약 캘린더 업체 리스트 조회")
     public List<CompanyListDto> getCalendarCompanyList(
-            @RequestParam @NotNull LocalDate selectedDate,
-            @RequestParam @NotNull int selectedTime,
-            @RequestParam @NotNull double userLatitude,
-            @RequestParam @NotNull double userLongitude) {
+            @ApiParam(value = "선택된 일자", example = "2023-10-11") @RequestParam @NotNull LocalDate selectedDate,
+            @ApiParam(value = "선택된 시간", example = "10") @RequestParam @NotNull int selectedTime,
+            @ApiParam(value = "사용자 위치 위도", example = "35.2388660") @RequestParam @NotNull double userLatitude,
+            @ApiParam(value = "사용자 위치 경도", example = "129.222829") @RequestParam @NotNull double userLongitude) {
         return companyService.getCalendarCompanyList(selectedDate, selectedTime, userLatitude, userLongitude);
     }
 
