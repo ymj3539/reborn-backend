@@ -1,6 +1,6 @@
 package com.rainbowbridge.reborn.dto.company;
 
-import com.rainbowbridge.reborn.dto.product.CalendarProductResponseDto;
+import com.rainbowbridge.reborn.dto.product.RebornPackageListDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +18,6 @@ public class CompanyListDto {
 
     private String name;
 
-    private List<CalendarProductResponseDto> products;
+    private List<RebornPackageListDto> products;
 
 }

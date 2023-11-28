@@ -6,7 +6,7 @@ import com.rainbowbridge.reborn.domain.Region;
 import com.rainbowbridge.reborn.domain.Review;
 import com.rainbowbridge.reborn.domain.SortCriteria;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
-import com.rainbowbridge.reborn.dto.product.CalendarProductResponseDto;
+import com.rainbowbridge.reborn.dto.product.RebornPackageListDto;
 import com.rainbowbridge.reborn.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -107,10 +107,10 @@ public class CompanyService {
         for (Company company : companies) {
 
             // 리본 패키지만 추출
-            List<CalendarProductResponseDto> productResponseDtoList = Optional.ofNullable(company.getProducts())
+            List<RebornPackageListDto> productResponseDtoList = Optional.ofNullable(company.getProducts())
                     .orElse(Collections.emptyList()).stream()
                     .filter(product -> product.getProductType().equals(ProductType.REBORN_PACKAGE))
-                    .map(product -> CalendarProductResponseDto.builder()
+                    .map(product -> RebornPackageListDto.builder()
                             .id(product.getId())
                             .name(product.getName())
                             .price(product.getPrice())
