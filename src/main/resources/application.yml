@@ -11,6 +11,9 @@ spring:
     url: jdbc:mysql://146.56.104.45:3306/reborn?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
     username: admin
     password: P@ssword12
+  web:
+    resources:
+      static-locations: file:/home/opc/reborn-backend/src/main/resources/images
 
   jpa:
     database: mysql
