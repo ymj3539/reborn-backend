@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.dto.product;
 
+import com.rainbowbridge.reborn.domain.Product;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,4 +25,10 @@ public class PackageListDto {
     @ApiModelProperty(value = "상품 설명", example = "염습+개별화장+기본관+꽃장식")
     private String intro;
 
+    public PackageListDto(Product product) {
+        this.id = product.getId();
+        this.name = product.getName();
+        this.price = product.getPrice();
+        this.intro = product.getIntro();
+    }
 }

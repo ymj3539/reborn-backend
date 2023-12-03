@@ -3,9 +3,20 @@ package com.rainbowbridge.reborn.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
+
 @Service
 @RequiredArgsConstructor
 public class CommonService {
+
+    // 시간 형식 변환
+    public String convertTimeRangeFormat(int openTime, int closeTime) {
+        DecimalFormat decimalFormat = new DecimalFormat("00");
+
+        String openTimeString = decimalFormat.format(openTime) + ":" + decimalFormat.format(0);
+        String closeTimeString = decimalFormat.format(closeTime) + ":" + decimalFormat.format(0);
+        return openTimeString + " - " + closeTimeString;
+    }
 
     // 거리 계산 - Vincenty 공식 사용
     public double calculateDistance(double userLatitude, double userLongitude, double companyLatitude, double companyLongitude) {

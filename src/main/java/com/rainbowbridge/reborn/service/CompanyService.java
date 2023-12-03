@@ -6,11 +6,14 @@ import com.rainbowbridge.reborn.domain.Region;
 import com.rainbowbridge.reborn.domain.Review;
 import com.rainbowbridge.reborn.domain.SortCriteria;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
+import com.rainbowbridge.reborn.dto.company.CompanyResponseDto;
+import com.rainbowbridge.reborn.dto.product.PackageListDto;
 import com.rainbowbridge.reborn.dto.product.RebornPackageListDto;
 import com.rainbowbridge.reborn.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,6 +29,45 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final CommonService commonService;
+
+    public CompanyResponseDto getCompany(String companyId) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
+
+        double averageRating = company.getReviews()
+                .stream()
+                .mapToInt(Review::getRating)
+                .average()
+                .orElse(0.0);
+
+        int reviewCount = company.getReservations().size();
+
+        String mainReview = company.getReviews().isEmpty() ? null : String.valueOf(company.getReviews().get(company.getReviews().size() - 1));
+
+        List<PackageListDto> rebornPackages = company.getProducts().stream()
+                .filter(product -> product.getProductType().equals(ProductType.REBORN_PACKAGE))
+                .map(PackageListDto::new)
+                .collect(Collectors.toList());
+
+        List<PackageListDto> companyPackages = company.getProducts().stream()
+                .filter(product -> product.getProductType().equals(ProductType.COMPANY_PACKAGE))
+                .map(PackageListDto::new)
+                .collect(Collectors.toList());
+
+        return CompanyResponseDto.builder()
+                .name(company.getName())
+                .intro(company.getIntro())
+                .address(company.getAddress())
+                .businessHours(commonService.convertTimeRangeFormat(company.getOpenTime(), company.getCloseTime()))
+                .telNum(company.getTelNum())
+                .notification(company.getNotification())
+                .averageRating(averageRating)
+                .reviewCount(reviewCount)
+                .mainReview(mainReview)
+                .rebornPackages(rebornPackages)
+                .companyPackages(companyPackages)
+                .build();
+    }
 
     public List<CompanyListDto> getCalendarCompanyList(LocalDate selectedDate, int selectedTime, double userLatitude, double userLongitude) {
         // 영업 가능한 업체 조회
