@@ -11,11 +11,14 @@ public class CommonService {
 
     // 시간 형식 변환
     public String convertTimeRangeFormat(int openTime, int closeTime) {
-        DecimalFormat decimalFormat = new DecimalFormat("00");
-
-        String openTimeString = decimalFormat.format(openTime) + ":" + decimalFormat.format(0);
-        String closeTimeString = decimalFormat.format(closeTime) + ":" + decimalFormat.format(0);
+        String openTimeString = convertTimeFormat(openTime);
+        String closeTimeString = convertTimeFormat(closeTime);
         return openTimeString + " - " + closeTimeString;
+    }
+
+    public String convertTimeFormat(int time) {
+        DecimalFormat decimalFormat = new DecimalFormat("00");
+        return decimalFormat.format(time) + ":" + decimalFormat.format(0);
     }
 
     // 거리 계산 - Vincenty 공식 사용
