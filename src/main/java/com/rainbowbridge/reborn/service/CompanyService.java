@@ -67,6 +67,7 @@ public class CompanyService {
                 .averageRating(averageRating)
                 .reviewCount(reviewCount)
                 .mainReview(mainReview)
+                .imagePath(commonService.getImagePath(company.getId()))
                 .rebornPackages(rebornPackages)
                 .companyPackages(companyPackages)
                 .build();
