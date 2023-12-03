@@ -17,4 +17,6 @@ public class HeartListDto {
 
     private String address;
 
+    private String imagePath;
+
 }
