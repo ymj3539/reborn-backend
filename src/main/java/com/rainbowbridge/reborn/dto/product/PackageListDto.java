@@ -25,10 +25,14 @@ public class PackageListDto {
     @ApiModelProperty(value = "상품 설명", example = "염습+개별화장+기본관+꽃장식")
     private String intro;
 
-    public PackageListDto(Product product) {
+    @ApiModelProperty(value = "상품 이미지 경로", example = "http://146.56.104.45:8080/home/opc/reborn-backend/src/main/resources/images/example.png")
+    private String imagePath;
+
+    public PackageListDto(Product product, String imagePath) {
         this.id = product.getId();
         this.name = product.getName();
         this.price = product.getPrice();
         this.intro = product.getIntro();
+        this.imagePath = imagePath;
     }
 }

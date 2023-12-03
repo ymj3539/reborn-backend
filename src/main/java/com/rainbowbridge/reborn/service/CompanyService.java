@@ -3,7 +3,6 @@ package com.rainbowbridge.reborn.service;
 import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.domain.ProductType;
 import com.rainbowbridge.reborn.domain.Region;
-import com.rainbowbridge.reborn.domain.Review;
 import com.rainbowbridge.reborn.domain.SortCriteria;
 import com.rainbowbridge.reborn.domain.TimeOff;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
@@ -49,12 +48,12 @@ public class CompanyService {
 
         List<PackageListDto> rebornPackages = company.getProducts().stream()
                 .filter(product -> product.getProductType().equals(ProductType.REBORN_PACKAGE))
-                .map(PackageListDto::new)
+                .map(product -> new PackageListDto(product, commonService.getImagePath(product.getName())))
                 .collect(Collectors.toList());
 
         List<PackageListDto> companyPackages = company.getProducts().stream()
                 .filter(product -> product.getProductType().equals(ProductType.COMPANY_PACKAGE))
-                .map(PackageListDto::new)
+                .map(product -> new PackageListDto(product, commonService.getImagePath(product.getName())))
                 .collect(Collectors.toList());
 
         return CompanyResponseDto.builder()
