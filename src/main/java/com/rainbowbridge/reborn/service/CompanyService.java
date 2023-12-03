@@ -31,6 +31,8 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final CommonService commonService;
 
+
+
     public Company getCompany(String companyId) {
         return companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
@@ -172,6 +174,7 @@ public class CompanyService {
                             .id(product.getId())
                             .name(product.getName())
                             .price(product.getPrice())
+                            .imagePath(commonService.getImagePath(product.getName()))
                             .build())
                     .collect(Collectors.toList());
 

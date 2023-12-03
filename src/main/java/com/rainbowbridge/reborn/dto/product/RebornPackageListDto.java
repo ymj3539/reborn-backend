@@ -17,4 +17,6 @@ public class RebornPackageListDto {
 
     private int price;
 
+    private String imagePath;
+
 }
