@@ -10,5 +10,6 @@ import java.util.List;
 public interface HeartRepository extends JpaRepository<Heart, Long> {
 
     List<Heart> findAllByUserAndCompany(User user, Company company);
+    List<Heart> findAllByUser(User user);
 
 }
