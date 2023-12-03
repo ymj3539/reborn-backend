@@ -31,6 +31,11 @@ public class CompanyController {
         return companyService.getCompany(companyId);
     }
 
+    @GetMapping("/{companyId}/available-times")
+    @ApiOperation(value = "업체별 예약 가능 시간 조회")
+    public List<String> getAvailableTimeList(@PathVariable String companyId) {
+        return companyService.getAvailableTimeList(companyId);
+    }
 
     @GetMapping("/calendar")
     @ApiOperation(value = "바로예약 캘린더 업체 리스트 조회")
