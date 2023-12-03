@@ -28,4 +28,8 @@ public class Heart {
     @JoinColumn(name = "company_id")
     private Company company;
 
+    public Heart(User user, Company company) {
+        this.user = user;
+        this.company = company;
+    }
 }
