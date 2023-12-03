@@ -43,7 +43,7 @@ public class CompanyController {
     @GetMapping("/calendar")
     @ApiOperation(value = "바로예약 캘린더 업체 리스트 조회")
     public List<CompanyListDto> getCalendarCompanyList(
-            @ApiParam(value = "선택된 일자", example = "2023-10-11") @RequestParam @NotNull LocalDate selectedDate,
+            @ApiParam(value = "선택된 일자", example = "2023-10-11") @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate selectedDate,
             @ApiParam(value = "선택된 시간", example = "10") @RequestParam @NotNull int selectedTime,
             @ApiParam(value = "사용자 위치 위도", example = "35.2388660") @RequestParam @NotNull double userLatitude,
             @ApiParam(value = "사용자 위치 경도", example = "129.222829") @RequestParam @NotNull double userLongitude) {
