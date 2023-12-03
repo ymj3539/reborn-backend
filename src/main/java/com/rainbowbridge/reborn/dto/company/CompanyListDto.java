@@ -18,6 +18,8 @@ public class CompanyListDto {
 
     private String name;
 
+    private String imagePath;
+
     private List<RebornPackageListDto> products;
 
 }

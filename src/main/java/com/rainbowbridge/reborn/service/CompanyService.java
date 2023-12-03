@@ -181,6 +181,7 @@ public class CompanyService {
             CompanyListDto companyListResponseDto = CompanyListDto.builder()
                     .id(company.getId())
                     .name(company.getName())
+                    .imagePath(commonService.getImagePath(company.getId()))
                     .products(productResponseDtoList)
                     .build();
 
