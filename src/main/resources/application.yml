@@ -32,4 +32,4 @@ logging.level:
   org.hibernate.type: trace
 
 file:
-  dir: /home/opc/reborn-backend/src/main/resources/images
+  dir: /home/opc/reborn-backend/src/main/resources/images/
