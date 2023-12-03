@@ -29,7 +29,7 @@ public class CompanyController {
     @GetMapping("/{companyId}")
     @ApiOperation(value = "업체 상세 조회")
     public CompanyResponseDto get(@PathVariable String companyId) {
-        return companyService.getCompany(companyId);
+        return companyService.getCompanyAndProducts(companyId);
     }
 
     @GetMapping("/{companyId}/available-times")

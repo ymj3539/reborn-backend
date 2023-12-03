@@ -31,9 +31,13 @@ public class CompanyService {
     private final CompanyRepository companyRepository;
     private final CommonService commonService;
 
-    public CompanyResponseDto getCompany(String companyId) {
-        Company company = companyRepository.findById(companyId)
+    public Company getCompany(String companyId) {
+        return companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
+    }
+
+    public CompanyResponseDto getCompanyAndProducts(String companyId) {
+        Company company = getCompany(companyId);
 
         double averageRating = company.getAverageRating();
 
