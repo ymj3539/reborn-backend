@@ -16,9 +16,17 @@ public class HeatService {
     private final HeartRepository heartRepository;
     private final CompanyService companyService;
 
+    public void checkDuplicatedHeart(User user, Company company) {
+        if (heartRepository.findAllByUserAndCompany(user, company).size() > 0) {
+            throw new IllegalStateException("중복해서 찜 하기를 할 수 없습니다.");
+        }
+    }
+
     public void addHeart(String companyId, HttpSession session) {
         User user = (User) session.getAttribute("user");
         Company company = companyService.getCompany(companyId);
+
+        checkDuplicatedHeart(user, company);
         heartRepository.save(new Heart(user, company));
     }
 }
