@@ -5,6 +5,7 @@ import com.rainbowbridge.reborn.domain.ProductType;
 import com.rainbowbridge.reborn.domain.Region;
 import com.rainbowbridge.reborn.domain.Review;
 import com.rainbowbridge.reborn.domain.SortCriteria;
+import com.rainbowbridge.reborn.domain.TimeOff;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
 import com.rainbowbridge.reborn.dto.company.CompanyResponseDto;
 import com.rainbowbridge.reborn.dto.product.PackageListDto;
@@ -63,6 +64,29 @@ public class CompanyService {
                 .rebornPackages(rebornPackages)
                 .companyPackages(companyPackages)
                 .build();
+    }
+
+    public List<String> getAvailableTimeList(String companyId, LocalDate selectedDate) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
+
+        int openTime = company.getOpenTime();
+        int closeTime = company.getCloseTime();
+
+        List<Integer> timesOffs = company.getTimeOffs().stream()
+                .filter(timeOff -> timeOff.getDate().equals(selectedDate))
+                .map(TimeOff::getTime)
+                .collect(Collectors.toList());
+
+        List<String> availableTimeList = new ArrayList<>();
+        for (int i = openTime; i <= closeTime; i++) {
+            if (!timesOffs.contains(i)) {
+                String timeString = commonService.convertTimeFormat(i);
+                availableTimeList.add(timeString);
+            }
+        }
+
+        return availableTimeList;
     }
 
     public List<CompanyListDto> getCalendarCompanyList(LocalDate selectedDate, int selectedTime, double userLatitude, double userLongitude) {
