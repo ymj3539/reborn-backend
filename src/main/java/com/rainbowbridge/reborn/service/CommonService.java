@@ -9,6 +9,11 @@ import java.text.DecimalFormat;
 @RequiredArgsConstructor
 public class CommonService {
 
+    // 이미지 경로 산출
+    public String getImagePath(String imageName) {
+        return "http://146.56.104.45:8080/home/opc/reborn-backend/src/main/resources/images/"+imageName+".png";
+    }
+
     // 시간 형식 변환
     public String convertTimeRangeFormat(int openTime, int closeTime) {
         String openTimeString = convertTimeFormat(openTime);
