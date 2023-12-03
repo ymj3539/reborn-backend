@@ -61,4 +61,11 @@ public class Company {
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<TimeOff> timeOffs = new ArrayList<>();
+
+    public double getAverageRating() {
+        return reviews.stream()
+                .mapToInt(Review::getRating)
+                .average()
+                .orElse(0.0);
+    }
 }

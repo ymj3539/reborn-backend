@@ -34,11 +34,7 @@ public class CompanyService {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
 
-        double averageRating = company.getReviews()
-                .stream()
-                .mapToInt(Review::getRating)
-                .average()
-                .orElse(0.0);
+        double averageRating = company.getAverageRating();
 
         int reviewCount = company.getReservations().size();
 
@@ -121,16 +117,8 @@ public class CompanyService {
 
     public void sortCompaniesByAverageRating(List<Company> companies) {
         companies.sort((c1, c2) -> {
-            double avgRating1 = c1.getReviews()
-                    .stream()
-                    .mapToInt(Review::getRating)
-                    .average()
-                    .orElse(0.0);
-            double avgRating2 = c2.getReviews()
-                    .stream()
-                    .mapToInt(Review::getRating)
-                    .average()
-                    .orElse(0.0);
+            double avgRating1 = c1.getAverageRating();
+            double avgRating2 = c2.getAverageRating();
             return Double.compare(avgRating2, avgRating1);  // 내림차순 정렬
         });
     }
