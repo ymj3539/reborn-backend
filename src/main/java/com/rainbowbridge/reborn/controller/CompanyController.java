@@ -3,11 +3,13 @@ package com.rainbowbridge.reborn.controller;
 import com.rainbowbridge.reborn.domain.Region;
 import com.rainbowbridge.reborn.domain.SortCriteria;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
+import com.rainbowbridge.reborn.dto.company.CompanyResponseDto;
 import com.rainbowbridge.reborn.service.CompanyService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,13 @@ import java.util.List;
 public class CompanyController {
 
     private final CompanyService companyService;
+
+    @GetMapping("/{companyId}")
+    @ApiOperation(value = "업체 상세 조회")
+    public CompanyResponseDto get(@PathVariable String companyId) {
+        return companyService.getCompany(companyId);
+    }
+
 
     @GetMapping("/calendar")
     @ApiOperation(value = "바로예약 캘린더 업체 리스트 조회")
