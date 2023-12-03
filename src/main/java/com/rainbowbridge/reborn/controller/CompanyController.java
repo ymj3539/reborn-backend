@@ -8,6 +8,7 @@ import com.rainbowbridge.reborn.service.CompanyService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,8 +34,10 @@ public class CompanyController {
 
     @GetMapping("/{companyId}/available-times")
     @ApiOperation(value = "업체별 예약 가능 시간 조회")
-    public List<String> getAvailableTimeList(@PathVariable String companyId) {
-        return companyService.getAvailableTimeList(companyId);
+    public List<String> getAvailableTimeList(
+            @PathVariable String companyId,
+            @ApiParam(value = "선택된 일자", example = "2023-10-11") @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate selectedDate) {
+        return companyService.getAvailableTimeList(companyId, selectedDate);
     }
 
     @GetMapping("/calendar")
