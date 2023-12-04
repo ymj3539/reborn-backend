@@ -19,51 +19,23 @@ public class ProductService {
     private final CompanyService companyService;
     private final CommonService commonService;
 
-    public List<RecommendedProductListDto> getRecommendedProductList(double userLatitude, double userLongitude) {
-        // 모든 업체 조회
+    public List<RecommendedProductListDto> getNearbyRecommendedProductList(double userLatitude, double userLongitude) {
         List<Company> allCompanies = companyService.getCompanyList();
-
-        // 가까운 순 15개 업체 조회
         List<Company> nearCompanies = companyService.sortCompanyListByDistance(allCompanies, userLatitude, userLongitude).subList(0, 15);
-
-        // 구매 많은 순 10개 업체 조회
-        List<Company> popularCompanies = companyService.sortCompaniesByReservationCount(nearCompanies).subList(0, 10);
-
-        // 평이 좋은 순 5개 업체 조회
-        List<Company> goodCompanies = companyService.sortCompaniesByAverageRating(popularCompanies).subList(0, 5);
-
-        // 저렴한 순 3개 패키지 상품 조회
-        EnumSet<ProductType> targetTypes = EnumSet.of(ProductType.REBORN_PACKAGE, ProductType.COMPANY_PACKAGE);
-        List<Product> cheapProducts = goodCompanies.stream()
-                .flatMap(company -> company.getProducts().stream())
-                .filter(product -> targetTypes.contains(product.getProductType()))
-                .sorted(Comparator.comparing(Product::getPrice))
-                .limit(3)
-                .collect(Collectors.toList());
-
-        // DTO 생성
-        return cheapProducts.stream()
-                .map(product -> RecommendedProductListDto.builder()
-                        .imagePath(commonService.getImagePath(product.getName()))
-                        .companyName(product.getCompany().getName())
-                        .productName(product.getName())
-                        .price(product.getPrice())
-                        .build())
-                .collect(Collectors.toList());
+        return selectProducts(nearCompanies);
     }
 
-    public List<RecommendedProductListDto> getGeneralRecommendedProductList() {
-        // 모든 업체 조회
+    public List<RecommendedProductListDto> getAllRecommendedProductList() {
         List<Company> allCompanies = companyService.getCompanyList();
+        return selectProducts(allCompanies);
+    }
 
-        // 구매 많은 순 10개 업체 조회
-        List<Company> popularCompanies = companyService.sortCompaniesByReservationCount(allCompanies).subList(0, 10);
-
-        // 평이 좋은 순 5개 업체 조회
+    private List<RecommendedProductListDto> selectProducts(List<Company> companies) {
+        List<Company> popularCompanies = companyService.sortCompaniesByReservationCount(companies).subList(0, 10);
         List<Company> goodCompanies = companyService.sortCompaniesByAverageRating(popularCompanies).subList(0, 5);
 
-        // 저렴한 순 3개 패키지 상품 조회
         EnumSet<ProductType> targetTypes = EnumSet.of(ProductType.REBORN_PACKAGE, ProductType.COMPANY_PACKAGE);
+
         List<Product> cheapProducts = goodCompanies.stream()
                 .flatMap(company -> company.getProducts().stream())
                 .filter(product -> targetTypes.contains(product.getProductType()))
@@ -81,4 +53,5 @@ public class ProductService {
                         .build())
                 .collect(Collectors.toList());
     }
+
 }

@@ -24,10 +24,10 @@ public class ProductController {
             @ApiParam(value = "사용자 위치 위도", example = "35.2388660") @RequestParam(required = false, defaultValue = "0.0") double userLatitude,
             @ApiParam(value = "사용자 위치 경도", example = "129.222829") @RequestParam(required = false, defaultValue = "0.0") double userLongitude) {
         if (userLatitude != 0.0 && userLongitude != 0.0) {
-            return productService.getRecommendedProductList(userLatitude, userLongitude);
+            return productService.getNearbyRecommendedProductList(userLatitude, userLongitude);
         }
         else {
-            return productService.getGeneralRecommendedProductList();
+            return productService.getAllRecommendedProductList();
         }
     }
 
