@@ -37,6 +37,10 @@ public class CompanyService {
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
     }
 
+    public List<Company> getCompanyList() {
+        return companyRepository.findAll();
+    }
+
     public CompanyResponseDto getCompanyAndProducts(String companyId) {
         Company company = getCompany(companyId);
 
@@ -119,16 +123,16 @@ public class CompanyService {
 
         // 정렬 기준으로 업체 리스트 정렬
         if (sortCriteria.equals(SortCriteria.RATING)) {
-            sortCompaniesByAverageRating(companies);
+            companies = sortCompaniesByAverageRating(companies);
         }
         else if (sortCriteria.equals(SortCriteria.POPULARITY)) {
-            sortCompaniesByReservationCount(companies);
+            companies = sortCompaniesByReservationCount(companies);
         }
 
         return toCompanyListDto(companies);
     }
 
-    private List<Company> sortCompanyListByDistance(List<Company> companies, double userLatitude, double userLongitude) {
+    public List<Company> sortCompanyListByDistance(List<Company> companies, double userLatitude, double userLongitude) {
         // 각 업체의 사용자의 거리를 계산하고, 그 결과를 Map에 저장
         Map<Company, Double> companyDistanceMap = new HashMap<>();
         for (Company company : companies) {
@@ -145,20 +149,24 @@ public class CompanyService {
                 .collect(Collectors.toList());
     }
 
-    public void sortCompaniesByAverageRating(List<Company> companies) {
+    public List<Company> sortCompaniesByAverageRating(List<Company> companies) {
         companies.sort((c1, c2) -> {
             double avgRating1 = c1.getAverageRating();
             double avgRating2 = c2.getAverageRating();
             return Double.compare(avgRating2, avgRating1);  // 내림차순 정렬
         });
+
+        return companies;
     }
 
-    private void sortCompaniesByReservationCount(List<Company> companies) {
+    public List<Company> sortCompaniesByReservationCount(List<Company> companies) {
         companies.sort((c1, c2) -> {
             int count1 = c1.getReservations().size();
             int count2 = c2.getReservations().size();
             return Integer.compare(count2, count1);
         });
+
+        return companies;
     }
 
     private List<CompanyListDto> toCompanyListDto(List<Company> companies) {
