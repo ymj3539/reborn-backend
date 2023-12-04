@@ -52,4 +52,33 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    public List<RecommendedProductListDto> getGeneralRecommendedProductList() {
+        // 모든 업체 조회
+        List<Company> allCompanies = companyService.getCompanyList();
+
+        // 구매 많은 순 10개 업체 조회
+        List<Company> popularCompanies = companyService.sortCompaniesByReservationCount(allCompanies).subList(0, 10);
+
+        // 평이 좋은 순 5개 업체 조회
+        List<Company> goodCompanies = companyService.sortCompaniesByAverageRating(popularCompanies).subList(0, 5);
+
+        // 저렴한 순 3개 패키지 상품 조회
+        EnumSet<ProductType> targetTypes = EnumSet.of(ProductType.REBORN_PACKAGE, ProductType.COMPANY_PACKAGE);
+        List<Product> cheapProducts = goodCompanies.stream()
+                .flatMap(company -> company.getProducts().stream())
+                .filter(product -> targetTypes.contains(product.getProductType()))
+                .sorted(Comparator.comparing(Product::getPrice))
+                .limit(3)
+                .collect(Collectors.toList());
+
+        // DTO 생성
+        return cheapProducts.stream()
+                .map(product -> RecommendedProductListDto.builder()
+                        .imagePath(commonService.getImagePath(product.getName()))
+                        .companyName(product.getCompany().getName())
+                        .productName(product.getName())
+                        .price(product.getPrice())
+                        .build())
+                .collect(Collectors.toList());
+    }
 }
