@@ -44,4 +44,7 @@ public class Product {
     @OneToMany(mappedBy = "productPics", cascade = CascadeType.ALL)
     private List<File> pics = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<Reservation> reservations = new ArrayList<>();
+
 }
