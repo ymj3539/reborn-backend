@@ -35,6 +35,8 @@ public class Pet {
 
     private int months;         // 나이 - 개월
 
+    private double weight;      // 체중
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
