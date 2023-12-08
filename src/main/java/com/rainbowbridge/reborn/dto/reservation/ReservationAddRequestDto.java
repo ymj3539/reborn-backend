@@ -1,5 +1,11 @@
 package com.rainbowbridge.reborn.dto.reservation;
 
+import com.rainbowbridge.reborn.domain.Company;
+import com.rainbowbridge.reborn.domain.Pay;
+import com.rainbowbridge.reborn.domain.Pet;
+import com.rainbowbridge.reborn.domain.Product;
+import com.rainbowbridge.reborn.domain.Reservation;
+import com.rainbowbridge.reborn.domain.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,4 +33,15 @@ public class ReservationAddRequestDto {
     @ApiModelProperty(value = "상품 ID", example = "500000")
     private long product_id;
 
+    public Reservation toEntity(Pet pet, Pay pay, User user, Product product, Company company) {
+        return Reservation.builder()
+                .date(reservationDate)
+                .time(reservationTime)
+                .pet(pet)
+                .pay(pay)
+                .user(user)
+                .company(company)
+                .product(product)
+                .build();
+    }
 }
