@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -12,6 +15,12 @@ public class CommonService {
     // 이미지 경로 산출
     public String getImagePath(String imageName) {
         return "http://146.56.104.45:8080/home/opc/reborn-backend/src/main/resources/images/"+imageName+".png";
+    }
+
+    // 날짜 형식 변환
+    public String convertDateFormat(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM.dd(EEE)", Locale.KOREAN);
+        return date.format(formatter);
     }
 
     // 시간 형식 변환
