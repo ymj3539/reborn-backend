@@ -6,7 +6,8 @@ import com.rainbowbridge.reborn.domain.ProductType;
 import com.rainbowbridge.reborn.dto.product.RecommendedProductListDto;
 import com.rainbowbridge.reborn.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;;import java.util.ArrayList;
+import org.springframework.stereotype.Service;;import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
@@ -16,8 +17,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductService {
 
+    private final ProductRepository productRepository;
     private final CompanyService companyService;
     private final CommonService commonService;
+
+    public Product getProduct(Long productId) {
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 상품입니다."));
+    }
 
     public List<RecommendedProductListDto> getNearbyRecommendedProductList(double userLatitude, double userLongitude) {
         List<Company> allCompanies = companyService.getCompanyList();
