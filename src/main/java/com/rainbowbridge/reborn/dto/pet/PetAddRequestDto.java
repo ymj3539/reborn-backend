@@ -1,6 +1,8 @@
 package com.rainbowbridge.reborn.dto.pet;
 
+import com.rainbowbridge.reborn.domain.Pet;
 import com.rainbowbridge.reborn.domain.Species;
+import com.rainbowbridge.reborn.domain.User;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,7 +42,16 @@ public class PetAddRequestDto {
     @ApiModelProperty(value = "체중", example = "5.7")
     private double weight;
 
-
-
+    public Pet toEntity(User user) {
+        return Pet.builder()
+                .species(species)
+                .breed(breed)
+                .name(name)
+                .years(years)
+                .months(months)
+                .weight(weight)
+                .user(user)
+                .build();
+    }
 
 }
