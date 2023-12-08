@@ -1,9 +1,7 @@
 package com.rainbowbridge.reborn.controller;
 
-import com.rainbowbridge.reborn.dto.pay.PayAddRequestDto;
+import com.rainbowbridge.reborn.dto.pay.CompletePayAddRequestDto;
 import com.rainbowbridge.reborn.dto.pay.PayAddResponseDto;
-import com.rainbowbridge.reborn.dto.pet.PetAddRequestDto;
-import com.rainbowbridge.reborn.dto.reservation.ReservationAddRequestDto;
 import com.rainbowbridge.reborn.service.PayService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +21,8 @@ public class PayController {
 
     @PostMapping
     @ApiOperation(value = "결제 하기")
-    public PayAddResponseDto add(@RequestBody PayAddRequestDto payDto,
-                                 @RequestBody ReservationAddRequestDto reservationDto,
-                                 @RequestBody PetAddRequestDto petDto,
-                                 HttpSession session) {
-        return payService.addPayAndReservationAndPet(payDto, reservationDto, petDto, session);
+    public PayAddResponseDto add(@RequestBody CompletePayAddRequestDto dto, HttpSession session) {
+        return payService.addPayAndReservationAndPet(dto, session);
     }
 
 }

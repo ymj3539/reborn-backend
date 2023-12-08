@@ -6,10 +6,9 @@ import com.rainbowbridge.reborn.domain.Pet;
 import com.rainbowbridge.reborn.domain.Product;
 import com.rainbowbridge.reborn.domain.Reservation;
 import com.rainbowbridge.reborn.domain.User;
+import com.rainbowbridge.reborn.dto.pay.CompletePayAddRequestDto;
 import com.rainbowbridge.reborn.dto.pay.PayAddRequestDto;
 import com.rainbowbridge.reborn.dto.pay.PayAddResponseDto;
-import com.rainbowbridge.reborn.dto.pet.PetAddRequestDto;
-import com.rainbowbridge.reborn.dto.reservation.ReservationAddRequestDto;
 import com.rainbowbridge.reborn.repository.PayRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,13 +29,13 @@ public class PayService {
         return payRepository.save(payDto.toEntity());
     }
 
-    public PayAddResponseDto addPayAndReservationAndPet(PayAddRequestDto payDto, ReservationAddRequestDto reservationDto, PetAddRequestDto petDto, HttpSession session) {
+    public PayAddResponseDto addPayAndReservationAndPet(CompletePayAddRequestDto dto, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        Pet pet = petService.addPet(petDto, user);
-        Pay pay = addPay(payDto);
-        Product product = productService.getProduct(reservationDto.getProduct_id());
+        Pet pet = petService.addPet(dto.getPetDto(), user);
+        Pay pay = addPay(dto.getPayDto());
+        Product product = productService.getProduct(dto.getReservationDto().getProduct_id());
         Company company = product.getCompany();
-        Reservation reservation = reservationService.addReservation(reservationDto, pet, pay, user, product, company);
+        Reservation reservation = reservationService.addReservation(dto.getReservationDto(), pet, pay, user, product, company);
 
         return PayAddResponseDto.builder()
                 .payDt(pay.getPayDt())
