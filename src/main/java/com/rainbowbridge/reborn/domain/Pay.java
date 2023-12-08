@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,12 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
@@ -44,5 +42,13 @@ public class Pay {
 
     @OneToOne(mappedBy = "pay", cascade = CascadeType.ALL)
     private Reservation reservation;
+
+    @Builder
+    public Pay(Payment payment, Card card, int installmentMonths, int totalPrice) {
+        this.payment = payment;
+        this.card = card;
+        this.installmentMonths = installmentMonths;
+        this.totalPrice = totalPrice;
+    }
 
 }
