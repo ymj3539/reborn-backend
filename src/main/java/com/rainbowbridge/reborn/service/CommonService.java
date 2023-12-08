@@ -35,6 +35,18 @@ public class CommonService {
         return decimalFormat.format(time) + ":" + decimalFormat.format(0);
     }
 
+    public String convertHourTo12HourFormat (int hour) {
+        String period = (hour < 12) ? "오전" : "오후";
+
+        if (hour > 12) {
+            hour -= 12;
+        }
+
+        String formattedHour = String.format("%02d", hour);
+
+        return period + " " + formattedHour + ":00";
+    }
+
     // 거리 계산 - Vincenty 공식 사용
     public double calculateDistance(double userLatitude, double userLongitude, double companyLatitude, double companyLongitude) {
         double a = 6378137, b = 6356752.314245, f = 1 / 298.257223563;  // WGS-84 ellipsoid params
