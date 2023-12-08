@@ -30,7 +30,7 @@ public class ReservationAddRequestDto {
     private int reservationTime;
 
     @NotNull
-    @ApiModelProperty(value = "상품 ID", example = "500000")
+    @ApiModelProperty(value = "상품 ID", example = "1")
     private long product_id;
 
     public Reservation toEntity(Pet pet, Pay pay, User user, Product product, Company company) {
