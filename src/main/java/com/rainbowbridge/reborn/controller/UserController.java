@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.controller;
 
+import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.user.LoginDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
 import com.rainbowbridge.reborn.service.UserService;
@@ -41,6 +42,18 @@ public class UserController {
     public ResponseEntity loginUser(@RequestBody LoginDto dto, HttpSession session) {
         userService.loginUser(dto, session);
         return ResponseEntity.ok("로그인에 성공했습니다.");
+    }
+
+    @GetMapping("/check-login")
+    @ApiOperation(value="로그인 여부 확인")
+    public String checkLogin(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        if (user != null) {
+            return user.getId();
+        } else {
+            return null;
+        }
     }
 
     @GetMapping("/logout")
