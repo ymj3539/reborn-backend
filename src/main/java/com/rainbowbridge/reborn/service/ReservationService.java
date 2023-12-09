@@ -27,6 +27,10 @@ public class ReservationService {
     public UpcomingReservationResponseDto getUpcomingReservation(HttpSession session) {
         User user = (User) session.getAttribute("user");
 
+        if (user == null) {
+            return null;
+        }
+
         List<Reservation> reservations = reservationRepository.findAllByUser(user);
 
         if (reservations.isEmpty()) {

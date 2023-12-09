@@ -29,6 +29,11 @@ public class HeatService {
 
     public void addHeart(String companyId, HttpSession session) {
         User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            return;
+        }
+
         Company company = companyService.getCompany(companyId);
 
         checkDuplicatedHeart(user, company);
@@ -37,6 +42,10 @@ public class HeatService {
 
     public List<HeartListDto> getHeartList(HttpSession session) {
         User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            return null;
+        }
 
         List<Heart> hearts = heartRepository.findAllByUser(user);
 

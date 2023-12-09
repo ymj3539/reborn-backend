@@ -31,6 +31,11 @@ public class PayService {
 
     public PayAddResponseDto addPayAndReservationAndPet(CompletePayAddRequestDto dto, HttpSession session) {
         User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            return null;
+        }
+
         Pet pet = petService.addPet(dto.getPetDto(), user);
         Pay pay = addPay(dto.getPayDto());
         Product product = productService.getProduct(dto.getReservationDto().getProduct_id());
