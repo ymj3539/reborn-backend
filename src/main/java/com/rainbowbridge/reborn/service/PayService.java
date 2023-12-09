@@ -39,7 +39,7 @@ public class PayService {
 
         return PayAddResponseDto.builder()
                 .payDt(pay.getPayDt())
-                .reservationDate(commonService.convertDateFormat(reservation.getDate()))
+                .reservationDate(commonService.convertLocalDateFormat(reservation.getDate()))
                 .reservationTime(commonService.convertHourTo12HourFormat(reservation.getTime()))
                 .companyName(company.getName())
                 .productName(product.getName())

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
@@ -18,7 +19,7 @@ public class CommonService {
     }
 
     // 날짜 형식 변환
-    public String convertDateFormat(LocalDate date) {
+    public String convertLocalDateFormat(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM.dd(EEE)", Locale.KOREAN);
         return date.format(formatter);
     }
