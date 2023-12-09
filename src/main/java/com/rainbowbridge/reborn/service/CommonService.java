@@ -24,6 +24,11 @@ public class CommonService {
         return date.format(formatter);
     }
 
+    public String convertLocalDateTimeFormat(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+        return dateTime.format(formatter);
+    }
+
     // 시간 형식 변환
     public String convertTimeRangeFormat(int openTime, int closeTime) {
         String openTimeString = convertTimeFormat(openTime);
