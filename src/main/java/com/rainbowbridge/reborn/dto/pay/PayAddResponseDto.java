@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class PayAddResponseDto {
 
-    @ApiModelProperty(value = "결제 일시", example = "KAKAO_PAY")
-    private LocalDateTime payDt;
+    @ApiModelProperty(value = "결제 일시", example = "")
+    private String payDt;
 
     @ApiModelProperty(value = "예약 일자", example = "11.15(수)")
     private String reservationDate;

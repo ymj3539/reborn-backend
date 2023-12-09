@@ -38,7 +38,7 @@ public class PayService {
         Reservation reservation = reservationService.addReservation(dto.getReservationDto(), pet, pay, user, product, company);
 
         return PayAddResponseDto.builder()
-                .payDt(pay.getPayDt())
+                .payDt(commonService.convertLocalDateTimeFormat(pay.getPayDt()))
                 .reservationDate(commonService.convertLocalDateFormat(reservation.getDate()))
                 .reservationTime(commonService.convertHourTo12HourFormat(reservation.getTime()))
                 .companyName(company.getName())
