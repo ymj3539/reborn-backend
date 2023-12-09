@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/reservations")
+@RequestMapping(value="/api/reservations", produces = "application/json; charset=utf8")
 public class ReservationController {
 
     private final ReservationService reservationService;

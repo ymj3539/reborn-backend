@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/companies")
+@RequestMapping(value="/api/companies", produces = "application/json; charset=utf8")
 public class CompanyController {
 
     private final CompanyService companyService;

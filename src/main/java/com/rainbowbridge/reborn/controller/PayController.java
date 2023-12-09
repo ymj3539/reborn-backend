@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/pays")
+@RequestMapping(value="/api/pays", produces = "application/json; charset=utf8")
 public class PayController {
 
     private final PayService payService;

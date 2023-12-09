@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/products")
+@RequestMapping(value="/api/products", produces = "application/json; charset=utf8")
 public class ProductController {
 
     private final ProductService productService;

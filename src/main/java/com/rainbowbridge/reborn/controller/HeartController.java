@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/hearts")
+@RequestMapping(value="/api/hearts", produces = "application/json; charset=utf8")
 public class HeartController {
 
     private final HeatService heatService;

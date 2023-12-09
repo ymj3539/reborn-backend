@@ -15,7 +15,7 @@ import java.util.Locale;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/common")
+@RequestMapping(value="/api/common", produces = "application/json; charset=utf8")
 public class CommonController {
 
     @GetMapping("/calendar")

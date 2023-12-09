@@ -1,6 +1,5 @@
 package com.rainbowbridge.reborn.controller;
 
-import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.user.LoginDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
 import com.rainbowbridge.reborn.service.UserService;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping(value="/api/users", produces = "application/json; charset=utf8")
 public class UserController {
 
     private final UserService userService;
