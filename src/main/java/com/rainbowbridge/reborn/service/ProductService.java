@@ -56,6 +56,7 @@ public class ProductService {
                         .imagePath(Utils.getImagePath(product.getName()))
                         .companyId(product.getCompany().getId())
                         .companyName(product.getCompany().getName())
+                        .productId(product.getId())
                         .productName(product.getName())
                         .price(product.getPrice())
                         .build())

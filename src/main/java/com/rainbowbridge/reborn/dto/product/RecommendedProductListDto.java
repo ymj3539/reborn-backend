@@ -17,6 +17,8 @@ public class RecommendedProductListDto {
 
     private String companyName;
 
+    private Long productId;
+
     private String productName;
 
     private int price;
