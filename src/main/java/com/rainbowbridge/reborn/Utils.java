@@ -4,12 +4,21 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public final class Utils {
 
     private Utils() {
         throw new AssertionError("Cannot create instance of this class");
+    }
+
+    // Response Body Json 메시지 생성
+    public static Map<String, String> convertMsgToMap(String msg) {
+        Map<String, String> map = new HashMap<>();
+        map.put("msg", msg);
+        return map;
     }
 
     // 이미지 경로 산출
