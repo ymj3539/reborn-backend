@@ -23,10 +23,16 @@ public class HeartController {
     private final HeatService heatService;
 
     @PostMapping("/{companyId}")
-    @ApiOperation(value = "찜 하기")
-    public ResponseEntity add(@PathVariable String companyId, HttpSession session) {
-       heatService.addHeart(companyId, session);
-       return ResponseEntity.ok(Utils.convertMsgToMap("찜 하기에 성공했습니다"));
+    @ApiOperation(value = "찜 추가/삭제")
+    public ResponseEntity toggle(@PathVariable String companyId, HttpSession session) {
+        if (heatService.toggleHeart(companyId, session)) {
+            // 찜이 되어 있지 않으면 추가
+            return ResponseEntity.ok(Utils.convertMsgToMap("찜 추가에 성공했습니다"));
+        }
+        else {
+            // 이미 찜이 되어 있으면 삭제
+            return ResponseEntity.ok(Utils.convertMsgToMap("찜 삭제에 성공했습니다"));
+        }
     }
 
     @GetMapping
