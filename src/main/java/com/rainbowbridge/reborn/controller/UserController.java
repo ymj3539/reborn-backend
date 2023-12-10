@@ -3,6 +3,7 @@ package com.rainbowbridge.reborn.controller;
 import com.rainbowbridge.reborn.Utils;
 import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.user.LoginDto;
+import com.rainbowbridge.reborn.dto.user.LoginResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
 import com.rainbowbridge.reborn.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -33,16 +34,14 @@ public class UserController {
 
     @PostMapping
     @ApiOperation(value="회원가입")
-    public ResponseEntity addUser(@RequestBody UserAddDto dto, HttpSession session){
-        userService.addUser(dto, session);
-        return ResponseEntity.ok(Utils.convertMsgToMap("로그인에 성공했습니다"));
+    public LoginResponseDto addUser(@RequestBody UserAddDto dto, HttpSession session){
+        return userService.addUser(dto, session);
     }
 
     @PostMapping("/login")
     @ApiOperation(value="로그인")
-    public ResponseEntity loginUser(@RequestBody LoginDto dto, HttpSession session) {
-        userService.loginUser(dto, session);
-        return ResponseEntity.ok(Utils.convertMsgToMap("로그인에 성공했습니다."));
+    public LoginResponseDto loginUser(@RequestBody LoginDto dto, HttpSession session) {
+        return userService.loginUser(dto, session);
     }
 
     @GetMapping("/logout")
