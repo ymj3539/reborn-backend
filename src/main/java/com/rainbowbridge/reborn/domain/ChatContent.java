@@ -42,4 +42,9 @@ public class ChatContent {
     @CreatedDate
     private LocalDateTime createDt;
 
+    public ChatContent(String content, ChatRoom chatRoom, Company company) {
+        this.content = content;
+        this.chatRoom = chatRoom;
+        this.company = company;
+    }
 }
