@@ -13,6 +13,12 @@ public class UpcomingReservationResponseDto {
 
     private String companyName;
 
+    private String productName;
+
+    private String payDt;
+
+    private int totalPrice;
+
     private String reservationDate;
 
     private String reservationTime;
