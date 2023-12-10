@@ -74,6 +74,7 @@ public class HeatService {
                             .id(company.getId())
                             .name(company.getName())
                             .address(company.getAddress())
+                            .businessHours(Utils.convertTimeRangeFormat(company.getOpenTime(), company.getCloseTime()))
                             .imagePath(Utils.getImagePath(company.getId()))
                             .build())
                     .collect(Collectors.toList());
