@@ -5,10 +5,12 @@ import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.domain.Heart;
 import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.heart.HeartListDto;
+import com.rainbowbridge.reborn.repository.CompanyRepository;
 import com.rainbowbridge.reborn.repository.HeartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +20,18 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HeatService {
 
+    private final CompanyRepository companyRepository;
     private final HeartRepository heartRepository;
-    private final CompanyService companyService;
+
+    public boolean check(Company company, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            return false;
+        }
+
+        return heartRepository.findAllByUserAndCompany(user, company).size() > 0;
+    }
 
     public void checkDuplicatedHeart(User user, Company company) {
         if (heartRepository.findAllByUserAndCompany(user, company).size() > 0) {
@@ -34,7 +46,8 @@ public class HeatService {
             return;
         }
 
-        Company company = companyService.getCompany(companyId);
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
 
         checkDuplicatedHeart(user, company);
         heartRepository.save(new Heart(user, company));
