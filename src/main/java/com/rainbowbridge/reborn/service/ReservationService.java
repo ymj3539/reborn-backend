@@ -40,10 +40,7 @@ public class ReservationService {
 
         Reservation upcomingReservation = reservations.get(reservations.size() - 1);
 
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime reservationDateTime = LocalDateTime.of(upcomingReservation.getDate(), LocalTime.of(upcomingReservation.getTime(), 0));
-
-        if (reservationDateTime.isBefore(now)) {
+        if (isReservationExpired(upcomingReservation)) {
             return toCheckReservationResponseDto(false, null);
         }
 
@@ -65,10 +62,7 @@ public class ReservationService {
 
         Reservation upcomingReservation = reservations.get(reservations.size() - 1);
 
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime reservationDateTime = LocalDateTime.of(upcomingReservation.getDate(), LocalTime.of(upcomingReservation.getTime(), 0));
-
-        if (reservationDateTime.isBefore(now)) {
+        if (isReservationExpired(upcomingReservation)) {
             return null;
         }
 
@@ -85,6 +79,12 @@ public class ReservationService {
 
     public Reservation addReservation(ReservationAddRequestDto reservationDto, Pet pet, Pay pay, User user, Product product, Company company) {
         return reservationRepository.save(reservationDto.toEntity(pet, pay, user, product, company));
+    }
+
+    private boolean isReservationExpired(Reservation reservation) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime reservationDateTime = LocalDateTime.of(reservation.getDate(), LocalTime.of(reservation.getTime(), 0));
+        return reservationDateTime.isBefore(now);
     }
 
     private CheckReservationResponseDto toCheckReservationResponseDto(boolean reservationYN, String reservationDate) {
