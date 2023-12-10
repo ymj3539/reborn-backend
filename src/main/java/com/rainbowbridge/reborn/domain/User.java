@@ -47,6 +47,12 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ChatRoom> chatRooms = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<ChatContent> chatContents = new ArrayList<>();
+
     @Builder
     public User(String id, String password, String name, String phoneNum, LocalDate birthday, Gender gender, String address) {
         this.id = id;
