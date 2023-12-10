@@ -45,18 +45,6 @@ public class UserController {
         return ResponseEntity.ok(Utils.convertMsgToMap("로그인에 성공했습니다."));
     }
 
-    @GetMapping("/check-login")
-    @ApiOperation(value="로그인 여부 확인")
-    public String checkLogin(HttpSession session) {
-        User user = (User) session.getAttribute("user");
-
-        if (user != null) {
-            return user.getId();
-        } else {
-            return null;
-        }
-    }
-
     @GetMapping("/logout")
     @ApiOperation(value="로그아웃")
     public ResponseEntity logout(HttpSession session) {
