@@ -54,6 +54,7 @@ public class ProductService {
         return cheapProducts.stream()
                 .map(product -> RecommendedProductListDto.builder()
                         .imagePath(Utils.getImagePath(product.getName()))
+                        .companyId(product.getCompany().getId())
                         .companyName(product.getCompany().getName())
                         .productName(product.getName())
                         .price(product.getPrice())

@@ -13,6 +13,8 @@ public class RecommendedProductListDto {
 
     private String imagePath;
 
+    private String companyId;
+
     private String companyName;
 
     private String productName;
