@@ -48,6 +48,11 @@ public class CompanyService {
 
         String mainReview = company.getReviews().isEmpty() ? null : String.valueOf(company.getReviews().get(company.getReviews().size() - 1));
 
+        List<String> companyImagePaths = new ArrayList<>();
+        for (int i = 1; i <= 4; i++) {
+            companyImagePaths.add(Utils.getImagePath("COMPANY" + i));
+        }
+
         List<PackageListDto> rebornPackages = company.getProducts().stream()
                 .filter(product -> product.getProductType().equals(ProductType.REBORN_PACKAGE))
                 .map(product -> new PackageListDto(product, Utils.getImagePath(product.getName())))
@@ -69,6 +74,7 @@ public class CompanyService {
                 .reviewCount(reviewCount)
                 .mainReview(mainReview)
                 .imagePath(Utils.getImagePath(company.getId()))
+                .companyImagePaths(companyImagePaths)
                 .rebornPackages(rebornPackages)
                 .companyPackages(companyPackages)
                 .build();
