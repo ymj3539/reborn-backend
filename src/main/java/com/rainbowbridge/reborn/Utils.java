@@ -1,7 +1,4 @@
-package com.rainbowbridge.reborn.service;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+package com.rainbowbridge.reborn;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -9,39 +6,41 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-@Service
-@RequiredArgsConstructor
-public class CommonService {
+public final class Utils {
+
+    private Utils() {
+        throw new AssertionError("Cannot create instance of this class");
+    }
 
     // 이미지 경로 산출
-    public String getImagePath(String imageName) {
+    public static String getImagePath(String imageName) {
         return "http://146.56.104.45:8080/home/opc/reborn-backend/src/main/resources/images/"+imageName+".png";
     }
 
     // 날짜 형식 변환
-    public String convertLocalDateFormat(LocalDate date) {
+    public static String convertLocalDateFormat(LocalDate date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM.dd(EEE)", Locale.KOREAN);
         return date.format(formatter);
     }
 
-    public String convertLocalDateTimeFormat(LocalDateTime dateTime) {
+    public static String convertLocalDateTimeFormat(LocalDateTime dateTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
         return dateTime.format(formatter);
     }
 
     // 시간 형식 변환
-    public String convertTimeRangeFormat(int openTime, int closeTime) {
+    public static String convertTimeRangeFormat(int openTime, int closeTime) {
         String openTimeString = convertTimeFormat(openTime);
         String closeTimeString = convertTimeFormat(closeTime);
         return openTimeString + " - " + closeTimeString;
     }
 
-    public String convertTimeFormat(int time) {
+    public static String convertTimeFormat(int time) {
         DecimalFormat decimalFormat = new DecimalFormat("00");
         return decimalFormat.format(time) + ":" + decimalFormat.format(0);
     }
 
-    public String convertHourTo12HourFormat (int hour) {
+    public static String convertHourTo12HourFormat (int hour) {
         String period = (hour < 12) ? "오전" : "오후";
 
         if (hour > 12) {
@@ -54,7 +53,7 @@ public class CommonService {
     }
 
     // 거리 계산 - Vincenty 공식 사용
-    public double calculateDistance(double userLatitude, double userLongitude, double companyLatitude, double companyLongitude) {
+    public static double calculateDistance(double userLatitude, double userLongitude, double companyLatitude, double companyLongitude) {
         double a = 6378137, b = 6356752.314245, f = 1 / 298.257223563;  // WGS-84 ellipsoid params
         double L = Math.toRadians(companyLongitude - userLongitude);
         double U1 = Math.atan((1 - f) * Math.tan(Math.toRadians(userLatitude)));

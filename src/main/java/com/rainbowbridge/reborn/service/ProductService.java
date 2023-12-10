@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.service;
 
+import com.rainbowbridge.reborn.Utils;
 import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.domain.Product;
 import com.rainbowbridge.reborn.domain.ProductType;
@@ -19,7 +20,6 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CompanyService companyService;
-    private final CommonService commonService;
 
     public Product getProduct(Long productId) {
         return productRepository.findById(productId)
@@ -53,7 +53,7 @@ public class ProductService {
         // DTO 생성
         return cheapProducts.stream()
                 .map(product -> RecommendedProductListDto.builder()
-                        .imagePath(commonService.getImagePath(product.getName()))
+                        .imagePath(Utils.getImagePath(product.getName()))
                         .companyName(product.getCompany().getName())
                         .productName(product.getName())
                         .price(product.getPrice())

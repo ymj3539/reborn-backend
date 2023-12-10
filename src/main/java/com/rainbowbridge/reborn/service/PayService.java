@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.service;
 
+import com.rainbowbridge.reborn.Utils;
 import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.domain.Pay;
 import com.rainbowbridge.reborn.domain.Pet;
@@ -23,7 +24,6 @@ public class PayService {
     private final PetService petService;
     private final ProductService productService;
     private final ReservationService reservationService;
-    private final CommonService commonService;
 
     public Pay addPay(PayAddRequestDto payDto) {
         return payRepository.save(payDto.toEntity());
@@ -43,9 +43,9 @@ public class PayService {
         Reservation reservation = reservationService.addReservation(dto.getReservationDto(), pet, pay, user, product, company);
 
         return PayAddResponseDto.builder()
-                .payDt(commonService.convertLocalDateTimeFormat(pay.getPayDt()))
-                .reservationDate(commonService.convertLocalDateFormat(reservation.getDate()))
-                .reservationTime(commonService.convertHourTo12HourFormat(reservation.getTime()))
+                .payDt(Utils.convertLocalDateTimeFormat(pay.getPayDt()))
+                .reservationDate(Utils.convertLocalDateFormat(reservation.getDate()))
+                .reservationTime(Utils.convertHourTo12HourFormat(reservation.getTime()))
                 .companyName(company.getName())
                 .productName(product.getName())
                 .totalPrice(pay.getTotalPrice())

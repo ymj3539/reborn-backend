@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.service;
 
+import com.rainbowbridge.reborn.Utils;
 import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.domain.Heart;
 import com.rainbowbridge.reborn.domain.User;
@@ -19,7 +20,6 @@ public class HeatService {
 
     private final HeartRepository heartRepository;
     private final CompanyService companyService;
-    private final CommonService commonService;
 
     public void checkDuplicatedHeart(User user, Company company) {
         if (heartRepository.findAllByUserAndCompany(user, company).size() > 0) {
@@ -61,7 +61,7 @@ public class HeatService {
                             .id(company.getId())
                             .name(company.getName())
                             .address(company.getAddress())
-                            .imagePath(commonService.getImagePath(company.getId()))
+                            .imagePath(Utils.getImagePath(company.getId()))
                             .build())
                     .collect(Collectors.toList());
         }

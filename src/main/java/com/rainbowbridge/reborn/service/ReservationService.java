@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.service;
 
+import com.rainbowbridge.reborn.Utils;
 import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.domain.Pay;
 import com.rainbowbridge.reborn.domain.Pet;
@@ -22,7 +23,6 @@ import java.util.List;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final CommonService commonService;
 
     public UpcomingReservationResponseDto getUpcomingReservation(HttpSession session) {
         User user = (User) session.getAttribute("user");
@@ -48,8 +48,8 @@ public class ReservationService {
 
         return UpcomingReservationResponseDto.builder()
                 .companyName(upcomingReservation.getCompany().getName())
-                .reservationDate(commonService.convertLocalDateFormat(upcomingReservation.getDate()))
-                .reservationTime(commonService.convertTimeFormat(upcomingReservation.getTime()))
+                .reservationDate(Utils.convertLocalDateFormat(upcomingReservation.getDate()))
+                .reservationTime(Utils.convertTimeFormat(upcomingReservation.getTime()))
                 .build();
 
     }

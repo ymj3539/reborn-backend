@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.service;
 
+import com.rainbowbridge.reborn.Utils;
 import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.domain.ProductType;
 import com.rainbowbridge.reborn.domain.Region;
@@ -28,9 +29,6 @@ import java.util.stream.Collectors;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
-    private final CommonService commonService;
-
-
 
     public Company getCompany(String companyId) {
         return companyRepository.findById(companyId)
@@ -52,25 +50,25 @@ public class CompanyService {
 
         List<PackageListDto> rebornPackages = company.getProducts().stream()
                 .filter(product -> product.getProductType().equals(ProductType.REBORN_PACKAGE))
-                .map(product -> new PackageListDto(product, commonService.getImagePath(product.getName())))
+                .map(product -> new PackageListDto(product, Utils.getImagePath(product.getName())))
                 .collect(Collectors.toList());
 
         List<PackageListDto> companyPackages = company.getProducts().stream()
                 .filter(product -> product.getProductType().equals(ProductType.COMPANY_PACKAGE))
-                .map(product -> new PackageListDto(product, commonService.getImagePath(product.getName())))
+                .map(product -> new PackageListDto(product, Utils.getImagePath(product.getName())))
                 .collect(Collectors.toList());
 
         return CompanyResponseDto.builder()
                 .name(company.getName())
                 .intro(company.getIntro())
                 .address(company.getAddress())
-                .businessHours(commonService.convertTimeRangeFormat(company.getOpenTime(), company.getCloseTime()))
+                .businessHours(Utils.convertTimeRangeFormat(company.getOpenTime(), company.getCloseTime()))
                 .telNum(company.getTelNum())
                 .notification(company.getNotification())
                 .averageRating(averageRating)
                 .reviewCount(reviewCount)
                 .mainReview(mainReview)
-                .imagePath(commonService.getImagePath(company.getId()))
+                .imagePath(Utils.getImagePath(company.getId()))
                 .rebornPackages(rebornPackages)
                 .companyPackages(companyPackages)
                 .build();
@@ -91,7 +89,7 @@ public class CompanyService {
         List<String> availableTimeList = new ArrayList<>();
         for (int i = openTime; i <= closeTime; i++) {
             if (!timesOffs.contains(i)) {
-                String timeString = commonService.convertTimeFormat(i);
+                String timeString = Utils.convertTimeFormat(i);
                 availableTimeList.add(timeString);
             }
         }
@@ -136,7 +134,7 @@ public class CompanyService {
         // 각 업체의 사용자의 거리를 계산하고, 그 결과를 Map에 저장
         Map<Company, Double> companyDistanceMap = new HashMap<>();
         for (Company company : companies) {
-            double distance = commonService.calculateDistance(userLatitude, userLongitude, company.getLatitude(), company.getLongitude());
+            double distance = Utils.calculateDistance(userLatitude, userLongitude, company.getLatitude(), company.getLongitude());
             companyDistanceMap.put(company, distance);
         }
 
@@ -182,14 +180,14 @@ public class CompanyService {
                             .id(product.getId())
                             .name(product.getName())
                             .price(product.getPrice())
-                            .imagePath(commonService.getImagePath(product.getName()))
+                            .imagePath(Utils.getImagePath(product.getName()))
                             .build())
                     .collect(Collectors.toList());
 
             CompanyListDto companyListResponseDto = CompanyListDto.builder()
                     .id(company.getId())
                     .name(company.getName())
-                    .imagePath(commonService.getImagePath(company.getId()))
+                    .imagePath(Utils.getImagePath(company.getId()))
                     .products(productResponseDtoList)
                     .build();
 
