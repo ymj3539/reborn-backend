@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.controller;
 
+import com.rainbowbridge.reborn.Utils;
 import com.rainbowbridge.reborn.dto.heart.HeartListDto;
 import com.rainbowbridge.reborn.service.HeatService;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +26,7 @@ public class HeartController {
     @ApiOperation(value = "찜 하기")
     public ResponseEntity add(@PathVariable String companyId, HttpSession session) {
        heatService.addHeart(companyId, session);
-       return ResponseEntity.ok("찜 하기에 성공했습니다");
+       return ResponseEntity.ok(Utils.convertMsgToMap("찜 하기에 성공했습니다"));
     }
 
     @GetMapping
