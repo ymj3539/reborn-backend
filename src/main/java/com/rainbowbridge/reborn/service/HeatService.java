@@ -9,6 +9,8 @@ import com.rainbowbridge.reborn.repository.CompanyRepository;
 import com.rainbowbridge.reborn.repository.HeartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,29 @@ public class HeatService {
         }
 
         return heartRepository.findAllByUserAndCompany(user, company).size() > 0;
+    }
+
+    public boolean toggleHeart(String companyId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
+        if (user == null) {
+            throw new EntityNotFoundException("사용자 로그인 정보가 없습니다.");
+        }
+
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
+
+        if (check(company, session)) {
+            // 이미 찜이 되어 있으면 삭제
+            heartRepository.deleteAll(heartRepository.findAllByUserAndCompany(user, company));
+            return false;
+        }
+        else {
+            // 찜이 되어 있지 않으면 추가
+            Heart heart = new Heart(user, company);
+            heartRepository.save(heart);
+            return true;
+        }
     }
 
     public List<HeartListDto> getHeartList(HttpSession session) {
