@@ -9,8 +9,6 @@ import com.rainbowbridge.reborn.repository.CompanyRepository;
 import com.rainbowbridge.reborn.repository.HeartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,26 +29,6 @@ public class HeatService {
         }
 
         return heartRepository.findAllByUserAndCompany(user, company).size() > 0;
-    }
-
-    public void checkDuplicatedHeart(User user, Company company) {
-        if (heartRepository.findAllByUserAndCompany(user, company).size() > 0) {
-            throw new IllegalStateException("중복해서 찜 하기를 할 수 없습니다.");
-        }
-    }
-
-    public void addHeart(String companyId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-
-        if (user == null) {
-            return;
-        }
-
-        Company company = companyRepository.findById(companyId)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
-
-        checkDuplicatedHeart(user, company);
-        heartRepository.save(new Heart(user, company));
     }
 
     public List<HeartListDto> getHeartList(HttpSession session) {
