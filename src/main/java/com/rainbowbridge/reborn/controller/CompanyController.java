@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,8 +29,8 @@ public class CompanyController {
 
     @GetMapping("/{companyId}")
     @ApiOperation(value = "업체 상세 조회")
-    public CompanyResponseDto get(@PathVariable String companyId) {
-        return companyService.getCompanyAndProducts(companyId);
+    public CompanyResponseDto get(@PathVariable String companyId, HttpSession session) {
+        return companyService.getCompanyAndProducts(companyId, session);
     }
 
     @GetMapping("/{companyId}/available-times")

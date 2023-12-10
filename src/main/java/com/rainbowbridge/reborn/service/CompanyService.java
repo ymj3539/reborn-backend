@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
+    private final HeatService heatService;
 
     public Company getCompany(String companyId) {
         return companyRepository.findById(companyId)
@@ -39,7 +41,7 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public CompanyResponseDto getCompanyAndProducts(String companyId) {
+    public CompanyResponseDto getCompanyAndProducts(String companyId, HttpSession session) {
         Company company = getCompany(companyId);
 
         double averageRating = company.getAverageRating();
@@ -70,6 +72,7 @@ public class CompanyService {
                 .businessHours(Utils.convertTimeRangeFormat(company.getOpenTime(), company.getCloseTime()))
                 .telNum(company.getTelNum())
                 .notification(company.getNotification())
+                .heartYN(heatService.check(company, session))
                 .averageRating(averageRating)
                 .reviewCount(reviewCount)
                 .mainReview(mainReview)

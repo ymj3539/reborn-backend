@@ -33,6 +33,9 @@ public class CompanyResponseDto {
     @ApiModelProperty(value = "안내사항", example = "")
     private String notification;
 
+    @ApiModelProperty(value = "찜 여부", example = "")
+    private boolean heartYN;
+
     @ApiModelProperty(value = "평점 평균", example = "4.68")
     private double averageRating;
 
