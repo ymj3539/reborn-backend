@@ -45,6 +45,9 @@ public class CompanyResponseDto {
     @ApiModelProperty(value = "업체 대표 이미지 경로", example = "http://146.56.104.45:8080/home/opc/reborn-backend/src/main/resources/images/example.png")
     private String imagePath;
 
+    @ApiModelProperty(value = "업체 이미지 개수")
+    private int companyImageCount;
+
     @ApiModelProperty(value = "업체 이미지 경로")
     private List<String> companyImagePaths;
 

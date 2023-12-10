@@ -74,6 +74,7 @@ public class CompanyService {
                 .reviewCount(reviewCount)
                 .mainReview(mainReview)
                 .imagePath(Utils.getImagePath(company.getId()))
+                .companyImageCount(4)
                 .companyImagePaths(companyImagePaths)
                 .rebornPackages(rebornPackages)
                 .companyPackages(companyPackages)
