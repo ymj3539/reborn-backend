@@ -14,7 +14,6 @@ import com.rainbowbridge.reborn.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -24,9 +23,10 @@ import java.util.List;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final UserService userService;
 
-    public CheckReservationResponseDto checkReservation(Company company, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public CheckReservationResponseDto checkReservation(Company company, String userId) {
+        User user = userService.checkUser(userId);
 
         if (user == null) {
             return null;
@@ -47,8 +47,8 @@ public class ReservationService {
         return toCheckReservationResponseDto(true, Utils.convertLocalDateFormat(upcomingReservation.getDate()));
     }
 
-    public UpcomingReservationResponseDto getUpcomingReservation(HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public UpcomingReservationResponseDto getUpcomingReservation(String userId) {
+        User user = userService.checkUser(userId);
 
         if (user == null) {
             return null;
