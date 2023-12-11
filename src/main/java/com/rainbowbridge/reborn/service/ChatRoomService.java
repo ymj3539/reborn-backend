@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 
 @Service
@@ -25,19 +26,23 @@ public class ChatRoomService {
         User user = (User) session.getAttribute("user");
         Company company = companyService.getCompany(companyId);
 
-        ChatRoom chatRoom = new ChatRoom();
+        Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findByUserAndCompany(user, company);
 
-        if (chatRoomRepository.findAllByUserAndCompany(user, company).size() == 0) {
+        if (chatRoomOptional.isEmpty()) {
             // 아직 생성된 채팅방이 없으면
             // 1. 채팅방 생성
-            chatRoom = new ChatRoom(user, company);
+            ChatRoom newChatRoom = new ChatRoom(user, company);
             // 2. 업체 최초 안내 채팅 추가
-            chatContentService.addCompanyFirstChat(chatRoom, company);
+            chatContentService.addCompanyFirstChat(newChatRoom, company);
             // 3. 채팅방 저장
-            chatRoomRepository.save(chatRoom);
-        }
+            chatRoomRepository.save(newChatRoom);
 
-        // 채팅 목록 조회
-        return chatContentService.getChatContentListDto(chatRoom, session);
+            return chatContentService.getChatContentListDto(newChatRoom, session);
+        }
+        else {
+            // 이미 생성된 채팅방이 있으면
+            ChatRoom chatRoom = chatRoomOptional.get();
+            return chatContentService.getChatContentListDto(chatRoom, session);
+        }
     }
 }
