@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,9 +21,10 @@ public class HeatService {
 
     private final CompanyRepository companyRepository;
     private final HeartRepository heartRepository;
+    private final UserService userService;
 
-    public boolean check(Company company, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public boolean check(Company company, String userId) {
+        User user = userService.checkUser(userId);
 
         if (user == null) {
             return false;
@@ -33,8 +33,8 @@ public class HeatService {
         return heartRepository.findAllByUserAndCompany(user, company).size() > 0;
     }
 
-    public boolean toggleHeart(String companyId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public boolean toggleHeart(String companyId, String userId) {
+        User user = userService.checkUser(userId);
 
         if (user == null) {
             throw new EntityNotFoundException("사용자 로그인 정보가 없습니다.");
@@ -43,7 +43,7 @@ public class HeatService {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
 
-        if (check(company, session)) {
+        if (check(company, userId)) {
             // 이미 찜이 되어 있으면 삭제
             heartRepository.deleteAll(heartRepository.findAllByUserAndCompany(user, company));
             return false;
@@ -56,8 +56,8 @@ public class HeatService {
         }
     }
 
-    public List<HeartListDto> getHeartList(HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public List<HeartListDto> getHeartList(String userId) {
+        User user = userService.checkUser(userId);
 
         if (user == null) {
             return null;

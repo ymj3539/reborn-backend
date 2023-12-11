@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -24,8 +25,8 @@ public class HeartController {
 
     @PostMapping("/{companyId}")
     @ApiOperation(value = "찜 추가/삭제")
-    public ResponseEntity toggle(@PathVariable String companyId, HttpSession session) {
-        if (heatService.toggleHeart(companyId, session)) {
+    public ResponseEntity toggle(@PathVariable String companyId, @RequestParam(required = false, defaultValue = "") String userId) {
+        if (heatService.toggleHeart(companyId,userId)) {
             // 찜이 되어 있지 않으면 추가
             return ResponseEntity.ok(Utils.convertMsgToMap("찜 추가에 성공했습니다"));
         }
@@ -37,8 +38,8 @@ public class HeartController {
 
     @GetMapping
     @ApiOperation(value = "찜한 업체 목록 조회")
-    public List<HeartListDto> add(HttpSession session) {
-        return heatService.getHeartList(session);
+    public List<HeartListDto> add(@RequestParam(required = false, defaultValue = "") String userId) {
+        return heatService.getHeartList(userId);
     }
 
 }
