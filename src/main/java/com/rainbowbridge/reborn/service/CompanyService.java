@@ -69,7 +69,6 @@ public class CompanyService {
                 .collect(Collectors.toList());
 
         return CompanyResponseDto.builder()
-                .userId(user.getId())
                 .name(company.getName())
                 .intro(company.getIntro())
                 .address(company.getAddress())
