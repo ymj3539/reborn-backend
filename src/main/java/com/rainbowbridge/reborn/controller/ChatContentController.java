@@ -9,9 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,8 +21,8 @@ public class ChatContentController {
 
     @PostMapping
     @ApiOperation(value = "사용자 채팅 전송")
-    public ResponseEntity add(@RequestBody ChatContentAddRequestDto dto, HttpSession session) {
-        chatContentService.addUserChat(dto, session);
+    public ResponseEntity add(@RequestBody ChatContentAddRequestDto dto, @RequestParam(required = false, defaultValue = "") String userId) {
+        chatContentService.addUserChat(dto, userId);
         return ResponseEntity.ok(Utils.convertMsgToMap("메시지 전송에 성공했습니다."));
     }
 

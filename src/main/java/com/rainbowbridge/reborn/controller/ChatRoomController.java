@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @RestController
@@ -23,15 +23,15 @@ public class ChatRoomController {
 
     @GetMapping
     @ApiOperation(value = "채팅방 목록 조회")
-    public List<ChatRoomListDto> getList(HttpSession session) {
-        return chatRoomService.getChatRoomList(session);
+    public List<ChatRoomListDto> getList(@RequestParam(required = false, defaultValue = "") String userId) {
+        return chatRoomService.getChatRoomList(userId);
     }
 
 
     @PostMapping("/{companyId}")
     @ApiOperation(value = "상담 하기")
-    public ChatContentResponseDto enter(@PathVariable String companyId, HttpSession session) {
-        return chatRoomService.enterChatRoom(companyId, session);
+    public ChatContentResponseDto enter(@PathVariable String companyId, @RequestParam(required = false, defaultValue = "") String userId) {
+        return chatRoomService.enterChatRoom(companyId, userId);
     }
 
 }

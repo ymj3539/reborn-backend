@@ -28,9 +28,10 @@ public class ChatContentService {
     private final ChatContentRepository chatContentRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ReservationService reservationService;
+    private final UserService userService;
 
-    public void addUserChat(ChatContentAddRequestDto dto, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public void addUserChat(ChatContentAddRequestDto dto, String userId) {
+        User user = userService.checkUser(userId);
 
         if (user == null) {
             throw new EntityNotFoundException("사용자 로그인 정보가 없습니다.");
@@ -48,7 +49,7 @@ public class ChatContentService {
         chatContentRepository.save(new ChatContent(content, chatRoom, company));
     }
 
-    public ChatContentResponseDto getChatContentListDto(ChatRoom chatRoom, HttpSession session) {
+    public ChatContentResponseDto getChatContentListDto(ChatRoom chatRoom, String userId) {
         List<ChatContentListDto> chatContents = chatContentRepository.findAllByChatRoom(chatRoom).stream()
                 .map(chatContent -> ChatContentListDto.builder()
                         .userSendYN(checkUserSendYn(chatContent))
@@ -59,7 +60,7 @@ public class ChatContentService {
                 .collect(Collectors.toList());
 
         Company company = chatRoom.getCompany();
-        CheckReservationResponseDto reservation = reservationService.checkReservation(company, session);
+        CheckReservationResponseDto reservation = reservationService.checkReservation(company, userId);
 
         return ChatContentResponseDto.builder()
                 .companyName(company.getName())
