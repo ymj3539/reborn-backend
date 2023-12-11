@@ -6,6 +6,7 @@ import com.rainbowbridge.reborn.domain.ProductType;
 import com.rainbowbridge.reborn.domain.Region;
 import com.rainbowbridge.reborn.domain.SortCriteria;
 import com.rainbowbridge.reborn.domain.TimeOff;
+import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
 import com.rainbowbridge.reborn.dto.company.CompanyResponseDto;
 import com.rainbowbridge.reborn.dto.product.PackageListDto;
@@ -42,6 +43,8 @@ public class CompanyService {
     }
 
     public CompanyResponseDto getCompanyAndProducts(String companyId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+
         Company company = getCompany(companyId);
 
         double averageRating = company.getAverageRating();
@@ -66,6 +69,7 @@ public class CompanyService {
                 .collect(Collectors.toList());
 
         return CompanyResponseDto.builder()
+                .userId(user.getId())
                 .name(company.getName())
                 .intro(company.getIntro())
                 .address(company.getAddress())

@@ -15,6 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 public class CompanyResponseDto {
 
+    @ApiModelProperty()
+    private String userId;
+
     @ApiModelProperty(value = "업체명", example = "포포즈 경기 김포점")
     private String name;
 
