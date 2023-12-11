@@ -18,6 +18,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public User checkUser(String userId) {
+        if (userId.equals("")) {
+            return null;
+        }
+
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사용자입니다."));
+    }
+
     public void checkDuplicatedId(String id) {
         if (userRepository.findById(id).isPresent()) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
