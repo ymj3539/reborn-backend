@@ -14,8 +14,6 @@ import com.rainbowbridge.reborn.repository.PayRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
-
 @Service
 @RequiredArgsConstructor
 public class PayService {
@@ -24,13 +22,14 @@ public class PayService {
     private final PetService petService;
     private final ProductService productService;
     private final ReservationService reservationService;
+    private final UserService userService;
 
     public Pay addPay(PayAddRequestDto payDto) {
         return payRepository.save(payDto.toEntity());
     }
 
-    public PayAddResponseDto addPayAndReservationAndPet(CompletePayAddRequestDto dto, HttpSession session) {
-        User user = (User) session.getAttribute("user");
+    public PayAddResponseDto addPayAndReservationAndPet(CompletePayAddRequestDto dto, String userId) {
+        User user = userService.checkUser(userId);
 
         if (user == null) {
             return null;

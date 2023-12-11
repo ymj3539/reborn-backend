@@ -8,9 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +20,8 @@ public class PayController {
 
     @PostMapping
     @ApiOperation(value = "결제 하기")
-    public PayAddResponseDto add(@RequestBody CompletePayAddRequestDto dto, HttpSession session) {
-        return payService.addPayAndReservationAndPet(dto, session);
+    public PayAddResponseDto add(@RequestBody CompletePayAddRequestDto dto, @RequestParam(required = false, defaultValue = "") String userId) {
+        return payService.addPayAndReservationAndPet(dto, userId);
     }
 
 }
