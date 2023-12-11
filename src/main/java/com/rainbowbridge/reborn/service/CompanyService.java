@@ -47,7 +47,7 @@ public class CompanyService {
 
         int reviewCount = company.getReservations().size();
 
-        String mainReview = company.getReviews().isEmpty() ? null : String.valueOf(company.getReviews().get(company.getReviews().size() - 1));
+        String mainReview = company.getReviews().isEmpty() ? null : company.getReviews().get(company.getReviews().size() - 1).getContent();
 
         List<String> companyImagePaths = new ArrayList<>();
         for (int i = 1; i <= 4; i++) {
