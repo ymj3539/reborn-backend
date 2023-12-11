@@ -26,6 +26,9 @@ public class PayAddResponseDto {
     @ApiModelProperty(value = "업체명", example = "포포즈 경기 김포점")
     private String companyName;
 
+    @ApiModelProperty(value = "업체 이미지 경로", example = "")
+    private String companyImagePath;
+
     @ApiModelProperty(value = "상품명", example = "포포즈 패키지")
     private String productName;
 
