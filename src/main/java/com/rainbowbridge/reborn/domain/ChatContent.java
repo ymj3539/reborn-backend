@@ -47,4 +47,10 @@ public class ChatContent {
         this.chatRoom = chatRoom;
         this.company = company;
     }
+
+    public ChatContent(String content, ChatRoom chatRoom, User user) {
+        this.content = content;
+        this.chatRoom = chatRoom;
+        this.user = user;
+    }
 }
