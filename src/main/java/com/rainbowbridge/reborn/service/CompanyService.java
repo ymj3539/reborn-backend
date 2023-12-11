@@ -6,7 +6,6 @@ import com.rainbowbridge.reborn.domain.ProductType;
 import com.rainbowbridge.reborn.domain.Region;
 import com.rainbowbridge.reborn.domain.SortCriteria;
 import com.rainbowbridge.reborn.domain.TimeOff;
-import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
 import com.rainbowbridge.reborn.dto.company.CompanyResponseDto;
 import com.rainbowbridge.reborn.dto.product.PackageListDto;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,9 +40,7 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public CompanyResponseDto getCompanyAndProducts(String companyId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-
+    public CompanyResponseDto getCompanyAndProducts(String companyId, String userId) {
         Company company = getCompany(companyId);
 
         double averageRating = company.getAverageRating();
@@ -75,7 +71,7 @@ public class CompanyService {
                 .businessHours(Utils.convertTimeRangeFormat(company.getOpenTime(), company.getCloseTime()))
                 .telNum(company.getTelNum())
                 .notification(company.getNotification())
-                .heartYN(heatService.check(company, session))
+                .heartYN(heatService.check(company, userId))
                 .averageRating(averageRating)
                 .reviewCount(reviewCount)
                 .mainReview(mainReview)
