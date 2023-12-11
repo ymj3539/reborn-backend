@@ -43,4 +43,8 @@ public class ChatRoom {
     @CreatedDate
     private LocalDateTime createDt;
 
+    public ChatRoom(User user, Company company) {
+        this.user = user;
+        this.company = company;
+    }
 }
