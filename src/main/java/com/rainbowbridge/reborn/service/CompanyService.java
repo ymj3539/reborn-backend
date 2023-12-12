@@ -146,6 +146,7 @@ public class CompanyService {
                 .map(company -> MapCompanyListDto.builder()
                         .id(company.getId())
                         .name(company.getName())
+                        .imagePath(Utils.getImagePath(company.getId()))
                         .latitude(company.getLatitude())
                         .longitude(company.getLongitude())
                         .build())

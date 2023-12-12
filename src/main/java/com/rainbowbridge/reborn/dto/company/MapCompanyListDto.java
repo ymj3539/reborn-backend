@@ -15,6 +15,8 @@ public class MapCompanyListDto {
 
     private String name;
 
+    private String imagePath;
+
     private double latitude;
 
     private double longitude;
