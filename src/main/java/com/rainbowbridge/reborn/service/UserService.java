@@ -27,6 +27,10 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사용자입니다."));
     }
 
+    public UserResponseDto getUser(String userId) {
+        return toLoginResponseDto(checkUser(userId));
+    }
+
     public void checkDuplicatedId(String id) {
         if (userRepository.findById(id).isPresent()) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
