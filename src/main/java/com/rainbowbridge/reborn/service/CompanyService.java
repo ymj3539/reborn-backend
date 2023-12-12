@@ -8,6 +8,7 @@ import com.rainbowbridge.reborn.domain.SortCriteria;
 import com.rainbowbridge.reborn.domain.TimeOff;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
 import com.rainbowbridge.reborn.dto.company.CompanyResponseDto;
+import com.rainbowbridge.reborn.dto.company.MapCompanyListDto;
 import com.rainbowbridge.reborn.dto.product.PackageListDto;
 import com.rainbowbridge.reborn.dto.product.RebornPackageListDto;
 import com.rainbowbridge.reborn.repository.CompanyRepository;
@@ -137,6 +138,18 @@ public class CompanyService {
         }
 
         return toCompanyListDto(companies);
+    }
+
+    public List<MapCompanyListDto> getMapCompanyList(double userLatitude, double userLongitude, int radius) {
+        return getCompanyList().stream()
+                .filter(company -> Utils.calculateDistance(userLatitude, userLongitude, company.getLatitude(), company.getLongitude()) <= radius * 1000)
+                .map(company -> MapCompanyListDto.builder()
+                        .id(company.getId())
+                        .name(company.getName())
+                        .latitude(company.getLatitude())
+                        .longitude(company.getLongitude())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     public List<Company> sortCompanyListByDistance(List<Company> companies, double userLatitude, double userLongitude) {
