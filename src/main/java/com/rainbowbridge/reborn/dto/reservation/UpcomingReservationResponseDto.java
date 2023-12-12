@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class UpcomingReservationResponseDto {
 
+    private String imagePath;
+
     private String companyName;
 
     private String productName;

@@ -67,6 +67,7 @@ public class ReservationService {
         }
 
         return UpcomingReservationResponseDto.builder()
+                .imagePath(Utils.getImagePath(upcomingReservation.getCompany().getName()))
                 .companyName(upcomingReservation.getCompany().getName())
                 .productName(upcomingReservation.getProduct().getName())
                 .payDt(Utils.convertLocalDateTimeFormat(upcomingReservation.getPay().getPayDt()))
