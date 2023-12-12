@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponseDto {
+public class UserResponseDto {
 
     @ApiModelProperty(value = "사용자 ID")
     private String id;

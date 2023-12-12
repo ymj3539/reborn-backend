@@ -2,7 +2,7 @@ package com.rainbowbridge.reborn.service;
 
 import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.user.LoginDto;
-import com.rainbowbridge.reborn.dto.user.LoginResponseDto;
+import com.rainbowbridge.reborn.dto.user.UserResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
 import com.rainbowbridge.reborn.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +34,7 @@ public class UserService {
     }
 
     @Transactional
-    public LoginResponseDto addUser(UserAddDto dto, HttpSession session){
+    public UserResponseDto addUser(UserAddDto dto, HttpSession session){
         String encodedPassword = UserSha256.encrypt(dto.getPassword());
         User user = dto.toEntity(encodedPassword);
 
@@ -42,7 +42,7 @@ public class UserService {
         return toLoginResponseDto(user);
     }
 
-    public LoginResponseDto loginUser(LoginDto dto, HttpSession session) {
+    public UserResponseDto loginUser(LoginDto dto, HttpSession session) {
         User user = userRepository.findById(dto.getId())
                 .orElseThrow(() -> new EntityNotFoundException("아이디가 존재하지 않습니다."));
 
@@ -56,8 +56,8 @@ public class UserService {
         return toLoginResponseDto(user);
     }
 
-    public LoginResponseDto toLoginResponseDto(User user) {
-        return LoginResponseDto.builder()
+    public UserResponseDto toLoginResponseDto(User user) {
+        return UserResponseDto.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .phoneNum(user.getPhoneNum())

@@ -1,9 +1,8 @@
 package com.rainbowbridge.reborn.controller;
 
 import com.rainbowbridge.reborn.Utils;
-import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.user.LoginDto;
-import com.rainbowbridge.reborn.dto.user.LoginResponseDto;
+import com.rainbowbridge.reborn.dto.user.UserResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
 import com.rainbowbridge.reborn.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
@@ -34,13 +34,13 @@ public class UserController {
 
     @PostMapping
     @ApiOperation(value="회원가입")
-    public LoginResponseDto addUser(@RequestBody UserAddDto dto, HttpSession session){
+    public UserResponseDto addUser(@RequestBody UserAddDto dto, HttpSession session){
         return userService.addUser(dto, session);
     }
 
     @PostMapping("/login")
     @ApiOperation(value="로그인")
-    public LoginResponseDto loginUser(@RequestBody LoginDto dto, HttpSession session) {
+    public UserResponseDto loginUser(@RequestBody LoginDto dto, HttpSession session) {
         return userService.loginUser(dto, session);
     }
 
