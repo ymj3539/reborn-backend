@@ -15,6 +15,9 @@ public class ChatRoomListDto {
     @ApiModelProperty(value = "채팅방 ID", example = "")
     private Long chatRoomId;
 
+    @ApiModelProperty(value = "업체 ID", example = "")
+    private String companyId;
+
     @ApiModelProperty(value = "업체 이름", example = "포포즈 경기 김포점")
     private String companyName;
 

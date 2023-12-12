@@ -39,6 +39,7 @@ public class ChatRoomService {
 
                     return ChatRoomListDto.builder()
                             .chatRoomId(chatRoom.getId())
+                            .companyId(company.getId())
                             .companyName(company.getName())
                             .companyImagePath(Utils.getImagePath(company.getId()))
                             .reservationYN(reservationYN)
