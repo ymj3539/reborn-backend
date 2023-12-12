@@ -38,6 +38,7 @@ public class ChatRoomService {
                     String recentChat = chatContents.isEmpty() ? "" : chatContents.get(chatContents.size() - 1).getContent();
 
                     return ChatRoomListDto.builder()
+                            .chatRoomId(chatRoom.getId())
                             .companyName(company.getName())
                             .companyImagePath(Utils.getImagePath(company.getId()))
                             .reservationYN(reservationYN)
