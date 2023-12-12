@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MapCompanyListDto {
 
+    private int key;
+
     private String id;
 
     private String name;

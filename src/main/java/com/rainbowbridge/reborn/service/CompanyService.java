@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -141,9 +142,12 @@ public class CompanyService {
     }
 
     public List<MapCompanyListDto> getMapCompanyList(double userLatitude, double userLongitude, int radius) {
+        AtomicInteger key = new AtomicInteger(1);
+
         return getCompanyList().stream()
                 .filter(company -> Utils.calculateDistance(userLatitude, userLongitude, company.getLatitude(), company.getLongitude()) <= radius * 1000)
                 .map(company -> MapCompanyListDto.builder()
+                        .key(key.getAndIncrement())
                         .id(company.getId())
                         .name(company.getName())
                         .imagePath(Utils.getImagePath(company.getId()))
