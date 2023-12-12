@@ -4,6 +4,7 @@ import com.rainbowbridge.reborn.domain.Region;
 import com.rainbowbridge.reborn.domain.SortCriteria;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
 import com.rainbowbridge.reborn.dto.company.CompanyResponseDto;
+import com.rainbowbridge.reborn.dto.company.MapCompanyListDto;
 import com.rainbowbridge.reborn.service.CompanyService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -57,6 +58,16 @@ public class CompanyController {
             @RequestParam @NotNull Region region) {
         // 매개변수들을 사용하여 로직을 수행
         return companyService.getFilteredCompanyList(sortCriteria, region);
+    }
+
+    @GetMapping("/map")
+    @ApiOperation(value = "내 주변 업체 리스트 조회")
+    public List<MapCompanyListDto> getMapCompanyList(
+            @ApiParam(value = "사용자 위치 위도", example = "35.2388660") @RequestParam @NotNull double userLatitude,
+            @ApiParam(value = "사용자 위치 경도", example = "129.222829") @RequestParam @NotNull double userLongitude,
+            @ApiParam(value = "주변 반경 기준 (km 단위)", example = "20") @RequestParam @NotNull int radius) {
+        // 매개변수들을 사용하여 로직을 수행
+        return companyService.getMapCompanyList(userLatitude, userLongitude, radius);
     }
 
 }
