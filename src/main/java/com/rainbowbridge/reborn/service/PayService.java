@@ -46,7 +46,7 @@ public class PayService {
                 .reservationDate(Utils.convertLocalDateFormat(reservation.getDate()))
                 .reservationTime(Utils.convertHourTo12HourFormat(reservation.getTime()))
                 .companyName(company.getName())
-                .companyImagePath(Utils.getImagePath(company.getName()))
+                .companyImagePath(Utils.getImagePath(company.getId()))
                 .productName(product.getName())
                 .totalPrice(pay.getTotalPrice())
                 .build();
