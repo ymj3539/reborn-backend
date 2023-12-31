@@ -1,5 +1,7 @@
 package com.rainbowbridge.reborn.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -17,7 +19,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class ChatContent {
 
@@ -42,15 +46,4 @@ public class ChatContent {
     @CreatedDate
     private LocalDateTime createDt;
 
-    public ChatContent(String content, ChatRoom chatRoom, Company company) {
-        this.content = content;
-        this.chatRoom = chatRoom;
-        this.company = company;
-    }
-
-    public ChatContent(String content, ChatRoom chatRoom, User user) {
-        this.content = content;
-        this.chatRoom = chatRoom;
-        this.user = user;
-    }
 }

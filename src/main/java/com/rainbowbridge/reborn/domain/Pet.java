@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,9 @@ import javax.persistence.OneToOne;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Pet {
 
     @Id
@@ -44,16 +47,5 @@ public class Pet {
 
     @OneToOne(mappedBy = "pet", cascade = CascadeType.ALL)
     private Reservation reservation;
-
-    @Builder
-    public Pet(Species species, String breed, String name, int years, int months, double weight, User user) {
-        this.species = species;
-        this.breed = breed;
-        this.name = name;
-        this.years = years;
-        this.months = months;
-        this.weight = weight;
-        this.user = user;
-    }
 
 }

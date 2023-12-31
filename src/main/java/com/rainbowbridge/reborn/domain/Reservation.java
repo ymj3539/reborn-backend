@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,9 @@ import java.time.LocalDate;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
 
     @Id
@@ -50,16 +53,5 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
-
-    @Builder
-    public Reservation(LocalDate date, int time, Pet pet, Pay pay, User user, Company company, Product product) {
-        this.date = date;
-        this.time = time;
-        this.pet = pet;
-        this.pay = pay;
-        this.user = user;
-        this.company = company;
-        this.product = product;
-    }
 
 }

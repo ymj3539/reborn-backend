@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,9 @@ import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -55,16 +58,5 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ChatContent> chatContents = new ArrayList<>();
-
-    @Builder
-    public User(String id, String password, String name, String phoneNum, LocalDate birthday, Gender gender, String address) {
-        this.id = id;
-        this.password = password;
-        this.name = name;
-        this.phoneNum = phoneNum;
-        this.birthday = birthday;
-        this.gender = gender;
-        this.address = address;
-    }
 
 }
