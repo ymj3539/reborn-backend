@@ -40,13 +40,21 @@ public class ChatContentService {
         ChatRoom chatRoom = chatRoomRepository.findById(dto.getChatRoomId())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 채팅방입니다."));
 
-        chatContentRepository.save(new ChatContent(dto.getContent(), chatRoom, user));
+        chatContentRepository.save(ChatContent.builder()
+                                                .content(dto.getContent())
+                                                .chatRoom(chatRoom)
+                                                .user(user)
+                                                .build());
     }
 
     public void addCompanyFirstChat(ChatRoom chatRoom, Company company) {
         String content = "안녕하세요. ‘" + company.getName() + "’ 상담원입니다. 어떤 도움이 필요하신가요?";
 
-        chatContentRepository.save(new ChatContent(content, chatRoom, company));
+        chatContentRepository.save(ChatContent.builder()
+                .content(content)
+                .chatRoom(chatRoom)
+                .company(company)
+                .build());
     }
 
     public ChatContentResponseDto getChatContentListDto(ChatRoom chatRoom, String userId) {

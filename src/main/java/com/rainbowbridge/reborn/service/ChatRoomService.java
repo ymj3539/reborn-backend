@@ -59,7 +59,7 @@ public class ChatRoomService {
         if (chatRoomOptional.isEmpty()) {
             // 아직 생성된 채팅방이 없으면
             // 1. 채팅방 생성
-            ChatRoom newChatRoom = new ChatRoom(user, company);
+            ChatRoom newChatRoom = ChatRoom.builder().user(user).company(company).build();
             // 2. 업체 최초 안내 채팅 추가
             chatContentService.addCompanyFirstChat(newChatRoom, company);
             // 3. 채팅방 저장
