@@ -45,9 +45,6 @@ public class User implements UserDetails {
 
     private String address;     // 주소
 
-    @Enumerated(EnumType.STRING)
-    private Authority authority;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Pet> pets = new ArrayList<>();
 
