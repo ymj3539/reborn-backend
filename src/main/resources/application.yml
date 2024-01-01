@@ -33,3 +33,6 @@ logging.level:
 
 file:
   dir: /home/opc/reborn-backend/src/main/resources/images/
+
+jwt:
+  secret: 6621d2afed6db948f4164225c6432cd42dccd48986e3f641023fb209bded0cd5
