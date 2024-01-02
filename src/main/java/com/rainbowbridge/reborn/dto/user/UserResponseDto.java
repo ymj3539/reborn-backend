@@ -32,4 +32,7 @@ public class UserResponseDto {
 
     @ApiModelProperty(value = "사용자 주소")
     private String address;
+
+    @ApiModelProperty(value = "액세스 토큰")
+    private String accessToken;
 }

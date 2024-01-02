@@ -1,4 +1,4 @@
-package com.rainbowbridge.reborn.dto.token;
+package com.rainbowbridge.reborn.token;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,7 +1,7 @@
 package com.rainbowbridge.reborn.service;
 
 import com.rainbowbridge.reborn.domain.User;
-import com.rainbowbridge.reborn.dto.token.JwtToken;
+import com.rainbowbridge.reborn.token.JwtToken;
 import com.rainbowbridge.reborn.dto.user.UserResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
 import com.rainbowbridge.reborn.repository.UserRepository;
@@ -35,7 +35,7 @@ public class UserService {
     }
 
     public UserResponseDto getUser(String userId) {
-        return toLoginResponseDto(checkUser(userId));
+        return toLoginResponseDto(checkUser(userId), null);
     }
 
     public void checkDuplicatedId(String id) {
@@ -45,18 +45,19 @@ public class UserService {
     }
 
     @Transactional
-    public JwtToken addUser(UserAddDto dto){
-        String encodedPassword = passwordEncoder.encode(dto.getPassword());
+    public UserResponseDto addUser(UserAddDto dto){
+        String originalPassword = dto.getPassword();
+        String encodedPassword = passwordEncoder.encode(originalPassword);
         User user = dto.toEntity(encodedPassword);
         user.addRole("USER");
 
         user = userRepository.save(user);
 
-        return loginUser(user.getId(), user.getPassword());
+        return toLoginResponseDto(user, getToken(user.getId(), originalPassword));
     }
 
     @Transactional
-    public JwtToken loginUser(String id, String password) {
+    public UserResponseDto loginUser(String id, String password) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사번입니다."));
 
@@ -64,6 +65,10 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 잘못되었습니다.");
         }
 
+        return toLoginResponseDto(user, getToken(id, password));
+    }
+
+    public JwtToken getToken(String id, String password) {
         // 1. username + password 를 기반으로 Authentication 객체 생성
         // 이때 authentication 은 인증 여부를 확인하는 authenticated 값이 false
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(id, password);
@@ -76,7 +81,7 @@ public class UserService {
         return jwtTokenProvider.generateToken(authentication);
     }
 
-    public UserResponseDto toLoginResponseDto(User user) {
+    public UserResponseDto toLoginResponseDto(User user, JwtToken token) {
         return UserResponseDto.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -84,6 +89,7 @@ public class UserService {
                 .birthday(user.getBirthday())
                 .gender(user.getGender())
                 .address(user.getAddress())
+                .accessToken(token.getAccessToken())
                 .build();
     }
 }

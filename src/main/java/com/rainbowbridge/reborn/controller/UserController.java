@@ -1,7 +1,6 @@
 package com.rainbowbridge.reborn.controller;
 
 import com.rainbowbridge.reborn.Utils;
-import com.rainbowbridge.reborn.dto.token.JwtToken;
 import com.rainbowbridge.reborn.dto.user.LoginDto;
 import com.rainbowbridge.reborn.dto.user.UserResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpSession;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,13 +38,13 @@ public class UserController {
 
     @PostMapping
     @ApiOperation(value="회원가입")
-    public JwtToken addUser(@RequestBody UserAddDto dto){
+    public UserResponseDto addUser(@RequestBody UserAddDto dto){
         return userService.addUser(dto);
     }
 
     @PostMapping("/login")
     @ApiOperation(value="로그인")
-    public JwtToken loginUser(@RequestBody LoginDto dto) {
+    public UserResponseDto loginUser(@RequestBody LoginDto dto) {
         return userService.loginUser(dto.getId(), dto.getPassword());
     }
 

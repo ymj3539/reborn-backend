@@ -1,6 +1,5 @@
 package com.rainbowbridge.reborn.token;
 
-import com.rainbowbridge.reborn.dto.token.JwtToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
