@@ -25,11 +25,26 @@ public class UserService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public User checkUser(String userId) {
-        if (userId.equals("")) {
+    public User checkUser(String accessToken) {
+        if (accessToken == null) {
             return null;
         }
 
+        if (!jwtTokenProvider.validateToken(accessToken)) {
+            return null;
+        }
+
+        // 토큰을 검증하고 인증 객체를 가져옵니다.
+        Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return null;
+        }
+
+        // 인증 객체에서 사용자 정보를 추출합니다.
+        String userId = (String) authentication.getPrincipal();
+
+        // 사용자 정보를 데이터베이스에서 조회합니다.
         return userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사용자입니다."));
     }
