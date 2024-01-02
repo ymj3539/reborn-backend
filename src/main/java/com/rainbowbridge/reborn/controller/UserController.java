@@ -1,6 +1,7 @@
 package com.rainbowbridge.reborn.controller;
 
 import com.rainbowbridge.reborn.Utils;
+import com.rainbowbridge.reborn.dto.token.JwtToken;
 import com.rainbowbridge.reborn.dto.user.LoginDto;
 import com.rainbowbridge.reborn.dto.user.UserResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
@@ -46,8 +47,8 @@ public class UserController {
 
     @PostMapping("/login")
     @ApiOperation(value="로그인")
-    public UserResponseDto loginUser(@RequestBody LoginDto dto, HttpSession session) {
-        return userService.loginUser(dto, session);
+    public JwtToken loginUser(@RequestBody LoginDto dto) {
+        return userService.loginUser(dto.getId(), dto.getPassword());
     }
 
     @GetMapping("/logout")
