@@ -49,7 +49,7 @@ public class UserService {
 
         user = userRepository.save(user);
 
-        return toLoginResponseDto(user, getToken(user.getId(), originalPassword));
+        return toUserResponseDto(user, getToken(user.getId(), originalPassword));
     }
 
     @Transactional
@@ -61,7 +61,7 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 잘못되었습니다.");
         }
 
-        return toLoginResponseDto(user, getToken(id, password));
+        return toUserResponseDto(user, getToken(id, password));
     }
 
     public JwtToken getToken(String id, String password) {
@@ -77,7 +77,7 @@ public class UserService {
         return jwtTokenProvider.generateToken(authentication);
     }
 
-    public UserResponseDto toLoginResponseDto(User user, JwtToken token) {
+    public UserResponseDto toUserResponseDto(User user, JwtToken token) {
         return UserResponseDto.builder()
                 .id(user.getId())
                 .name(user.getName())
