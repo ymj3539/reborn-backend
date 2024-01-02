@@ -4,16 +4,19 @@ import com.rainbowbridge.reborn.Utils;
 import com.rainbowbridge.reborn.dto.user.LoginDto;
 import com.rainbowbridge.reborn.dto.user.UserResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
+import com.rainbowbridge.reborn.repository.TokenBlackListRepository;
+import com.rainbowbridge.reborn.service.TokenBlackListService;
 import com.rainbowbridge.reborn.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -40,6 +43,13 @@ public class UserController {
     @ApiOperation(value="로그인")
     public UserResponseDto loginUser(@RequestBody LoginDto dto) {
         return userService.loginUser(dto.getId(), dto.getPassword());
+    }
+
+    @PostMapping("/logout")
+    @ApiOperation(value="로그아웃")
+    public ResponseEntity logoutUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        userService.logoutUser(accessToken);
+        return ResponseEntity.ok(Utils.convertMsgToMap("로그아웃에 성공하였습니다."));
     }
 
 }
