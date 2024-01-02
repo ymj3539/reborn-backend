@@ -13,6 +13,10 @@ public class TokenBlackListService {
 
     private final TokenBlackListRepository tokenBlackListRepository;
 
+    public boolean check(String accessToken) {
+        return tokenBlackListRepository.existsByAccessToken(accessToken);
+    }
+
     public void add(String accessToken, Date expiryDate) {
         TokenBlackList blackListToken = new TokenBlackList();
         blackListToken.setAccessToken(accessToken);
