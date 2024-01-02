@@ -13,9 +13,11 @@ import com.rainbowbridge.reborn.dto.pay.PayAddResponseDto;
 import com.rainbowbridge.reborn.repository.PayRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PayService {
 
     private final PayRepository payRepository;

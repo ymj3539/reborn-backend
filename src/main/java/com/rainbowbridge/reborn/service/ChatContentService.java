@@ -13,6 +13,7 @@ import com.rainbowbridge.reborn.repository.ChatContentRepository;
 import com.rainbowbridge.reborn.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ChatContentService {
 
     private final ChatContentRepository chatContentRepository;
@@ -57,6 +59,7 @@ public class ChatContentService {
                 .build());
     }
 
+    @Transactional(readOnly = true)
     public ChatContentResponseDto getChatContentListDto(ChatRoom chatRoom, String userId) {
         List<ChatContentListDto> chatContents = chatContentRepository.findAllByChatRoom(chatRoom).stream()
                 .map(chatContent -> ChatContentListDto.builder()

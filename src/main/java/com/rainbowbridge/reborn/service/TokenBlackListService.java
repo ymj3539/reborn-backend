@@ -5,15 +5,18 @@ import com.rainbowbridge.reborn.repository.TokenBlackListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TokenBlackListService {
 
     private final TokenBlackListRepository tokenBlackListRepository;
 
+    @Transactional(readOnly = true)
     public boolean check(String accessToken) {
         return tokenBlackListRepository.existsByAccessToken(accessToken);
     }

@@ -14,6 +14,7 @@ import com.rainbowbridge.reborn.dto.product.RebornPackageListDto;
 import com.rainbowbridge.reborn.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
@@ -28,20 +29,24 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final HeatService heatService;
 
+    @Transactional(readOnly = true)
     public Company getCompany(String companyId) {
         return companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
     }
 
+    @Transactional(readOnly = true)
     public List<Company> getCompanyList() {
         return companyRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public CompanyResponseDto getCompanyAndProducts(String companyId, String userId) {
         Company company = getCompany(companyId);
 
@@ -85,6 +90,7 @@ public class CompanyService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public List<String> getAvailableTimeList(String companyId, LocalDate selectedDate) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
@@ -108,6 +114,7 @@ public class CompanyService {
         return availableTimeList;
     }
 
+    @Transactional(readOnly = true)
     public List<CompanyListDto> getCalendarCompanyList(LocalDate selectedDate, int selectedTime, double userLatitude, double userLongitude) {
         // 영업 가능한 업체 조회
         List<Company> availableCompanies = companyRepository.findAvailableCompanieList(selectedDate, selectedTime);
@@ -119,6 +126,7 @@ public class CompanyService {
         return toCompanyListDto(nearbyAvailableCompanies);
     }
 
+    @Transactional(readOnly = true)
     public List<CompanyListDto> getFilteredCompanyList(SortCriteria sortCriteria, Region region) {
         List<Company> companies;
 
@@ -141,6 +149,7 @@ public class CompanyService {
         return toCompanyListDto(companies);
     }
 
+    @Transactional(readOnly = true)
     public List<MapCompanyListDto> getMapCompanyList(double userLatitude, double userLongitude, int radius) {
         AtomicInteger key = new AtomicInteger(1);
 

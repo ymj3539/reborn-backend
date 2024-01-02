@@ -13,6 +13,7 @@ import com.rainbowbridge.reborn.dto.reservation.UpcomingReservationResponseDto;
 import com.rainbowbridge.reborn.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -20,11 +21,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
     private final UserService userService;
 
+    @Transactional(readOnly = true)
     public CheckReservationResponseDto checkReservation(Company company, String userId) {
         User user = userService.checkUser(userId);
 
@@ -47,6 +50,7 @@ public class ReservationService {
         return toCheckReservationResponseDto(true, Utils.convertLocalDateFormat(upcomingReservation.getDate()));
     }
 
+    @Transactional(readOnly = true)
     public UpcomingReservationResponseDto getUpcomingReservation(String userId) {
         User user = userService.checkUser(userId);
 

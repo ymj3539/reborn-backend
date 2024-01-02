@@ -9,6 +9,7 @@ import com.rainbowbridge.reborn.repository.CompanyRepository;
 import com.rainbowbridge.reborn.repository.HeartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
@@ -17,12 +18,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class HeatService {
 
     private final CompanyRepository companyRepository;
     private final HeartRepository heartRepository;
     private final UserService userService;
 
+    @Transactional(readOnly = true)
     public boolean check(Company company, String userId) {
         User user = userService.checkUser(userId);
 
@@ -56,6 +59,7 @@ public class HeatService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<HeartListDto> getHeartList(String userId) {
         User user = userService.checkUser(userId);
 

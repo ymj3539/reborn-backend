@@ -19,6 +19,7 @@ import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository userRepository;
@@ -27,6 +28,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenBlackListService tokenBlackListService;
 
+    @Transactional(readOnly = true)
     public User checkUser(String accessToken) {
         if (accessToken == null) {
             return null;
@@ -51,13 +53,13 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사용자입니다."));
     }
 
+    @Transactional(readOnly = true)
     public void checkDuplicatedId(String id) {
         if (userRepository.findById(id).isPresent()) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
         }
     }
 
-    @Transactional
     public UserResponseDto addUser(UserAddDto dto){
         String originalPassword = dto.getPassword();
         String encodedPassword = passwordEncoder.encode(originalPassword);
@@ -69,7 +71,6 @@ public class UserService {
         return toUserResponseDto(user, getToken(user.getId(), originalPassword));
     }
 
-    @Transactional
     public UserResponseDto loginUser(String id, String password) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사번입니다."));

@@ -7,7 +7,8 @@ import com.rainbowbridge.reborn.domain.ProductType;
 import com.rainbowbridge.reborn.dto.product.RecommendedProductListDto;
 import com.rainbowbridge.reborn.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;;import javax.persistence.EntityNotFoundException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;;import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -16,27 +17,32 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ProductService {
 
     private final ProductRepository productRepository;
     private final CompanyService companyService;
 
+    @Transactional(readOnly = true)
     public Product getProduct(Long productId) {
         return productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 상품입니다."));
     }
 
+    @Transactional(readOnly = true)
     public List<RecommendedProductListDto> getNearbyRecommendedProductList(double userLatitude, double userLongitude) {
         List<Company> allCompanies = companyService.getCompanyList();
         List<Company> nearCompanies = companyService.sortCompanyListByDistance(allCompanies, userLatitude, userLongitude).subList(0, 15);
         return selectProducts(nearCompanies);
     }
 
+    @Transactional(readOnly = true)
     public List<RecommendedProductListDto> getAllRecommendedProductList() {
         List<Company> allCompanies = companyService.getCompanyList();
         return selectProducts(allCompanies);
     }
 
+    @Transactional(readOnly = true)
     private List<RecommendedProductListDto> selectProducts(List<Company> companies) {
         List<Company> popularCompanies = companyService.sortCompaniesByReservationCount(companies).subList(0, 10);
         List<Company> goodCompanies = companyService.sortCompaniesByAverageRating(popularCompanies).subList(0, 5);

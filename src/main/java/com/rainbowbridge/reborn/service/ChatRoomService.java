@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
@@ -27,6 +28,7 @@ public class ChatRoomService {
     private final ReservationService reservationService;
     private final UserService userService;
 
+    @Transactional(readOnly = true)
     public List<ChatRoomListDto> getChatRoomList(String userId) {
         User user = userService.checkUser(userId);
 
