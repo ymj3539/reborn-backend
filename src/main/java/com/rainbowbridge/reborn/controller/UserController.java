@@ -23,12 +23,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
-    @ApiOperation(value="사용자 정보 조회")
-    public UserResponseDto get(@RequestParam(required = false, defaultValue = "") String userId) {
-        return userService.getUser(userId);
-    }
-
     @GetMapping("/{id}")
     @ApiOperation(value="아이디 중복 확인")
     public ResponseEntity checkDuplicatedId(@PathVariable String id) {
