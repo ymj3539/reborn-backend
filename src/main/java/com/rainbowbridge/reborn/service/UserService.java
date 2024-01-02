@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpSession;
 
 @Service
 @RequiredArgsConstructor
@@ -46,12 +45,14 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto addUser(UserAddDto dto, HttpSession session){
-        String encodedPassword = UserSha256.encrypt(dto.getPassword());
+    public JwtToken addUser(UserAddDto dto){
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
         User user = dto.toEntity(encodedPassword);
+        user.addRole("USER");
 
-        session.setAttribute("user", userRepository.save(user));
-        return toLoginResponseDto(user);
+        user = userRepository.save(user);
+
+        return loginUser(user.getId(), user.getPassword());
     }
 
     @Transactional

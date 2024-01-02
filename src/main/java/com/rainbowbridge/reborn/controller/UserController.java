@@ -41,8 +41,8 @@ public class UserController {
 
     @PostMapping
     @ApiOperation(value="회원가입")
-    public UserResponseDto addUser(@RequestBody UserAddDto dto, HttpSession session){
-        return userService.addUser(dto, session);
+    public JwtToken addUser(@RequestBody UserAddDto dto){
+        return userService.addUser(dto);
     }
 
     @PostMapping("/login")
