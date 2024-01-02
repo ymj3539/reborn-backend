@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,7 @@ public class UserService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final TokenBlackListService tokenBlackListService;
 
     public User checkUser(String accessToken) {
         if (accessToken == null) {
@@ -90,6 +92,16 @@ public class UserService {
 
         // 3. 인증 정보를 기반으로 JWT 토큰 반환
         return jwtTokenProvider.generateToken(authentication);
+    }
+
+    public void logoutUser(String accessToken) {
+        // 토큰에서 "Bearer " 제거
+        accessToken = accessToken.replace("Bearer ", "");
+
+        // 토큰에서 만료 시간을 가져와서 저장
+        Date expiryDate = jwtTokenProvider.getExpiryDate(accessToken);
+
+        tokenBlackListService.add(accessToken, expiryDate);
     }
 
     public UserResponseDto toUserResponseDto(User user, JwtToken token) {
