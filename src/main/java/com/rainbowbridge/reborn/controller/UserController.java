@@ -51,11 +51,4 @@ public class UserController {
         return userService.loginUser(dto.getId(), dto.getPassword());
     }
 
-    @GetMapping("/logout")
-    @ApiOperation(value="로그아웃")
-    public ResponseEntity logout(HttpSession session) {
-        session.removeAttribute("user");
-        return ResponseEntity.ok(Utils.convertMsgToMap("로그아웃에 성공했습니다."));
-    }
-
 }
