@@ -1,5 +1,8 @@
 package com.rainbowbridge.reborn;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,11 +17,11 @@ public final class Utils {
         throw new AssertionError("Cannot create instance of this class");
     }
 
-    // Response Body Json 메시지 생성
-    public static Map<String, String> convertMsgToMap(String msg) {
+    // ResponseEntity 생성
+    public static ResponseEntity createResponse(String msg, HttpStatus status) {
         Map<String, String> map = new HashMap<>();
         map.put("msg", msg);
-        return map;
+        return new ResponseEntity<>(map, status);
     }
 
     // 이미지 경로 산출

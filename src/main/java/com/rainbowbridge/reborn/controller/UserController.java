@@ -31,7 +31,7 @@ public class UserController {
     @ApiOperation(value="아이디 중복 확인")
     public ResponseEntity checkDuplicatedId(@PathVariable String id) {
         userService.checkDuplicatedId(id);
-        return ResponseEntity.ok(Utils.convertMsgToMap("사용 가능한 아이디입니다."));
+        return Utils.createResponse("사용 가능한 아이디입니다.", HttpStatus.OK);
     }
 
     @PostMapping
@@ -44,9 +44,9 @@ public class UserController {
     @ApiOperation(value="로그인 여부 확인")
     public ResponseEntity checkLogin(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         if (userService.checkUser(accessToken) != null) {
-            return ResponseEntity.ok(Utils.convertMsgToMap("유효한 토큰입니다."));
+            return Utils.createResponse("유효한 토큰입니다.", HttpStatus.OK);
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Utils.convertMsgToMap("유효하지 않은 토큰입니다."));
+            return Utils.createResponse("유효하지 않은 토큰입니다.", HttpStatus.UNAUTHORIZED);
         }
     }
 
@@ -60,7 +60,7 @@ public class UserController {
     @ApiOperation(value="로그아웃")
     public ResponseEntity logoutUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         userService.logoutUser(accessToken);
-        return ResponseEntity.ok(Utils.convertMsgToMap("로그아웃에 성공하였습니다."));
+        return Utils.createResponse("로그아웃에 성공하였습니다.", HttpStatus.OK);
     }
 
 }

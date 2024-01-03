@@ -5,6 +5,7 @@ import com.rainbowbridge.reborn.dto.heart.HeartListDto;
 import com.rainbowbridge.reborn.service.HeatService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,11 +29,11 @@ public class HeartController {
     public ResponseEntity toggle(@PathVariable String companyId, @RequestParam(required = false, defaultValue = "") String userId) {
         if (heatService.toggleHeart(companyId,userId)) {
             // 찜이 되어 있지 않으면 추가
-            return ResponseEntity.ok(Utils.convertMsgToMap("찜 추가에 성공했습니다"));
+            return Utils.createResponse("찜 추가에 성공했습니다.", HttpStatus.OK);
         }
         else {
             // 이미 찜이 되어 있으면 삭제
-            return ResponseEntity.ok(Utils.convertMsgToMap("찜 삭제에 성공했습니다"));
+            return Utils.createResponse("찜 삭제에 성공했습니다.", HttpStatus.OK);
         }
     }
 

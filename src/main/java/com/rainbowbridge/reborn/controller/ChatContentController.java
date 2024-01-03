@@ -5,6 +5,7 @@ import com.rainbowbridge.reborn.dto.chatContent.ChatContentAddRequestDto;
 import com.rainbowbridge.reborn.service.ChatContentService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ public class ChatContentController {
     @ApiOperation(value = "사용자 채팅 전송")
     public ResponseEntity add(@RequestBody ChatContentAddRequestDto dto, @RequestParam(required = false, defaultValue = "") String userId) {
         chatContentService.addUserChat(dto, userId);
-        return ResponseEntity.ok(Utils.convertMsgToMap("메시지 전송에 성공했습니다."));
+        return Utils.createResponse("메시지 전송에 성공했습니다.", HttpStatus.OK);
     }
 
 }
