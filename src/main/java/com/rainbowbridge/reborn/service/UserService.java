@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,9 @@ public class UserService {
             return null;
         }
 
+        // 토큰에서 "Bearer " 제거
+        accessToken = accessToken.replace("Bearer ", "");
+
         if (!jwtTokenProvider.validateToken(accessToken)) {
             return null;
         }
@@ -46,7 +50,7 @@ public class UserService {
         }
 
         // 인증 객체에서 사용자 정보를 추출합니다.
-        String userId = (String) authentication.getPrincipal();
+        String userId = ((UserDetails)authentication.getPrincipal()).getUsername();
 
         // 사용자 정보를 데이터베이스에서 조회합니다.
         return userRepository.findById(userId)
