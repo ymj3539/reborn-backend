@@ -10,6 +10,7 @@ import com.rainbowbridge.reborn.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,16 @@ public class UserController {
     @ApiOperation(value="회원가입")
     public UserResponseDto addUser(@RequestBody UserAddDto dto){
         return userService.addUser(dto);
+    }
+
+    @GetMapping("/login")
+    @ApiOperation(value="로그인 여부 확인")
+    public ResponseEntity checkLogin(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        if (userService.checkUser(accessToken) != null) {
+            return ResponseEntity.ok(Utils.convertMsgToMap("유효한 토큰입니다."));
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Utils.convertMsgToMap("유효하지 않은 토큰입니다."));
+        }
     }
 
     @PostMapping("/login")
