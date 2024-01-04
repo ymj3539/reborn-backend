@@ -100,8 +100,16 @@ public class UserService {
     }
 
     public void logoutUser(String accessToken) {
+        if (accessToken == null) {
+            throw new IllegalArgumentException("액세스 토큰이 필요합니다.");
+        }
+
         // 토큰에서 "Bearer " 제거
         accessToken = accessToken.replace("Bearer ", "");
+
+        if (!jwtTokenProvider.validateToken(accessToken)) {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+        }
 
         // 토큰에서 만료 시간을 가져와서 저장
         Date expiryDate = jwtTokenProvider.getExpiryDate(accessToken);
