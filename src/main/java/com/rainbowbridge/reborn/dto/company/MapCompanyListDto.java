@@ -13,7 +13,7 @@ public class MapCompanyListDto {
 
     private int key;
 
-    private String id;
+    private Long id;
 
     private String name;
 

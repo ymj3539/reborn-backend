@@ -30,7 +30,7 @@ public class ChatRoomController {
 
     @PostMapping("/{companyId}")
     @ApiOperation(value = "상담 하기")
-    public ChatContentResponseDto enter(@PathVariable String companyId, @RequestParam(required = false, defaultValue = "") String userId) {
+    public ChatContentResponseDto enter(@PathVariable Long companyId, @RequestParam(required = false, defaultValue = "") String userId) {
         return chatRoomService.enterChatRoom(companyId, userId);
     }
 

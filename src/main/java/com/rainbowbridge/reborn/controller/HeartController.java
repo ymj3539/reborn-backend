@@ -26,8 +26,8 @@ public class HeartController {
 
     @PostMapping("/{companyId}")
     @ApiOperation(value = "찜 추가/삭제")
-    public ResponseEntity toggle(@PathVariable String companyId, @RequestParam(required = false, defaultValue = "") String userId) {
-        if (heatService.toggleHeart(companyId,userId)) {
+    public ResponseEntity toggle(@PathVariable Long companyId, @RequestParam(required = false, defaultValue = "") String userId) {
+        if (heatService.toggleHeart(companyId, userId)) {
             // 찜이 되어 있지 않으면 추가
             return Utils.createResponse("찜 추가에 성공했습니다.", HttpStatus.OK);
         }

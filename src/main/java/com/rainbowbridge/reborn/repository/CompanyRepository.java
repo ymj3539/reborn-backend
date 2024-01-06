@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface CompanyRepository extends JpaRepository<Company, String> {
+public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query("SELECT c FROM Company c WHERE c.id NOT IN (SELECT t.company.id FROM TimeOff t WHERE t.date = :date AND t.time = :time)")
     List<Company> findAvailableCompanieList(@Param("date") LocalDate date, @Param("time") int time);
 

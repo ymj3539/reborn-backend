@@ -36,7 +36,7 @@ public class CompanyService {
     private final HeatService heatService;
 
     @Transactional(readOnly = true)
-    public Company getCompany(String companyId) {
+    public Company getCompany(Long companyId) {
         return companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
     }
@@ -47,7 +47,7 @@ public class CompanyService {
     }
 
     @Transactional(readOnly = true)
-    public CompanyResponseDto getCompanyAndProducts(String companyId, String userId) {
+    public CompanyResponseDto getCompanyAndProducts(Long companyId, String userId) {
         Company company = getCompany(companyId);
 
         double averageRating = company.getAverageRating();
@@ -82,7 +82,7 @@ public class CompanyService {
                 .averageRating(averageRating)
                 .reviewCount(reviewCount)
                 .mainReview(mainReview)
-                .imagePath(Utils.getImagePath(company.getId()))
+                .imagePath(Utils.getImagePath(company.getNickname()))
                 .companyImageCount(4)
                 .companyImagePaths(companyImagePaths)
                 .rebornPackages(rebornPackages)
@@ -91,7 +91,7 @@ public class CompanyService {
     }
 
     @Transactional(readOnly = true)
-    public List<String> getAvailableTimeList(String companyId, LocalDate selectedDate) {
+    public List<String> getAvailableTimeList(Long companyId, LocalDate selectedDate) {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
 
@@ -159,7 +159,7 @@ public class CompanyService {
                         .key(key.getAndIncrement())
                         .id(company.getId())
                         .name(company.getName())
-                        .imagePath(Utils.getImagePath(company.getId()))
+                        .imagePath(Utils.getImagePath(company.getNickname()))
                         .latitude(company.getLatitude())
                         .longitude(company.getLongitude())
                         .build())
@@ -223,7 +223,7 @@ public class CompanyService {
             CompanyListDto companyListResponseDto = CompanyListDto.builder()
                     .id(company.getId())
                     .name(company.getName())
-                    .imagePath(Utils.getImagePath(company.getId()))
+                    .imagePath(Utils.getImagePath(company.getNickname()))
                     .products(productResponseDtoList)
                     .build();
 

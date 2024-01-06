@@ -8,10 +8,12 @@ import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.chatContent.ChatContentResponseDto;
 import com.rainbowbridge.reborn.dto.chatRoom.ChatRoomListDto;
 import com.rainbowbridge.reborn.repository.ChatRoomRepository;
+import com.rainbowbridge.reborn.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,8 +25,8 @@ import java.util.stream.Collectors;
 public class ChatRoomService {
 
     private final ChatRoomRepository chatRoomRepository;
+    private final CompanyRepository companyRepository;
     private final ChatContentService chatContentService;
-    private final CompanyService companyService;
     private final ReservationService reservationService;
     private final UserService userService;
 
@@ -43,7 +45,7 @@ public class ChatRoomService {
                             .chatRoomId(chatRoom.getId())
                             .companyId(company.getId())
                             .companyName(company.getName())
-                            .companyImagePath(Utils.getImagePath(company.getId()))
+                            .companyImagePath(Utils.getImagePath(company.getNickname()))
                             .reservationYN(reservationYN)
                             .recentChat(recentChat)
                             .build();
@@ -52,9 +54,10 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public ChatContentResponseDto enterChatRoom(String companyId, String userId) {
+    public ChatContentResponseDto enterChatRoom(Long companyId, String userId) {
         User user = userService.checkUser(userId);
-        Company company = companyService.getCompany(companyId);
+        Company company =companyRepository.findById(companyId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
 
         Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findByUserAndCompany(user, company);
 

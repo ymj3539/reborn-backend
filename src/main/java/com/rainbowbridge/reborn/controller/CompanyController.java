@@ -29,14 +29,14 @@ public class CompanyController {
 
     @GetMapping("/{companyId}")
     @ApiOperation(value = "업체 상세 조회")
-    public CompanyResponseDto get(@PathVariable String companyId, @RequestParam(required = false, defaultValue = "") String userId) {
+    public CompanyResponseDto get(@PathVariable Long companyId, @RequestParam(required = false, defaultValue = "") String userId) {
         return companyService.getCompanyAndProducts(companyId, userId);
     }
 
     @GetMapping("/{companyId}/available-times")
     @ApiOperation(value = "업체별 예약 가능 시간 조회")
     public List<String> getAvailableTimeList(
-            @PathVariable String companyId,
+            @PathVariable Long companyId,
             @ApiParam(value = "선택된 일자", example = "2023-10-11") @RequestParam @NotNull @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate selectedDate) {
         return companyService.getAvailableTimeList(companyId, selectedDate);
     }

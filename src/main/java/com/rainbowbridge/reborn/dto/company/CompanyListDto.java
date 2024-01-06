@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CompanyListDto {
 
-    private String id;
+    private Long id;
 
     private String name;
 

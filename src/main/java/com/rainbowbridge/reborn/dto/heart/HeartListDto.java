@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class HeartListDto {
 
-    private String id;
+    private Long id;
 
     private String name;
 

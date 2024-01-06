@@ -36,7 +36,7 @@ public class HeatService {
         return heartRepository.findAllByUserAndCompany(user, company).size() > 0;
     }
 
-    public boolean toggleHeart(String companyId, String userId) {
+    public boolean toggleHeart(Long companyId, String userId) {
         User user = userService.checkUser(userId);
 
         if (user == null) {
@@ -82,7 +82,7 @@ public class HeatService {
                             .name(company.getName())
                             .address(company.getAddress())
                             .businessHours(Utils.convertTimeRangeFormat(company.getOpenTime(), company.getCloseTime()))
-                            .imagePath(Utils.getImagePath(company.getId()))
+                            .imagePath(Utils.getImagePath(company.getNickname()))
                             .build())
                     .collect(Collectors.toList());
         }

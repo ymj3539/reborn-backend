@@ -75,7 +75,7 @@ public class ChatContentService {
 
         return ChatContentResponseDto.builder()
                 .companyName(company.getName())
-                .companyImagePath(Utils.getImagePath(company.getId()))
+                .companyImagePath(Utils.getImagePath(company.getNickname()))
                 .reservationYN(reservation.isReservationYN())
                 .reservationDate(reservation.getReservationDate())
                 .chatContentListDtos(chatContents)
