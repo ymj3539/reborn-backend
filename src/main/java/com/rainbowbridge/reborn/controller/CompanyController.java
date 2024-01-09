@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.controller;
 
+import com.google.common.net.HttpHeaders;
 import com.rainbowbridge.reborn.domain.Region;
 import com.rainbowbridge.reborn.domain.SortCriteria;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,8 +31,8 @@ public class CompanyController {
 
     @GetMapping("/{companyId}")
     @ApiOperation(value = "업체 상세 조회")
-    public CompanyResponseDto get(@PathVariable Long companyId, @RequestParam(required = false, defaultValue = "") String userId) {
-        return companyService.getCompanyAndProducts(companyId, userId);
+    public CompanyResponseDto get(@PathVariable Long companyId, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        return companyService.getCompanyAndProducts(companyId, token);
     }
 
     @GetMapping("/{companyId}/available-times")

@@ -26,8 +26,8 @@ public class HeatService {
     private final UserService userService;
 
     @Transactional(readOnly = true)
-    public boolean check(Company company, String userId) {
-        User user = userService.checkUser(userId);
+    public boolean check(Company company, String token) {
+        User user = userService.checkUser(token);
 
         if (user == null) {
             return false;
@@ -36,8 +36,8 @@ public class HeatService {
         return heartRepository.findAllByUserAndCompany(user, company).size() > 0;
     }
 
-    public boolean toggleHeart(Long companyId, String userId) {
-        User user = userService.checkUser(userId);
+    public boolean toggleHeart(Long companyId, String token) {
+        User user = userService.checkUser(token);
 
         if (user == null) {
             throw new EntityNotFoundException("사용자 로그인 정보가 없습니다.");
@@ -46,7 +46,7 @@ public class HeatService {
         Company company = companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
 
-        if (check(company, userId)) {
+        if (check(company, token)) {
             // 이미 찜이 되어 있으면 삭제
             heartRepository.deleteAll(heartRepository.findAllByUserAndCompany(user, company));
             return false;
@@ -60,8 +60,8 @@ public class HeatService {
     }
 
     @Transactional(readOnly = true)
-    public List<HeartListDto> getHeartList(String userId) {
-        User user = userService.checkUser(userId);
+    public List<HeartListDto> getHeartList(String token) {
+        User user = userService.checkUser(token);
 
         if (user == null) {
             return null;

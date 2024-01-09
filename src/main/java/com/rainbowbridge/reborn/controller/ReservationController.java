@@ -3,9 +3,10 @@ package com.rainbowbridge.reborn.controller;
 import com.rainbowbridge.reborn.dto.reservation.UpcomingReservationResponseDto;
 import com.rainbowbridge.reborn.service.ReservationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -16,8 +17,8 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @GetMapping("/upcoming")
-    public UpcomingReservationResponseDto getUpcomingReservation(@RequestParam(required = false, defaultValue = "") String userId) {
-        return reservationService.getUpcomingReservation(userId);
+    public UpcomingReservationResponseDto getUpcomingReservation(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        return reservationService.getUpcomingReservation(token);
     }
 
 }

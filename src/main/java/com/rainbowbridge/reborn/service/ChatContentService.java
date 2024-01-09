@@ -32,8 +32,8 @@ public class ChatContentService {
     private final ReservationService reservationService;
     private final UserService userService;
 
-    public void addUserChat(ChatContentAddRequestDto dto, String userId) {
-        User user = userService.checkUser(userId);
+    public void addUserChat(ChatContentAddRequestDto dto, String token) {
+        User user = userService.checkUser(token);
 
         if (user == null) {
             throw new EntityNotFoundException("사용자 로그인 정보가 없습니다.");

@@ -47,7 +47,7 @@ public class CompanyService {
     }
 
     @Transactional(readOnly = true)
-    public CompanyResponseDto getCompanyAndProducts(Long companyId, String userId) {
+    public CompanyResponseDto getCompanyAndProducts(Long companyId, String token) {
         Company company = getCompany(companyId);
 
         double averageRating = company.getAverageRating();
@@ -78,7 +78,7 @@ public class CompanyService {
                 .businessHours(Utils.convertTimeRangeFormat(company.getOpenTime(), company.getCloseTime()))
                 .telNum(company.getTelNum())
                 .notification(company.getNotification())
-                .heartYN(heatService.check(company, userId))
+                .heartYN(heatService.check(company, token))
                 .averageRating(averageRating)
                 .reviewCount(reviewCount)
                 .mainReview(mainReview)

@@ -51,8 +51,8 @@ public class ReservationService {
     }
 
     @Transactional(readOnly = true)
-    public UpcomingReservationResponseDto getUpcomingReservation(String userId) {
-        User user = userService.checkUser(userId);
+    public UpcomingReservationResponseDto getUpcomingReservation(String token) {
+        User user = userService.checkUser(token);
 
         if (user == null) {
             return null;

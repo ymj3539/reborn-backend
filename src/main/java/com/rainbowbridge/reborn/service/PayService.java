@@ -30,8 +30,8 @@ public class PayService {
         return payRepository.save(payDto.toEntity());
     }
 
-    public PayAddResponseDto addPayAndReservationAndPet(CompletePayAddRequestDto dto, String userId) {
-        User user = userService.checkUser(userId);
+    public PayAddResponseDto addPayAndReservationAndPet(CompletePayAddRequestDto dto, String token) {
+        User user = userService.checkUser(token);
 
         if (user == null) {
             return null;

@@ -31,13 +31,13 @@ public class ChatRoomService {
     private final UserService userService;
 
     @Transactional(readOnly = true)
-    public List<ChatRoomListDto> getChatRoomList(String userId) {
-        User user = userService.checkUser(userId);
+    public List<ChatRoomListDto> getChatRoomList(String token) {
+        User user = userService.checkUser(token);
 
         return chatRoomRepository.findAllByUser(user).stream()
                 .map(chatRoom -> {
                     Company company = chatRoom.getCompany();
-                    boolean reservationYN = reservationService.checkReservation(company, userId).isReservationYN();
+                    boolean reservationYN = reservationService.checkReservation(company, token).isReservationYN();
                     List<ChatContent> chatContents = chatRoom.getChatContents();
                     String recentChat = chatContents.isEmpty() ? "" : chatContents.get(chatContents.size() - 1).getContent();
 
@@ -54,8 +54,8 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public ChatContentResponseDto enterChatRoom(Long companyId, String userId) {
-        User user = userService.checkUser(userId);
+    public ChatContentResponseDto enterChatRoom(Long companyId, String token) {
+        User user = userService.checkUser(token);
         Company company =companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
 
@@ -70,12 +70,12 @@ public class ChatRoomService {
             // 3. 채팅방 저장
             chatRoomRepository.save(newChatRoom);
 
-            return chatContentService.getChatContentListDto(newChatRoom, userId);
+            return chatContentService.getChatContentListDto(newChatRoom, token);
         }
         else {
             // 이미 생성된 채팅방이 있으면
             ChatRoom chatRoom = chatRoomOptional.get();
-            return chatContentService.getChatContentListDto(chatRoom, userId);
+            return chatContentService.getChatContentListDto(chatRoom, token);
         }
     }
 }

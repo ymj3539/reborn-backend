@@ -5,10 +5,11 @@ import com.rainbowbridge.reborn.dto.pay.PayAddResponseDto;
 import com.rainbowbridge.reborn.service.PayService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,8 +21,8 @@ public class PayController {
 
     @PostMapping
     @ApiOperation(value = "결제 하기")
-    public PayAddResponseDto add(@RequestBody CompletePayAddRequestDto dto, @RequestParam(required = false, defaultValue = "") String userId) {
-        return payService.addPayAndReservationAndPet(dto, userId);
+    public PayAddResponseDto add(@RequestBody CompletePayAddRequestDto dto, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        return payService.addPayAndReservationAndPet(dto, token);
     }
 
 }

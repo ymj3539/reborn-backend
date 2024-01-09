@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.controller;
 
+import com.google.common.net.HttpHeaders;
 import com.rainbowbridge.reborn.dto.chatContent.ChatContentResponseDto;
 import com.rainbowbridge.reborn.dto.chatRoom.ChatRoomListDto;
 import com.rainbowbridge.reborn.service.ChatRoomService;
@@ -8,8 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,15 +24,15 @@ public class ChatRoomController {
 
     @GetMapping
     @ApiOperation(value = "채팅방 목록 조회")
-    public List<ChatRoomListDto> getList(@RequestParam(required = false, defaultValue = "") String userId) {
-        return chatRoomService.getChatRoomList(userId);
+    public List<ChatRoomListDto> getList(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        return chatRoomService.getChatRoomList(token);
     }
 
 
     @PostMapping("/{companyId}")
     @ApiOperation(value = "상담 하기")
-    public ChatContentResponseDto enter(@PathVariable Long companyId, @RequestParam(required = false, defaultValue = "") String userId) {
-        return chatRoomService.enterChatRoom(companyId, userId);
+    public ChatContentResponseDto enter(@PathVariable Long companyId, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        return chatRoomService.enterChatRoom(companyId, token);
     }
 
 }
