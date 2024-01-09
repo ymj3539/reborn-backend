@@ -5,6 +5,7 @@ import com.rainbowbridge.reborn.dto.user.LoginDto;
 import com.rainbowbridge.reborn.dto.user.LoginResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
+import com.rainbowbridge.reborn.dto.user.UserUpdateDto;
 import com.rainbowbridge.reborn.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,6 +68,13 @@ public class UserController {
     @ApiOperation(value="사용자 정보 조회")
     public UserResponseDto getUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         return userService.getUser(accessToken);
+    }
+
+    @PutMapping
+    @ApiOperation(value="사용자 정보 수정")
+    public UserResponseDto updateUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+                                      @RequestBody UserUpdateDto dto) {
+        return userService.updateUser(accessToken, dto);
     }
 
 }
