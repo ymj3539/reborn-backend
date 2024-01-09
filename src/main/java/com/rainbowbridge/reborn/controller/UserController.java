@@ -62,4 +62,10 @@ public class UserController {
         return Utils.createResponse("로그아웃에 성공하였습니다.", HttpStatus.OK);
     }
 
+    @GetMapping
+    @ApiOperation(value="사용자 정보 조회")
+    public UserResponseDto getUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
+        return userService.getUser(accessToken);
+    }
+
 }
