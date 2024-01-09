@@ -2,6 +2,7 @@ package com.rainbowbridge.reborn.service;
 
 import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.user.LoginResponseDto;
+import com.rainbowbridge.reborn.dto.user.UserUpdateDto;
 import com.rainbowbridge.reborn.token.JwtToken;
 import com.rainbowbridge.reborn.dto.user.UserResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
@@ -60,6 +61,12 @@ public class UserService {
 
     public UserResponseDto getUser(String accessToken) {
         return toUserResponseDto(checkUser(accessToken));
+    }
+
+    public UserResponseDto updateUser(String accessToken, UserUpdateDto dto) {
+        User user = checkUser(accessToken);
+        user.updateInfo(dto);
+        return toUserResponseDto(user);
     }
 
     @Transactional(readOnly = true)

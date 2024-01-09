@@ -1,9 +1,11 @@
 package com.rainbowbridge.reborn.domain;
 
+import com.rainbowbridge.reborn.dto.user.UserUpdateDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,10 +22,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -107,6 +111,16 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void updateInfo(UserUpdateDto dto) {
+        Optional.ofNullable(dto.getName()).ifPresent(this::setName);
+        Optional.ofNullable(dto.getPhoneNum()).ifPresent(this::setPhoneNum);
+        Optional.ofNullable(dto.getBirthday()).ifPresent(this::setBirthday);
+        Optional.ofNullable(dto.getGender()).ifPresent(this::setGender);
+        Optional.ofNullable(dto.getPostalCode()).ifPresent(this::setPostalCode);
+        Optional.ofNullable(dto.getBaseAddress()).ifPresent(this::setBaseAddress);
+        Optional.ofNullable(dto.getDetailAddress()).ifPresent(this::setDetailAddress);
     }
 
 }
