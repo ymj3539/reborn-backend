@@ -1,6 +1,7 @@
 package com.rainbowbridge.reborn.service;
 
 import com.rainbowbridge.reborn.domain.User;
+import com.rainbowbridge.reborn.dto.user.LoginResponseDto;
 import com.rainbowbridge.reborn.token.JwtToken;
 import com.rainbowbridge.reborn.dto.user.UserResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
@@ -64,7 +65,7 @@ public class UserService {
         }
     }
 
-    public UserResponseDto addUser(UserAddDto dto){
+    public LoginResponseDto addUser(UserAddDto dto){
         String originalPassword = dto.getPassword();
         String encodedPassword = passwordEncoder.encode(originalPassword);
         User user = dto.toEntity(encodedPassword);
@@ -72,10 +73,10 @@ public class UserService {
 
         user = userRepository.save(user);
 
-        return toUserResponseDto(user, getToken(user.getId(), originalPassword));
+        return toLoginResponseDto(user, getToken(user.getId(), originalPassword));
     }
 
-    public UserResponseDto loginUser(String id, String password) {
+    public LoginResponseDto loginUser(String id, String password) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사번입니다."));
 
@@ -83,7 +84,7 @@ public class UserService {
             throw new IllegalArgumentException("비밀번호가 잘못되었습니다.");
         }
 
-        return toUserResponseDto(user, getToken(id, password));
+        return toLoginResponseDto(user, getToken(id, password));
     }
 
     public JwtToken getToken(String id, String password) {
@@ -117,14 +118,10 @@ public class UserService {
         tokenBlackListService.add(accessToken, expiryDate);
     }
 
-    public UserResponseDto toUserResponseDto(User user, JwtToken token) {
-        return UserResponseDto.builder()
-                .id(user.getId())
+    public LoginResponseDto toLoginResponseDto(User user, JwtToken token) {
+        return LoginResponseDto.builder()
                 .name(user.getName())
                 .phoneNum(user.getPhoneNum())
-                .birthday(user.getBirthday())
-                .gender(user.getGender())
-                .address(user.getAddress())
                 .accessToken(token.getAccessToken())
                 .build();
     }

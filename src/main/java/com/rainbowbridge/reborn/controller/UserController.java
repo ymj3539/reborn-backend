@@ -2,10 +2,9 @@ package com.rainbowbridge.reborn.controller;
 
 import com.rainbowbridge.reborn.Utils;
 import com.rainbowbridge.reborn.dto.user.LoginDto;
+import com.rainbowbridge.reborn.dto.user.LoginResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserResponseDto;
 import com.rainbowbridge.reborn.dto.user.UserAddDto;
-import com.rainbowbridge.reborn.repository.TokenBlackListRepository;
-import com.rainbowbridge.reborn.service.TokenBlackListService;
 import com.rainbowbridge.reborn.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +35,7 @@ public class UserController {
 
     @PostMapping
     @ApiOperation(value="회원가입")
-    public UserResponseDto addUser(@RequestBody UserAddDto dto){
+    public LoginResponseDto addUser(@RequestBody UserAddDto dto){
         return userService.addUser(dto);
     }
 
@@ -52,7 +51,7 @@ public class UserController {
 
     @PostMapping("/login")
     @ApiOperation(value="로그인")
-    public UserResponseDto loginUser(@RequestBody LoginDto dto) {
+    public LoginResponseDto loginUser(@RequestBody LoginDto dto) {
         return userService.loginUser(dto.getId(), dto.getPassword());
     }
 
