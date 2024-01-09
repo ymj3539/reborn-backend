@@ -43,7 +43,11 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Gender gender;      // 성별
 
-    private String address;     // 주소
+    private String postalCode;  // 우편번호
+
+    private String baseAddress;     // 기본 주소
+
+    private String detailAddress;   // 상세 주소
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Pet> pets = new ArrayList<>();
