@@ -28,11 +28,15 @@ public class UserResponseDto {
     private LocalDate birthday;
 
     @ApiModelProperty(value = "사용자 성별")
-    private Gender gender;
+    private String gender;
 
-    @ApiModelProperty(value = "사용자 주소")
-    private String address;
+    @ApiModelProperty(value = "사용자 우편번호")
+    private String postalCode;
 
-    @ApiModelProperty(value = "액세스 토큰")
-    private String accessToken;
+    @ApiModelProperty(value = "사용자 기본주소")
+    private String baseAddress;
+
+    @ApiModelProperty(value = "사용자 상세주소")
+    private String detailAddress;
+
 }
