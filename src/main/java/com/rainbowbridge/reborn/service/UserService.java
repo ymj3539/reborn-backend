@@ -58,6 +58,10 @@ public class UserService {
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 사용자입니다."));
     }
 
+    public UserResponseDto getUser(String accessToken) {
+        return toUserResponseDto(checkUser(accessToken));
+    }
+
     @Transactional(readOnly = true)
     public void checkDuplicatedId(String id) {
         if (userRepository.findById(id).isPresent()) {
@@ -123,6 +127,19 @@ public class UserService {
                 .name(user.getName())
                 .phoneNum(user.getPhoneNum())
                 .accessToken(token.getAccessToken())
+                .build();
+    }
+
+    private UserResponseDto toUserResponseDto(User user) {
+        return UserResponseDto.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .phoneNum(user.getPhoneNum())
+                .birthday(user.getBirthday())
+                .gender(user.getGender().getDisplayName())
+                .postalCode(user.getPostalCode())
+                .baseAddress(user.getBaseAddress())
+                .detailAddress(user.getDetailAddress())
                 .build();
     }
 }
