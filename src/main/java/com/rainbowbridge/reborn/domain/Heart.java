@@ -20,6 +20,8 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 public class Heart {
 
+    // 찜 - 업체, 옵션상품
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,6 +33,14 @@ public class Heart {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bundle_id")
+    private Bundle bundle;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplement_id")
+    private Supplement supplement;
 
     public Heart(User user, Company company) {
         this.user = user;

@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.domain;
 
+import com.rainbowbridge.reborn.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,21 +25,36 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public class Bundle {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;                // 이름
+    @Enumerated(EnumType.STRING)
+    private BundleType bundleType;     // 타입 : 리본 패키지, 업체 패키지
 
-    private String intro;               // 설명
+    private String name;
+
+    private int price;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bundle_id")
-    private Bundle bundle;
+    @JoinColumn(name = "company_id")
+    private Company company;
 
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL)
     private List<File> files = new ArrayList<>();
+
+    @OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL)
+    private List<Product> products = new ArrayList<>();
+
+    @OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL)
+    private List<Heart> hearts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL)
+    private List<Reservation> reservations = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
 
 }

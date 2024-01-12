@@ -1,5 +1,6 @@
 package com.rainbowbridge.reborn.domain;
 
+import com.rainbowbridge.reborn.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,8 +53,10 @@ public class Company {
 
     private double longitude;       // 경도
 
+    private boolean approved;       // 입점 승인 여부
+
     @OneToOne(mappedBy = "companyMain", cascade = CascadeType.ALL)
-    private File mainPic;
+    private File mainFile;
 
     @OneToMany(mappedBy = "company")
     private List<Heart> hearts = new ArrayList<>();
@@ -64,11 +67,14 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToMany(mappedBy = "companyPics", cascade = CascadeType.ALL)
-    private List<File> pics = new ArrayList<>();
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<File> files = new ArrayList<>();
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-    private List<Product> products = new ArrayList<>();
+    private List<Bundle> bundles = new ArrayList<>();
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<Supplement> supplements = new ArrayList<>();
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<TimeOff> timeOffs = new ArrayList<>();

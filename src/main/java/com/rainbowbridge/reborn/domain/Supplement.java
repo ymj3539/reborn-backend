@@ -14,8 +14,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,40 +22,29 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reservation {
+public class Supplement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate date;         // 예약 일자
+    private String name;                // 이름
 
-    private int time;               // 예약 시간
+    private String intro;               // 설명
 
-    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
-    private Review review;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pet_id")
-    private Pet pet;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pay_id")
-    private Pay pay;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    private int price;                  // 가격
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bundle_id")
-    private Bundle bundle;
+    @OneToMany(mappedBy = "supplement", cascade = CascadeType.ALL)
+    private List<File> files = new ArrayList<>();
 
-    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "supplement", cascade = CascadeType.ALL)
+    private List<Heart> hearts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "supplement", cascade = CascadeType.ALL)
     private List<Supplement_Reservation> supplementReservations = new ArrayList<>();
 
 }

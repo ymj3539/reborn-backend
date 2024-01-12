@@ -36,15 +36,23 @@ public class File {
     private boolean stat;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "companyMain_id")
+    @JoinColumn(name = "company_main_id")
     private Company companyMain;        // 업체 대표 이미지
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
-    private Company companyPics;        // 업체 사진들
+    private Company company;        // 업체 사진들
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bundle_id")
+    private Bundle bundle;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
-    private Product productPics;
+    private Product product;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "supplement_id")
+    private Supplement supplement;
 
 }
