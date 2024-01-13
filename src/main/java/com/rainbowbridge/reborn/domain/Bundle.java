@@ -57,4 +57,19 @@ public class Bundle {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
+    public double getDistance(double userLatitude, double userLongitude) {
+        return Utils.calculateDistance(userLatitude, userLongitude, company.getLatitude(), company.getLongitude());
+    }
+
+    public int getSales() {
+        return reservations.size();
+    }
+
+    public double getAverageRating() {
+        return reviews.stream()
+                .mapToInt(Review::getRating)
+                .average()
+                .orElse(0.0);
+    }
+
 }
