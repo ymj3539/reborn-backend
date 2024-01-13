@@ -15,7 +15,7 @@ public class UpcomingReservationResponseDto {
 
     private String companyName;
 
-    private String productName;
+    private String bundleName;
 
     private String payDt;
 
