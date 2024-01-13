@@ -1,6 +1,6 @@
 package com.rainbowbridge.reborn.dto.company;
 
-import com.rainbowbridge.reborn.dto.product.PackageListDto;
+import com.rainbowbridge.reborn.dto.bundle.BundleListDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -55,9 +55,9 @@ public class CompanyResponseDto {
     private List<String> companyImagePaths;
 
     @ApiModelProperty(value = "리본 고정 패키지")
-    private List<PackageListDto> rebornPackages;
+    private List<BundleListDto> rebornBundles;
 
     @ApiModelProperty(value = "업체 전용 패키지")
-    private List<PackageListDto> companyPackages;
+    private List<BundleListDto> companyBundles;
 
 }

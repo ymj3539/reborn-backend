@@ -1,6 +1,6 @@
 package com.rainbowbridge.reborn.dto.company;
 
-import com.rainbowbridge.reborn.dto.product.RebornPackageListDto;
+import com.rainbowbridge.reborn.dto.bundle.RebornBundleListDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,6 +20,6 @@ public class CompanyListDto {
 
     private String imagePath;
 
-    private List<RebornPackageListDto> products;
+    private List<RebornBundleListDto> bundles;
 
 }

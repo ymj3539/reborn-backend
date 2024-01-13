@@ -1,16 +1,17 @@
 package com.rainbowbridge.reborn.service;
 
 import com.rainbowbridge.reborn.Utils;
+import com.rainbowbridge.reborn.domain.BundleType;
 import com.rainbowbridge.reborn.domain.Company;
-import com.rainbowbridge.reborn.domain.ProductType;
+import com.rainbowbridge.reborn.domain.Product;
 import com.rainbowbridge.reborn.domain.Region;
 import com.rainbowbridge.reborn.domain.SortCriteria;
 import com.rainbowbridge.reborn.domain.TimeOff;
+import com.rainbowbridge.reborn.dto.bundle.BundleListDto;
+import com.rainbowbridge.reborn.dto.bundle.RebornBundleListDto;
 import com.rainbowbridge.reborn.dto.company.CompanyListDto;
 import com.rainbowbridge.reborn.dto.company.CompanyResponseDto;
 import com.rainbowbridge.reborn.dto.company.MapCompanyListDto;
-import com.rainbowbridge.reborn.dto.product.PackageListDto;
-import com.rainbowbridge.reborn.dto.product.RebornPackageListDto;
 import com.rainbowbridge.reborn.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,19 +37,14 @@ public class CompanyService {
     private final HeatService heatService;
 
     @Transactional(readOnly = true)
-    public Company getCompany(Long companyId) {
-        return companyRepository.findById(companyId)
-                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
-    }
-
-    @Transactional(readOnly = true)
     public List<Company> getCompanyList() {
         return companyRepository.findAll();
     }
 
     @Transactional(readOnly = true)
-    public CompanyResponseDto getCompanyAndProducts(Long companyId, String token) {
-        Company company = getCompany(companyId);
+    public CompanyResponseDto getCompany(Long companyId, String token) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
 
         double averageRating = company.getAverageRating();
 
@@ -60,16 +56,6 @@ public class CompanyService {
         for (int i = 1; i <= 4; i++) {
             companyImagePaths.add(Utils.getImagePath("COMPANY" + i));
         }
-
-        List<PackageListDto> rebornPackages = company.getProducts().stream()
-                .filter(product -> product.getProductType().equals(ProductType.REBORN_PACKAGE))
-                .map(product -> new PackageListDto(product, Utils.getImagePath(product.getName())))
-                .collect(Collectors.toList());
-
-        List<PackageListDto> companyPackages = company.getProducts().stream()
-                .filter(product -> product.getProductType().equals(ProductType.COMPANY_PACKAGE))
-                .map(product -> new PackageListDto(product, Utils.getImagePath(product.getName())))
-                .collect(Collectors.toList());
 
         return CompanyResponseDto.builder()
                 .name(company.getName())
@@ -85,8 +71,8 @@ public class CompanyService {
                 .imagePath(Utils.getImagePath(company.getNickname()))
                 .companyImageCount(4)
                 .companyImagePaths(companyImagePaths)
-                .rebornPackages(rebornPackages)
-                .companyPackages(companyPackages)
+                .rebornBundles(getBundlesByType(company, BundleType.REBORN_BUNDLE))
+                .companyBundles(getBundlesByType(company, BundleType.COMPANY_BUNDLE))
                 .build();
     }
 
@@ -209,14 +195,14 @@ public class CompanyService {
         for (Company company : companies) {
 
             // 리본 패키지만 추출
-            List<RebornPackageListDto> productResponseDtoList = Optional.ofNullable(company.getProducts())
+            List<RebornBundleListDto> rebornBundles = Optional.ofNullable(company.getBundles())
                     .orElse(Collections.emptyList()).stream()
-                    .filter(product -> product.getProductType().equals(ProductType.REBORN_PACKAGE))
-                    .map(product -> RebornPackageListDto.builder()
-                            .id(product.getId())
-                            .name(product.getName())
-                            .price(product.getPrice())
-                            .imagePath(Utils.getImagePath(product.getName()))
+                    .filter(bundle -> bundle.getBundleType().equals(BundleType.REBORN_BUNDLE))
+                    .map(bundle -> RebornBundleListDto.builder()
+                            .id(bundle.getId())
+                            .name(bundle.getName())
+                            .price(bundle.getPrice())
+                            .imagePath(Utils.getImagePath(bundle.getName()))
                             .build())
                     .collect(Collectors.toList());
 
@@ -224,13 +210,26 @@ public class CompanyService {
                     .id(company.getId())
                     .name(company.getName())
                     .imagePath(Utils.getImagePath(company.getNickname()))
-                    .products(productResponseDtoList)
+                    .bundles(rebornBundles)
                     .build();
 
             companyResponseDtoList.add(companyListResponseDto);
         }
 
         return companyResponseDtoList;
+    }
+
+    private List<BundleListDto> getBundlesByType(Company company, BundleType bundleType) {
+        return Optional.ofNullable(company.getBundles())
+                .orElse(Collections.emptyList()).stream()
+                .filter(bundle -> bundle.getBundleType().equals(bundleType))
+                .map(bundle -> {
+                    String intro = bundle.getProducts().stream()
+                            .map(Product::getName)
+                            .collect(Collectors.joining(" + "));
+                    return new BundleListDto(bundle, intro, Utils.getImagePath(bundle.getName()));
+                })
+                .collect(Collectors.toList());
     }
 
 }

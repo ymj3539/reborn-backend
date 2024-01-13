@@ -32,7 +32,7 @@ public class CompanyController {
     @GetMapping("/{companyId}")
     @ApiOperation(value = "업체 상세 조회")
     public CompanyResponseDto get(@PathVariable Long companyId, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
-        return companyService.getCompanyAndProducts(companyId, token);
+        return companyService.getCompany(companyId, token);
     }
 
     @GetMapping("/{companyId}/available-times")
