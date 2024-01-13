@@ -1,4 +1,4 @@
-package com.rainbowbridge.reborn.dto.product;
+package com.rainbowbridge.reborn.dto.bundle;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,18 +9,18 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecommendedProductListDto {
+public class BundleRecommendListDto {
 
     private String imagePath;
 
-    private Long companyId;
-
     private String companyName;
 
-    private Long productId;
+    private Long bundleId;
 
-    private String productName;
+    private String bundleName;
 
     private int price;
+
+    private boolean heartYN;
 
 }
