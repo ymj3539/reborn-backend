@@ -4,6 +4,7 @@ import com.rainbowbridge.reborn.Utils;
 import com.rainbowbridge.reborn.domain.ChatContent;
 import com.rainbowbridge.reborn.domain.ChatRoom;
 import com.rainbowbridge.reborn.domain.Company;
+import com.rainbowbridge.reborn.domain.SenderType;
 import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.chatContent.ChatContentAddRequestDto;
 import com.rainbowbridge.reborn.dto.chatContent.ChatContentListDto;
@@ -45,7 +46,7 @@ public class ChatContentService {
         chatContentRepository.save(ChatContent.builder()
                                                 .content(dto.getContent())
                                                 .chatRoom(chatRoom)
-                                                .user(user)
+                                                .senderType(SenderType.USER)
                                                 .build());
     }
 
@@ -55,7 +56,7 @@ public class ChatContentService {
         chatContentRepository.save(ChatContent.builder()
                 .content(content)
                 .chatRoom(chatRoom)
-                .company(company)
+                .senderType(SenderType.COMPANY)
                 .build());
     }
 
@@ -83,8 +84,8 @@ public class ChatContentService {
     }
 
     private boolean checkUserSendYn(ChatContent chatContent) {
-        User user = chatContent.getUser();
-        Company company = chatContent.getCompany();
+        User user = chatContent.getChatRoom().getUser();
+        Company company = chatContent.getChatRoom().getCompany();
 
         return user != null && company == null;
     }

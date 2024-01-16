@@ -34,19 +34,11 @@ public class ChatContent {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    private SendType sendType;
+    private SenderType senderType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatRoom_id")
     private ChatRoom chatRoom;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
-    private Company company;
 
     @CreatedDate
     private LocalDateTime createDt;

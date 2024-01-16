@@ -86,9 +86,6 @@ public class Company {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
     private List<ChatRoom> chatRooms = new ArrayList<>();
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
-    private List<ChatContent> chatContents = new ArrayList<>();
-
     public double getAverageRating() {
         return reviews.stream()
                 .mapToInt(Review::getRating)

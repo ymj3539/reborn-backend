@@ -69,9 +69,6 @@ public class User implements UserDetails {
     private List<ChatRoom> chatRooms = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<ChatContent> chatContents = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Search> searches = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)

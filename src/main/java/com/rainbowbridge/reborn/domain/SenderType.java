@@ -1,6 +1,6 @@
 package com.rainbowbridge.reborn.domain;
 
-public enum SendType {
+public enum SenderType {
 
     USER,
     COMPANY
