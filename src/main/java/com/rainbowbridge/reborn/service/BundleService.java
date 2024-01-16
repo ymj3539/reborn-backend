@@ -86,7 +86,6 @@ public class BundleService {
                         .bundleId(bundle.getId())
                         .bundleName(bundle.getName())
                         .price(bundle.getPrice())
-                        .heartYN(heatService.check(bundle.getCompany(), dto.getToken()))
                         .build())
                 .collect(Collectors.toList());
     }

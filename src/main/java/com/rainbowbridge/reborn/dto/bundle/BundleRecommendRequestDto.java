@@ -36,7 +36,4 @@ public class BundleRecommendRequestDto {
     @ApiModelProperty(value = "사용자 위치 경도", example = "129.222829")
     private double userLongitude;
 
-    @ApiModelProperty(value = "액세스 토큰")
-    private String token;
-
 }

@@ -21,6 +21,4 @@ public class BundleRecommendListDto {
 
     private int price;
 
-    private boolean heartYN;
-
 }
