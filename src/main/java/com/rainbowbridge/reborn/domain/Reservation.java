@@ -37,13 +37,12 @@ public class Reservation {
     @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
     private Review review;
 
+    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL)
+    private Pay pay;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pet_id")
     private Pet pet;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "pay_id")
-    private Pay pay;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

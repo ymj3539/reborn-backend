@@ -12,9 +12,11 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import java.time.LocalDateTime;
 
@@ -43,15 +45,8 @@ public class Pay {
 
     private int totalPrice;         // 총 결제 금액
 
-    @OneToOne(mappedBy = "pay", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reservation_id")
     private Reservation reservation;
-
-    @Builder
-    public Pay(Payment payment, Card card, int installmentMonths, int totalPrice) {
-        this.payment = payment;
-        this.card = card;
-        this.installmentMonths = installmentMonths;
-        this.totalPrice = totalPrice;
-    }
 
 }
