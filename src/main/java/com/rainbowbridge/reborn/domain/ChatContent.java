@@ -9,6 +9,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,6 +32,9 @@ public class ChatContent {
     private Long id;
 
     private String content;
+
+    @Enumerated(EnumType.STRING)
+    private SendType sendType;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chatRoom_id")
