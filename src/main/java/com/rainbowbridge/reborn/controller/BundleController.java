@@ -30,11 +30,13 @@ public class BundleController {
     }
 
     @GetMapping("/recommendation")
+    @ApiOperation(value = "장례 번들 추천")
     public List<BundleRecommendListDto> getRecommendedProductList(@RequestBody BundleRecommendRequestDto dto) {
          return bundleService.getRecommendationList(dto, 3);
     }
 
     @GetMapping("/recommendation/more")
+    @ApiOperation(value = "장례 번들 추천 더보기")
     public List<BundleRecommendListDto> getMoreRecommendedProductList(@RequestBody BundleRecommendRequestDto dto) {
         return bundleService.getRecommendationList(dto, 10);
     }
