@@ -25,13 +25,13 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fileName;
+    private String name;
 
     private String originName;
 
     private String ext;
 
-    private Long fileSize;
+    private Long size;
 
     private boolean stat;
 
