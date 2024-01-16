@@ -53,8 +53,7 @@ public class HeatService {
         }
         else {
             // 찜이 되어 있지 않으면 추가
-            Heart heart = new Heart(user, company);
-            heartRepository.save(heart);
+            heartRepository.save(Heart.builder().user(user).company(company).build());
             return true;
         }
     }
