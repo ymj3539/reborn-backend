@@ -79,7 +79,7 @@ public class HeatService {
                     .map(company -> HeartListDto.builder()
                             .id(company.getId())
                             .name(company.getName())
-                            .address(company.getAddress())
+                            .address(company.getBaseAddress() + " " + company.getDetailAddress())
                             .businessHours(Utils.convertTimeRangeFormat(company.getOpenTime(), company.getCloseTime()))
                             .imagePath(Utils.getImagePath(company.getNickname()))
                             .build())

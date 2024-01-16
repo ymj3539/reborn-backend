@@ -60,7 +60,7 @@ public class CompanyService {
         return CompanyResponseDto.builder()
                 .name(company.getName())
                 .intro(company.getIntro())
-                .address(company.getAddress())
+                .address(company.getBaseAddress() + " " + company.getDetailAddress())
                 .businessHours(Utils.convertTimeRangeFormat(company.getOpenTime(), company.getCloseTime()))
                 .telNum(company.getTelNum())
                 .notification(company.getNotification())

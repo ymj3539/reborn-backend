@@ -37,7 +37,11 @@ public class Company {
 
     private String region;          // 권역
 
-    private String address;         // 주소
+    private String postalCode;      // 우편번호
+
+    private String baseAddress;     // 기본 주소
+
+    private String detailAddress;   // 상세 주소
 
     private String intro;           // 설명
 
