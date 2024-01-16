@@ -49,9 +49,6 @@ public class Bundle {
     private List<Product> products = new ArrayList<>();
 
     @OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL)
-    private List<Heart> hearts = new ArrayList<>();
-
-    @OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL)
     private List<Reservation> reservations = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
