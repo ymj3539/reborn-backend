@@ -51,7 +51,7 @@ public class Bundle {
     @OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL)
     private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bundle", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
     public double getDistance(double userLatitude, double userLongitude) {
