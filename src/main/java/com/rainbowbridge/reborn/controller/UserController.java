@@ -28,7 +28,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/{id}")
+    @GetMapping("/check/{id}")
     @ApiOperation(value="아이디 중복 확인")
     public ResponseEntity checkDuplicatedId(@PathVariable String id) {
         userService.checkDuplicatedId(id);
@@ -41,7 +41,7 @@ public class UserController {
         return userService.addUser(dto);
     }
 
-    @GetMapping("/login")
+    @GetMapping("/check/login")
     @ApiOperation(value="로그인 여부 확인")
     public ResponseEntity checkLogin(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken) {
         if (userService.checkUser(accessToken) != null) {
