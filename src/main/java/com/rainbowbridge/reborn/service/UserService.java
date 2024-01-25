@@ -71,7 +71,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public void checkDuplicatedId(String id) {
-        if (userRepository.findById(id).isPresent()) {
+        if (userRepository.existsById(id)) {
             throw new IllegalStateException("이미 존재하는 아이디입니다.");
         }
     }
