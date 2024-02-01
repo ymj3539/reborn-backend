@@ -1,11 +1,7 @@
 package com.rainbowbridge.reborn.controller;
 
 import com.rainbowbridge.reborn.Utils;
-import com.rainbowbridge.reborn.dto.user.LoginDto;
-import com.rainbowbridge.reborn.dto.user.LoginResponseDto;
-import com.rainbowbridge.reborn.dto.user.UserResponseDto;
-import com.rainbowbridge.reborn.dto.user.UserAddDto;
-import com.rainbowbridge.reborn.dto.user.UserUpdateDto;
+import com.rainbowbridge.reborn.dto.user.*;
 import com.rainbowbridge.reborn.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -75,6 +71,12 @@ public class UserController {
     public UserResponseDto updateUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
                                       @RequestBody UserUpdateDto dto) {
         return userService.updateUser(accessToken, dto);
+    }
+
+    @PostMapping("oauth/kakao")
+    @ApiOperation(value="소셜로그인-카카오")
+    public LoginResponseDto OAuthLogin(@RequestBody OAuthLoginDto dto) {
+        return userService.OAuthLoginUser(dto);
     }
 
 }
