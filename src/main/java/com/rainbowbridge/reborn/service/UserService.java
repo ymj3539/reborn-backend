@@ -40,6 +40,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenBlackListService tokenBlackListService;
     private final String KAKAO_REQ_URL = "https://kapi.kakao.com/v2/user/me";
+    private final String NAVER_REQ_URL = "https://openapi.naver.com/v1/nid/me";
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Transactional(readOnly = true)
@@ -141,25 +142,103 @@ public class UserService {
     }
 
 
-    public LoginResponseDto OAuthLoginUser(OAuthLoginDto dto) {
-        String reqURL = KAKAO_REQ_URL;
+    public LoginResponseDto KaKaOLoginUser(OAuthLoginDto dto) {
+        ResponseEntity<String> response = getSocialUserInfo(KAKAO_REQ_URL, dto.getAccessToken());
 
-        // 1. accessToken으로 사용자 정보 조회
-        // Http Header 생성
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + dto.getAccessToken());
-        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+        // responseBody에 있는 정보 꺼내기
+        JsonNode jsonNode = JsonProcessing(response);
 
-        // Http 요청 보내기
-        HttpEntity<MultiValueMap<String, String>> kakaoUserInfoRequest = new HttpEntity<>(headers);
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.exchange(
-                reqURL,
-                HttpMethod.POST,
-                kakaoUserInfoRequest,
-                String.class
-        );
+        // json 파싱
+        String email = null;
+        String nickname = null;
 
+        if(jsonNode.get("kakao_account").has("email")){
+            email = jsonNode.get("kakao_account").get("email").asText(); // 사용자 이메일
+        }
+
+        if(jsonNode.get("properties").has("nickname")){
+            nickname = jsonNode.get("properties").get("nickname").asText(); // 사용자 카카오 닉네임
+        }
+
+        // password: random UUID
+        String UUID = "9e6434ac-e91c-4417-922b-9c2c43946fe3";
+        String password = email+UUID;
+
+        // 2. DB에 존재하는 회원인지 확인
+        User SocialUser = userRepository.findById(email)
+                .orElse(null);
+
+
+        // 3. 존재하지 않는 사용자면 회원가입 후 로그인
+        if (SocialUser == null) {
+            String encodedPassword = passwordEncoder.encode(password);
+            User user = dto.toEntity(email, encodedPassword, nickname);
+            user.addRole("USER");
+
+            user = userRepository.save(user);
+
+            return toLoginResponseDto(user, getToken(user.getId(), password));
+        }
+
+        // 4. 존재하면 로그인
+        else {
+            return toLoginResponseDto(SocialUser, getToken(SocialUser.getId(), password));
+        }
+    }
+
+    public LoginResponseDto NaverLoginUser(OAuthLoginDto dto) {
+        // 사용자 정보 받아오기
+        ResponseEntity<String> response = getSocialUserInfo(NAVER_REQ_URL, dto.getAccessToken());
+
+        // responseBody에 있는 정보 꺼내기
+        JsonNode jsonNode = JsonProcessing(response);
+
+        // json 파싱
+        String email = null;
+        String name = null;
+        String phoneNum = null;
+
+        if(jsonNode.get("response").has("email")){
+            email = jsonNode.get("response").get("email").asText(); // 네이버에 등록된 연락처 이메일(네이버 이메일 아님)
+        }
+
+        if(jsonNode.get("response").has("name")){
+            name = jsonNode.get("response").get("name").asText(); // 성명
+        }
+
+        if(jsonNode.get("response").has("mobile")){
+            phoneNum = jsonNode.get("response").get("mobile").asText(); // 전화번호
+        }
+
+        // password: random UUID
+        String UUID = "9e6434ac-e91c-4417-922b-9c2c43946fe3";
+        String password = email+UUID;
+
+        // 2. DB에 존재하는 회원인지 확인
+        User SocialUser = userRepository.findById(email)
+                .orElse(null);
+
+        // 3. 존재하지 않는 사용자면 회원가입 후 로그인
+        if (SocialUser == null) {
+            String encodedPassword = passwordEncoder.encode(password);
+            User user = dto.toEntity(email, encodedPassword, name, phoneNum);
+            user.addRole("USER");
+
+            user = userRepository.save(user);
+
+            return toLoginResponseDto(user, getToken(user.getId(), password));
+        }
+
+        // 4. 존재하면 로그인
+        else {
+            if(!passwordEncoder.matches(password, SocialUser.getPassword())) {
+                throw new IllegalArgumentException("비밀번호가 잘못되었습니다.");
+            }
+            return toLoginResponseDto(SocialUser, getToken(email, password));
+        }
+    }
+
+    private JsonNode JsonProcessing(ResponseEntity<String> response){
         // responseBody에 있는 정보 꺼내기
         JsonNode jsonNode = null;
         try {
@@ -171,32 +250,26 @@ public class UserService {
             throw new CustomException("사용자 정보 가져오기에 실패하였습니다. ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        String socialId = jsonNode.get("id").asText(); // 카카오 회원번호
+        return jsonNode;
+    }
 
-        // password: random UUID
-        String password = UUID.randomUUID().toString();
+    private ResponseEntity<String> getSocialUserInfo(String reqURL, String accessToken){
+        // accessToken으로 사용자 정보 조회
+        // Http Header 생성
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer " + accessToken);
+        headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
 
-        // 2. DB에 존재하는 회원인지 확인
-        User SocialUser = userRepository.findById(socialId)
-                .orElse(null);
-
-        // 3. 존재하지 않는 사용자면 회원가입 후 로그인
-        if (SocialUser == null) {
-            String encodedPassword = passwordEncoder.encode(password);
-            User user = dto.toEntity(socialId, encodedPassword);
-            user.addRole("USER");
-
-            user = userRepository.save(user);
-
-            return toLoginResponseDto(user, getToken(user.getId(), password));
-        }
-
-        // 4. 존재하면 로그인
-        else {
-            return toLoginResponseDto(SocialUser, getToken(socialId, password));
-        }
-
-
+        // Http 요청 보내기
+        HttpEntity<MultiValueMap<String, String>> UserInfoRequest = new HttpEntity<>(headers);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(
+                reqURL,
+                HttpMethod.POST,
+                UserInfoRequest,
+                String.class
+        );
+        return response;
     }
 
     public LoginResponseDto toLoginResponseDto(User user, JwtToken token) {

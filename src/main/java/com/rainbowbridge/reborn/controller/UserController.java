@@ -74,9 +74,15 @@ public class UserController {
     }
 
     @PostMapping("oauth/kakao")
-    @ApiOperation(value="소셜로그인-카카오")
-    public LoginResponseDto OAuthLogin(@RequestBody OAuthLoginDto dto) {
-        return userService.OAuthLoginUser(dto);
+    @ApiOperation(value="카카오 소셜로그인")
+    public LoginResponseDto KakaoOAuthLogin(@RequestBody OAuthLoginDto dto) {
+        return userService.KaKaOLoginUser(dto);
+    }
+
+    @PostMapping("oauth/naver")
+    @ApiOperation(value="네이버 소셜로그인")
+    public LoginResponseDto NaverOAuthLogin(@RequestBody OAuthLoginDto dto) {
+        return userService.NaverLoginUser(dto);
     }
 
 }
