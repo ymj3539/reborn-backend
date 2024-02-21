@@ -6,9 +6,9 @@ import com.rainbowbridge.reborn.domain.ChatRoom;
 import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.domain.SenderType;
 import com.rainbowbridge.reborn.domain.User;
-import com.rainbowbridge.reborn.dto.chatContent.ChatContentAddRequestDto;
 import com.rainbowbridge.reborn.dto.chatContent.ChatContentListDto;
 import com.rainbowbridge.reborn.dto.chatContent.ChatContentResponseDto;
+import com.rainbowbridge.reborn.dto.chatContent.ChatMessageDto;
 import com.rainbowbridge.reborn.dto.reservation.CheckReservationResponseDto;
 import com.rainbowbridge.reborn.repository.ChatContentRepository;
 import com.rainbowbridge.reborn.repository.ChatRoomRepository;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -33,12 +32,12 @@ public class ChatContentService {
     private final ReservationService reservationService;
     private final UserService userService;
 
-    public void addUserChat(ChatContentAddRequestDto dto, String token) {
-        User user = userService.checkUser(token);
-
-        if (user == null) {
-            throw new EntityNotFoundException("사용자 로그인 정보가 없습니다.");
-        }
+    public void addUserChat(ChatMessageDto dto) {
+//        User user = userService.checkUser(token);
+//
+//        if (user == null) {
+//            throw new EntityNotFoundException("사용자 로그인 정보가 없습니다.");
+//        }
 
         ChatRoom chatRoom = chatRoomRepository.findById(dto.getChatRoomId())
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 채팅방입니다."));
