@@ -1,15 +1,12 @@
 package com.rainbowbridge.reborn.service;
 
-import com.rainbowbridge.reborn.Utils;
 import com.rainbowbridge.reborn.domain.ChatContent;
 import com.rainbowbridge.reborn.domain.ChatRoom;
 import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.domain.SenderType;
 import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.chatContent.ChatContentListDto;
-import com.rainbowbridge.reborn.dto.chatContent.ChatContentResponseDto;
 import com.rainbowbridge.reborn.dto.chatContent.ChatMessageDto;
-import com.rainbowbridge.reborn.dto.reservation.CheckReservationResponseDto;
 import com.rainbowbridge.reborn.repository.ChatContentRepository;
 import com.rainbowbridge.reborn.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +17,7 @@ import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,26 +58,22 @@ public class ChatContentService {
     }
 
     @Transactional(readOnly = true)
-    public ChatContentResponseDto getChatContentListDto(ChatRoom chatRoom, String userId) {
+    public List<ChatContentListDto> getChatContentListDto(Long chatRoomId, String token) {
+        Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findById(chatRoomId);
+        ChatRoom chatRoom = chatRoomOptional.get();
+
         List<ChatContentListDto> chatContents = chatContentRepository.findAllByChatRoom(chatRoom).stream()
                 .map(chatContent -> ChatContentListDto.builder()
+                        .chatContentId(chatContent.getId())
                         .userSendYN(checkUserSendYn(chatContent))
                         .content(chatContent.getContent())
                         .sendDate(formatChatSendDate(chatContent.getCreateDt()))
                         .sendTime(formatChatSendTime(chatContent.getCreateDt()))
+                        .readCount(chatContent.getReadCount())
                         .build())
                 .collect(Collectors.toList());
 
-        Company company = chatRoom.getCompany();
-        CheckReservationResponseDto reservation = reservationService.checkReservation(company, userId);
-
-        return ChatContentResponseDto.builder()
-                .companyName(company.getName())
-                .companyImagePath(Utils.getImagePath(company.getNickname()))
-                .reservationYN(reservation.isReservationYN())
-                .reservationDate(reservation.getReservationDate())
-                .chatContentListDtos(chatContents)
-                .build();
+        return chatContents;
     }
 
     private boolean checkUserSendYn(ChatContent chatContent) {

@@ -43,4 +43,6 @@ public class ChatContent {
     @CreatedDate
     private LocalDateTime createDt;
 
+    private int readCount;
+
 }

@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ChatContentListDto {
+    @ApiModelProperty(value = "채팅 메세지 pk", example = "")
+    private Long chatContentId;
 
     @ApiModelProperty(value = "사용자 전송 메시지 여부 : true - 사용자 전송 메시지 / false - 업체 전송 메시지", example = "")
     private boolean userSendYN;
@@ -23,5 +25,8 @@ public class ChatContentListDto {
 
     @ApiModelProperty(value = "발신 시간", example = "오후 1:39")
     private String  sendTime;
+
+    @ApiModelProperty(value = "아직 읽지 않은 사람 수", example = "")
+    private int readCount;
 
 }
