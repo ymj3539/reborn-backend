@@ -6,7 +6,9 @@ import com.rainbowbridge.reborn.domain.ChatRoom;
 import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.chatContent.ChatContentResponseDto;
+import com.rainbowbridge.reborn.dto.chatRoom.ChatRoomDto;
 import com.rainbowbridge.reborn.dto.chatRoom.ChatRoomListDto;
+import com.rainbowbridge.reborn.dto.reservation.CheckReservationResponseDto;
 import com.rainbowbridge.reborn.repository.ChatRoomRepository;
 import com.rainbowbridge.reborn.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,6 +53,25 @@ public class ChatRoomService {
                             .build();
                 })
                 .collect(Collectors.toList());
+    }
+
+    public ChatRoomDto getChatRoom(Long chatRoomId, String token){
+        User user = userService.checkUser(token);
+
+        Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findById(chatRoomId);
+
+        ChatRoom chatRoom = chatRoomOptional.get();
+
+        Company company = chatRoom.getCompany();
+        CheckReservationResponseDto reservation = reservationService.checkReservation(company, token);
+
+        return ChatRoomDto.builder()
+                .companyId(company.getId())
+                .companyName(company.getName())
+                .companyImagePath(Utils.getImagePath(company.getNickname()))
+                .reservationYN(reservation.isReservationYN())
+                .reservationDate(reservation.getReservationDate())
+                .build();
     }
 
     @Transactional

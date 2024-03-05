@@ -2,6 +2,7 @@ package com.rainbowbridge.reborn.controller;
 
 import com.google.common.net.HttpHeaders;
 import com.rainbowbridge.reborn.dto.chatContent.ChatContentResponseDto;
+import com.rainbowbridge.reborn.dto.chatRoom.ChatRoomDto;
 import com.rainbowbridge.reborn.dto.chatRoom.ChatRoomListDto;
 import com.rainbowbridge.reborn.service.ChatRoomService;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +27,12 @@ public class ChatRoomController {
     @ApiOperation(value = "채팅방 목록 조회")
     public List<ChatRoomListDto> getList(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         return chatRoomService.getChatRoomList(token);
+    }
+
+    @GetMapping("/{chatRoomId}")
+    @ApiOperation(value = "채팅방 조회")
+    public ChatRoomDto getchatRoom(@PathVariable Long chatRoomId, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        return chatRoomService.getChatRoom(chatRoomId, token);
     }
 
 
