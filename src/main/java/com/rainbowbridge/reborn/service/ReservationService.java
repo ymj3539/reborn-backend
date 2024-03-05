@@ -24,8 +24,8 @@ public class ReservationService {
     private final UserService userService;
 
     @Transactional(readOnly = true)
-    public CheckReservationResponseDto checkReservation(Company company, String userId) {
-        User user = userService.checkUser(userId);
+    public CheckReservationResponseDto checkReservation(Company company, String token) {
+        User user = userService.checkUser(token);
 
         if (user == null) {
             return null;
