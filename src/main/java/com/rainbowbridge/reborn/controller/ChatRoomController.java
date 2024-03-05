@@ -38,7 +38,7 @@ public class ChatRoomController {
 
     @PostMapping("/{companyId}")
     @ApiOperation(value = "상담 하기")
-    public ChatContentResponseDto enter(@PathVariable Long companyId, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+    public ChatRoomDto enter(@PathVariable Long companyId, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
         return chatRoomService.enterChatRoom(companyId, token);
     }
 

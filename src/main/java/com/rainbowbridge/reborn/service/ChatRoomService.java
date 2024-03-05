@@ -56,8 +56,6 @@ public class ChatRoomService {
     }
 
     public ChatRoomDto getChatRoom(Long chatRoomId, String token){
-        User user = userService.checkUser(token);
-
         Optional<ChatRoom> chatRoomOptional = chatRoomRepository.findById(chatRoomId);
 
         ChatRoom chatRoom = chatRoomOptional.get();
@@ -75,7 +73,7 @@ public class ChatRoomService {
     }
 
     @Transactional
-    public ChatContentResponseDto enterChatRoom(Long companyId, String token) {
+    public ChatRoomDto enterChatRoom(Long companyId, String token) {
         User user = userService.checkUser(token);
         Company company =companyRepository.findById(companyId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 업체입니다."));
@@ -91,12 +89,12 @@ public class ChatRoomService {
             // 3. 채팅방 저장
             chatRoomRepository.save(newChatRoom);
 
-            return chatContentService.getChatContentListDto(newChatRoom, token);
+            return getChatRoom(newChatRoom.getId(), token);
         }
         else {
             // 이미 생성된 채팅방이 있으면
             ChatRoom chatRoom = chatRoomOptional.get();
-            return chatContentService.getChatContentListDto(chatRoom, token);
+            return getChatRoom(chatRoom.getId(), token);
         }
     }
 }
