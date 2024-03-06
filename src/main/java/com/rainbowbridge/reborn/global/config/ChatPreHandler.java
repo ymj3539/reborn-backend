@@ -52,6 +52,8 @@ public class ChatPreHandler implements ChannelInterceptor {
             // 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext에 저장
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+        } else {
+            throw new MalformedJwtException("jwt Expired");
         }
 
         return message;
