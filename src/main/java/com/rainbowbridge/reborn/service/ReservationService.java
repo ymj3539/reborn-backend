@@ -5,6 +5,7 @@ import com.rainbowbridge.reborn.domain.Company;
 import com.rainbowbridge.reborn.domain.Reservation;
 import com.rainbowbridge.reborn.domain.User;
 import com.rainbowbridge.reborn.dto.reservation.CheckReservationResponseDto;
+import com.rainbowbridge.reborn.dto.reservation.ReservationDto;
 import com.rainbowbridge.reborn.dto.reservation.UpcomingReservationResponseDto;
 import com.rainbowbridge.reborn.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,48 @@ public class ReservationService {
         }
 
         return toCheckReservationResponseDto(true, Utils.convertLocalDateFormat(upcomingReservation.getDate()));
+    }
+
+    @Transactional(readOnly = true)
+    public CheckReservationResponseDto checkReservation(Company company, User user) {
+
+        List<Reservation> reservations = reservationRepository.findAllByUserAndCompany(user, company);
+
+        if (reservations.isEmpty()) {
+            return toCheckReservationResponseDto(false, null);
+        }
+
+        Reservation upcomingReservation = reservations.get(reservations.size() - 1);
+
+        if (isReservationExpired(upcomingReservation)) {
+            return toCheckReservationResponseDto(false, null);
+        }
+
+        return toCheckReservationResponseDto(true, Utils.convertLocalDateFormat(upcomingReservation.getDate()));
+    }
+
+
+    @Transactional(readOnly = true)
+    public ReservationDto findRecentReservationDto(Company company, User user) {
+
+        List<Reservation> reservations = reservationRepository.findAllByUserAndCompany(user, company);
+
+        if (reservations.isEmpty()) {
+            return (new ReservationDto(null, false, null, null));
+        }
+
+        Reservation upcomingReservation = reservations.get(reservations.size() - 1);
+
+        if (isReservationExpired(upcomingReservation)) {
+            return (new ReservationDto(null, false, null, null));
+        }
+
+        return ReservationDto.builder()
+                .reservationId(upcomingReservation.getId())
+                .reservationYN(true)
+                .reservationDate(Utils.convertLocalDateFormat(upcomingReservation.getDate()))
+                .bundleName(upcomingReservation.getBundle().getName())
+                .build();
     }
 
     @Transactional(readOnly = true)
