@@ -30,21 +30,22 @@ public class ChatContentService {
     private final ReservationService reservationService;
     private final UserService userService;
 
-    public void addUserChat(ChatMessageDto dto) {
+    public void addUserChat(ChatMessageDto chatMessageDto, Long chatRoomId) {
 //        User user = userService.checkUser(token);
 //
 //        if (user == null) {
 //            throw new EntityNotFoundException("사용자 로그인 정보가 없습니다.");
 //        }
 
-        ChatRoom chatRoom = chatRoomRepository.findById(dto.getChatRoomId())
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 채팅방입니다."));
 
         chatContentRepository.save(ChatContent.builder()
-                                                .content(dto.getContent())
-                                                .chatRoom(chatRoom)
-                                                .senderType(SenderType.USER)
-                                                .build());
+                .chatRoom(chatRoom)
+                .content(chatMessageDto.getContent())
+                .senderType(chatMessageDto.isUserSendYN() ? SenderType.USER : SenderType.COMPANY)
+                .readCount(chatMessageDto.getReadCount())
+                .build());
     }
 
     public void addCompanyFirstChat(ChatRoom chatRoom, Company company) {
@@ -54,6 +55,7 @@ public class ChatContentService {
                 .content(content)
                 .chatRoom(chatRoom)
                 .senderType(SenderType.COMPANY)
+                .readCount(1)
                 .build());
     }
 

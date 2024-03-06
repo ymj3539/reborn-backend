@@ -2,6 +2,7 @@ package com.rainbowbridge.reborn.controller;
 
 import com.rainbowbridge.reborn.dto.chatContent.ChatMessageDto;
 import com.rainbowbridge.reborn.service.ChatContentService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -20,22 +21,11 @@ public class ChatSocketController {
      */
     @MessageMapping("/message/{chatRoomId}") // 여기로 보낸 메시지를
     @SendTo("/topic/message/{chatRoomId}")  // 여기로 보내줌
+    @ApiOperation(value = "채팅 메세지 보내기(소켓)")
     public ChatMessageDto chatting(ChatMessageDto message,
-                                   @DestinationVariable String chatRoomId) throws Exception{
+                                   @DestinationVariable Long chatRoomId){
         // 메세지 디비 저장
-        chatContentService.addUserChat(message);
-
-        return message;
-    }
-
-    /*
-    * 새로운 채팅방이 연결될 때와 채팅방 리스트에 보여지는 마지막 메시지 갱신을 위한 소켓연결
-    * */
-    @MessageMapping("/chatlist/{userId}")
-    @SendTo("/topic/chatlist/{userId}")
-    public ChatMessageDto chattingList(ChatMessageDto message,
-                                       @DestinationVariable String userId) throws Exception{
-
+        chatContentService.addUserChat(message, chatRoomId);
         return message;
     }
 }
