@@ -2,15 +2,15 @@ package com.rainbowbridge.reborn.dto.chatContent;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@Builder
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
-public class ChatContentListDto {
+@NoArgsConstructor
+public class ChatMessageDto {
     @ApiModelProperty(value = "채팅 메세지 pk", example = "")
     private Long chatContentId;
 
@@ -20,13 +20,6 @@ public class ChatContentListDto {
     @ApiModelProperty(value = "채팅 메시지", example = "안녕하세요. ‘포포즈’ 상담원입니다. 어떤 도움이 필요하신가요?")
     private String content;
 
-    @ApiModelProperty(value = "발신 일자", example = "2023년 11월 7일 화요일")
-    private String  sendDate;
-
-    @ApiModelProperty(value = "발신 시간", example = "오후 1:39")
-    private String  sendTime;
-
     @ApiModelProperty(value = "아직 읽지 않은 사람 수", example = "")
     private int readCount;
-
 }
