@@ -53,6 +53,8 @@ public class User implements UserDetails {
 
     private String detailAddress;   // 상세 주소
 
+    private String firebaseToken; // firebase 토큰
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Pet> pets = new ArrayList<>();
 
