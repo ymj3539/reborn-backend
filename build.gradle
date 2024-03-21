@@ -40,6 +40,8 @@ dependencies {
 
     // 웹소켓 관련 의존성
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // FCM을 위한 의존성
+    implementation 'com.google.firebase:firebase-admin:9.2.0'
 }
 
 tasks.named('test') {

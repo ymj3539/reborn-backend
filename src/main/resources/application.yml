@@ -29,3 +29,7 @@ file:
 
 jwt:
   secret: ${JWT_SECRET}
+
+firebase:
+  secret:
+    key: ${firebase.secret.key}
